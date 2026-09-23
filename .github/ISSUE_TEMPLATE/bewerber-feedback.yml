@@ -1,0 +1,28 @@
+name: Rückmeldung zur Bewerbungsstrecke
+description: Etwas war für Bewerberinnen und Bewerber unklar, zu lang oder falsch übersetzt.
+labels: ["bewerber-ux"]
+body:
+  - type: dropdown
+    id: language
+    attributes:
+      label: Sprache
+      options: [Deutsch, Leichte Sprache, English, Polski, Română, Українська, Русский, Türkçe, العربية]
+    validations:
+      required: true
+  - type: dropdown
+    id: device
+    attributes:
+      label: Gerät
+      options: [Handy, Tablet, Computer]
+  - type: input
+    id: step
+    attributes:
+      label: Schritt / Seite
+      placeholder: z. B. "Frage 2 – Führerschein" oder /jobs/lkw-fahrer
+  - type: textarea
+    id: problem
+    attributes:
+      label: Was war das Problem?
+      description: Möglichst mit Screenshot. Keine echten Bewerberdaten eintragen!
+    validations:
+      required: true

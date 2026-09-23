@@ -32,14 +32,14 @@ jobs:
       - id: meta
         uses: docker/metadata-action@v5
         with:
-          images: ghcr.io/vytral/harly
+          images: ghcr.io/toymen/funnel
           flavor: latest=false
           tags: |
             type=raw,value=edge,enable=${{ github.ref == 'refs/heads/main' }}
             type=semver,pattern={{version}},enable=${{ startsWith(github.ref, 'refs/tags/v') }}
             type=sha,prefix=sha-
           labels: |
-            org.opencontainers.image.title=Harly
+            org.opencontainers.image.title=Bier-Schneider Recruiting (Harly-Fork)
             org.opencontainers.image.description=Self-hosted applicant tracking system
             org.opencontainers.image.licenses=MIT
       - id: build
@@ -47,9 +47,9 @@ jobs:
         with:
           context: .
           push: true
-          # Main is a fast VPS testing channel. Version tags remain the
-          # reproducible multi-architecture release channel.
-          platforms: ${{ github.ref == 'refs/heads/main' && 'linux/amd64' || 'linux/amd64,linux/arm64' }}
+          # Zielplattform ist der Raspberry Pi (arm64). Versions-Tags bauen
+          # zusätzlich amd64 für Tests auf einem normalen Server/PC.
+          platforms: ${{ github.ref == 'refs/heads/main' && 'linux/arm64' || 'linux/amd64,linux/arm64' }}
           tags: ${{ steps.meta.outputs.tags }}
           labels: ${{ steps.meta.outputs.labels }}
           sbom: true
@@ -57,7 +57,7 @@ jobs:
       - name: Scan published image for HIGH and CRITICAL vulnerabilities
         uses: aquasecurity/trivy-action@v0.36.0
         with:
-          image-ref: ghcr.io/vytral/harly@${{ steps.build.outputs.digest }}
+          image-ref: ghcr.io/toymen/funnel@${{ steps.build.outputs.digest }}
           format: table
           severity: HIGH,CRITICAL
           ignore-unfixed: true
@@ -65,13 +65,14 @@ jobs:
       - name: Block fixed CRITICAL vulnerabilities
         uses: aquasecurity/trivy-action@v0.36.0
         with:
-          image-ref: ghcr.io/vytral/harly@${{ steps.build.outputs.digest }}
+          image-ref: ghcr.io/toymen/funnel@${{ steps.build.outputs.digest }}
           format: table
           severity: CRITICAL
           ignore-unfixed: true
           exit-code: "1"
   release-manifest:
-    if: startsWith(github.ref, 'refs/tags/v')
+    # Nur im Original-Repo: synchronisiert die Harly-CLI-Release-Assets.
+    if: github.repository == 'Vytral/harly' && startsWith(github.ref, 'refs/tags/v')
     needs: image
     runs-on: ubuntu-latest
     permissions:

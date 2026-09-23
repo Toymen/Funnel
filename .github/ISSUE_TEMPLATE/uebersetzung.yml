@@ -1,0 +1,22 @@
+name: Übersetzung prüfen / korrigieren
+description: Muttersprachliche Prüfung eines Textes im Bewerber-Frontend.
+labels: ["i18n"]
+body:
+  - type: dropdown
+    id: language
+    attributes:
+      label: Sprache
+      options: [Leichte Sprache, English, Polski, Română, Українська, Русский, Türkçe, العربية]
+    validations:
+      required: true
+  - type: input
+    id: key
+    attributes:
+      label: Datei / Schlüssel
+      placeholder: apps/web/src/features/quick-apply/messages/pl.ts → steps.contact.title
+  - type: textarea
+    id: correction
+    attributes:
+      label: Aktueller Text → Vorschlag
+    validations:
+      required: true
