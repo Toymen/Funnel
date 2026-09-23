@@ -1,3 +1,10 @@
+> **Bier-Schneider Recruiting Funnel.** Dieses Repository ist ein Fork von
+> [Harly](https://github.com/Vytral/harly) (MIT) mit Anpassungen für die
+> Bier-Schneider GmbH & Co. KG: mehrsprachige 60-Sekunden-Bewerbung, LKW-Animation,
+> anonymes Funnel-Tracking und Betrieb auf einem Raspberry Pi 5.
+> Anforderungen: [docs/bier-schneider/PRD.md](docs/bier-schneider/PRD.md) ·
+> Upstream-Updates: [docs/bier-schneider/UPSTREAM.md](docs/bier-schneider/UPSTREAM.md)
+
 <p align="center">
   <img src="public/banner-harly.webp" alt="Harly, an open-source applicant tracking system" width="1200" />
 </p>
