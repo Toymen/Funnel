@@ -5,6 +5,7 @@ import {
   Briefcase,
   CalendarDays,
   FileText,
+  Filter,
   Globe,
   Home,
   Inbox,
@@ -104,6 +105,14 @@ export const moreNav: MoreGroup[] = [
         href: "/dashboard/reports",
         icon: BarChart3,
         hint: "Funnel, sources, time to hire",
+      },
+      // Bier-Schneider: Recruiting-Funnel inkl. Aufrufe/Starts (PRD v2 §10)
+      {
+        label: "Recruiting-Funnel",
+        href: "/dashboard/reports/funnel",
+        icon: Filter,
+        requiredPermission: "reports:read",
+        hint: "Aufrufe → Bewerbung → Einstellung",
       },
     ],
   },
