@@ -4,6 +4,8 @@ import { and, eq, isNull } from "drizzle-orm";
 import { candidates, db, jobs, organization, workspaceSettings } from "@harly/db";
 
 import { getWorkspaceChatConfig, type ChatConfig } from "@/lib/notify/config";
+import { isAllowedChatWebhookUrl } from "@/lib/notify/webhook-hosts";
+import { safeFetchWebhook } from "@/lib/ssrf";
 import { getWorkspaceSlackConfig } from "@/lib/slack/config";
 import { getWorkspaceTelegramConfig } from "@/lib/telegram/config";
 import { sendTelegramMessage } from "@/lib/telegram/client";
@@ -284,10 +286,15 @@ export async function sendChatMessage(
   const n = normalize(event, data, branding);
   const body = config.provider === "slack" ? slackPayload(n) : discordPayload(n);
 
+  // Allowlist + DNS-/Private-Netz-Prüfung vor jedem Versand (CodeQL js/request-forgery).
+  if (!config.provider || !isAllowedChatWebhookUrl(config.provider, config.webhookUrl)) {
+    return { ok: false, error: "Webhook URL is not an allowed provider endpoint." };
+  }
+
   try {
     const controller = new AbortController();
     const timeout = setTimeout(() => controller.abort(), 8000);
-    const res = await fetch(config.webhookUrl, {
+    const res = await safeFetchWebhook(config.webhookUrl, {
       method: "POST",
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify(body),

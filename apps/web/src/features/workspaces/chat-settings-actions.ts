@@ -13,6 +13,7 @@ import {
   isChatProviderId,
   type ChatProviderId,
 } from "@/lib/notify/config";
+import { CHAT_WEBHOOK_HOSTS } from "@/lib/notify/webhook-hosts";
 import { sendChatMessage } from "@/server/notify/dispatch";
 import { isWebhookEvent } from "@/server/webhooks/events";
 
@@ -25,11 +26,6 @@ const SETTINGS_PATH = "/settings/integrations";
  * URL field from being abused as a server-side request forgery (SSRF) primitive
  * , Harly will only ever POST to the real Slack/Discord webhook endpoints.
  */
-const ALLOWED_HOSTS: Record<ChatProviderId, string[]> = {
-  slack: ["hooks.slack.com"],
-  discord: ["discord.com", "discordapp.com", "ptb.discord.com", "canary.discord.com"],
-};
-
 function validateWebhookUrl(
   provider: ChatProviderId,
   url: string,
@@ -41,7 +37,7 @@ function validateWebhookUrl(
     return "Enter a valid webhook URL.";
   }
   if (parsed.protocol !== "https:") return "Webhook URL must use https.";
-  if (!ALLOWED_HOSTS[provider].includes(parsed.hostname)) {
+  if (!CHAT_WEBHOOK_HOSTS[provider].includes(parsed.hostname)) {
     return provider === "slack"
       ? "Slack webhooks start with https://hooks.slack.com/…"
       : "Discord webhooks start with https://discord.com/api/webhooks/…";
