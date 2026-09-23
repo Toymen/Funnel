@@ -1002,6 +1002,13 @@
       "when": 1785743493571,
       "tag": "0142_great_wraith",
       "breakpoints": true
+    },
+    {
+      "idx": 143,
+      "version": "7",
+      "when": 1790198041738,
+      "tag": "0143_bier_schneider_quick_apply_funnel",
+      "breakpoints": true
     }
   ]
 }
