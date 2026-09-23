@@ -4931,3 +4931,86 @@ export type AiMessage = typeof aiMessages.$inferSelect;
 export type NewAiMessage = typeof aiMessages.$inferInsert;
 export type AiActionReceipt = typeof aiActionReceipts.$inferSelect;
 export type NewAiActionReceipt = typeof aiActionReceipts.$inferInsert;
+
+// ─────────────────────────────────────────────────────────────────────────────
+// Bier-Schneider-Erweiterungen (Fork). Bewusst am Dateiende und in eigenen
+// Tabellen, damit Harly-Upstream-Updates selten kollidieren.
+// ─────────────────────────────────────────────────────────────────────────────
+
+/** Übersetzte Texte einer Stelle für die 60-Sekunden-Bewerbung. */
+export type QuickApplyLocalization = {
+  title?: string;
+  summary?: string;
+  highlights?: string[];
+  /** Fragetexte je Harly-Frage-ID (application_questions.key). */
+  questions?: Record<string, string>;
+  /** Optionstexte je Frage-ID und Original-Option. */
+  options?: Record<string, Record<string, string>>;
+};
+
+/**
+ * Einstellungen der Kurzbewerbung je Stelle: Piktogramm, Kurzfakten und
+ * Übersetzungen (Schlüssel = Sprachcode, z. B. "pl", "de-easy", "ar").
+ */
+export const jobQuickApply = pgTable("job_quick_apply", {
+  jobId: uuid("job_id")
+    .primaryKey()
+    .references(() => jobs.id, { onDelete: "cascade" }),
+  workspaceId: text("workspace_id")
+    .notNull()
+    .references(() => organization.id, { onDelete: "cascade" }),
+  enabled: boolean("enabled").default(true).notNull(),
+  icon: text("icon").default("truck").notNull(),
+  payLabel: text("pay_label"),
+  hoursLabel: text("hours_label"),
+  localizations: jsonb("localizations")
+    .$type<Record<string, QuickApplyLocalization>>()
+    .default(sql`'{}'::jsonb`)
+    .notNull(),
+  ...timestamps(),
+});
+
+/**
+ * Anonyme Funnel-Ereignisse (Bewerbung ≠ Funnel-Event). Enthält keine
+ * personenbezogenen Daten: nur eine zufällige Browser-Session-ID, Stelle,
+ * Ereignis und Traffic-Quelle. Keine IP-Adressen, keine Cookies.
+ */
+export const funnelEvents = pgTable(
+  "funnel_events",
+  {
+    id: uuid("id").defaultRandom().primaryKey(),
+    workspaceId: text("workspace_id")
+      .notNull()
+      .references(() => organization.id, { onDelete: "cascade" }),
+    sessionId: uuid("session_id").notNull(),
+    jobId: uuid("job_id").references(() => jobs.id, { onDelete: "set null" }),
+    applicationId: uuid("application_id").references(() => applications.id, {
+      onDelete: "set null",
+    }),
+    eventType: text("event_type").notNull(),
+    utmSource: text("utm_source"),
+    utmMedium: text("utm_medium"),
+    utmCampaign: text("utm_campaign"),
+    metadata: jsonb("metadata").$type<Record<string, string | number | boolean>>(),
+    createdAt: timestamp("created_at", { withTimezone: true })
+      .defaultNow()
+      .notNull(),
+  },
+  (table) => [
+    index("funnel_events_workspace_job_type_idx").on(
+      table.workspaceId,
+      table.jobId,
+      table.eventType,
+      table.createdAt,
+    ),
+    index("funnel_events_workspace_created_idx").on(
+      table.workspaceId,
+      table.createdAt,
+    ),
+  ],
+);
+
+export type JobQuickApply = typeof jobQuickApply.$inferSelect;
+export type NewJobQuickApply = typeof jobQuickApply.$inferInsert;
+export type FunnelEvent = typeof funnelEvents.$inferSelect;
+export type NewFunnelEvent = typeof funnelEvents.$inferInsert;
