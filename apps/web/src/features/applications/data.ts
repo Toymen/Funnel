@@ -199,6 +199,12 @@ export async function createPublicApplication(
       ipAddress: string | null;
       userAgent: string | null;
     } | null;
+    /** Bier-Schneider: Traffic-Quelle (z. B. "qr", "indeed"); Standard "public_form". */
+    source?: string | null;
+    /** Bier-Schneider: Zusatzdaten der Kurzbewerbung (Sprache, Modus, Rückrufzeit). */
+    snapshotExtra?: Record<string, unknown>;
+    /** Bier-Schneider: Kurzbewerbung ohne Lebenslauf, auch wenn die Stelle einen verlangt. */
+    allowMissingResume?: boolean;
   },
 ): Promise<PublicApplicationResult> {
   // Captured inside the transaction, emitted after commit so a failed webhook
@@ -254,7 +260,8 @@ export async function createPublicApplication(
       );
       if (
         applicationConfig.sections.profile.resume.visibility === "required" &&
-        !values.resumeKey
+        !values.resumeKey &&
+        !options?.allowMissingResume
       ) {
         return { ok: false, message: "Resume is required." };
       }
@@ -422,7 +429,7 @@ export async function createPublicApplication(
           jobId: job.id,
           currentStageId: firstStage.id,
           pipelineOrder: nextPipelineOrder?.value ?? 1,
-          source: "public_form",
+          source: options?.source ?? "public_form",
           status: "active",
           appliedAt: now,
           coverLetter: values.coverLetter ?? null,
@@ -444,6 +451,7 @@ export async function createPublicApplication(
             resumeFileName: verifiedResume?.fileName ?? null,
             resumeFileType: verifiedResume?.fileType ?? null,
             resumeFileSize: verifiedResume?.fileSize ?? null,
+            ...options?.snapshotExtra,
           },
         })
         .returning({ id: applications.id });

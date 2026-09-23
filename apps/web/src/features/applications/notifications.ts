@@ -18,7 +18,11 @@ type ApplicationEmail = Extract<
 export async function sendApplicationReceivedEmails(
   email: ApplicationEmail & { portalEnabled?: boolean },
 ): Promise<void> {
-  const ids: string[] = [
+  const ids: string[] = [];
+  // Bier-Schneider: Kurzbewerbungen nur mit Telefonnummer erhalten eine
+  // Platzhalteradresse unter der reservierten TLD .invalid – dorthin keine Mail.
+  if (!email.candidateEmail.toLowerCase().endsWith(".invalid")) {
+    ids.push(
     await enqueueEmailOutbox(email.workspaceId, "application.received.candidate", {
       candidateEmail: email.candidateEmail,
       candidateFirstName: email.candidateFirstName,
@@ -28,7 +32,8 @@ export async function sendApplicationReceivedEmails(
       applicationId: email.applicationId,
       portalEnabled: email.portalEnabled,
     }),
-  ];
+    );
+  }
 
   for (const ownerEmail of email.ownerEmails) {
     ids.push(
