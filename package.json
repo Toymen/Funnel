@@ -1,0 +1,64 @@
+{
+  "name": "harly",
+  "private": true,
+  "version": "0.1.0",
+  "description": "Open-source applicant tracking system for modern teams.",
+  "license": "MIT",
+  "engines": {
+    "node": ">=22"
+  },
+  "scripts": {
+    "dev": "pnpm db:up && pnpm db:migrate && DOTENV_CONFIG_PATH=.env.local node -r dotenv/config ./node_modules/turbo/bin/turbo dev --filter=web",
+    "dev:web": "DOTENV_CONFIG_PATH=.env.local node -r dotenv/config ./node_modules/turbo/bin/turbo dev --filter=web",
+    "build": "DOTENV_CONFIG_PATH=.env.local node -r dotenv/config ./node_modules/turbo/bin/turbo build",
+    "lint": "turbo lint",
+    "typecheck": "turbo typecheck",
+    "test": "turbo test",
+    "docs:dev": "pnpm --dir apps/docs dev",
+    "docs:validate": "pnpm --dir apps/docs validate",
+    "docs:broken-links": "pnpm --dir apps/docs broken-links",
+    "docs:a11y": "pnpm --dir apps/docs a11y",
+    "generate:openapi": "pnpm --filter web generate:openapi",
+    "clean": "rm -rf .next .turbo apps/*/.next apps/*/dist packages/*/dist tooling/*/dist",
+    "db:up": "docker compose -f tooling/docker/compose.dev.yml up -d",
+    "db:down": "docker compose -f tooling/docker/compose.dev.yml down",
+    "db:generate": "pnpm --filter @harly/db db:generate",
+    "db:migrate": "pnpm --filter @harly/db db:migrate",
+    "db:studio": "pnpm --filter @harly/db db:studio",
+    "db:push": "pnpm --filter @harly/db db:push",
+    "db:seed": "pnpm --filter @harly/db db:seed"
+  },
+  "devDependencies": {
+    "dotenv": "^17.4.2",
+    "drizzle-kit": "^0.31.10",
+    "drizzle-orm": "^0.45.2",
+    "esbuild": "^0.27.7",
+    "eslint": "^10.4.0",
+    "prettier": "^3.8.3",
+    "tsx": "^4.22.3",
+    "turbo": "^2.9.14",
+    "typescript": "^6.0.3"
+  },
+  "packageManager": "pnpm@9.15.0",
+  "pnpm": {
+    "overrides": {
+      "@babel/core": "7.29.6",
+      "drizzle-orm": "0.45.2",
+      "esbuild": "0.28.1",
+      "ip-address": "10.4.0",
+      "postcss": "8.5.25",
+      "next>sharp": "0.35.2",
+      "nanoid@3.3.16": "3.3.17",
+      "tar": ">=7.5.19",
+      "vite": "7.3.6",
+      "vitest": "3.2.6"
+    },
+    "packageExtensions": {
+      "drizzle-orm": {
+        "dependencies": {
+          "@opentelemetry/api": "^1.9.1"
+        }
+      }
+    }
+  }
+}

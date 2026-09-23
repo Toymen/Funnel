@@ -1,0 +1,58 @@
+{
+  "name": "@harly/cli",
+  "version": "0.4.0",
+  "private": false,
+  "type": "module",
+  "description": "Official operations CLI for self-hosted Harly — guided install, day-2 management, and disaster recovery for the Docker Compose distribution.",
+  "license": "MIT",
+  "keywords": [
+    "harly",
+    "ats",
+    "applicant-tracking",
+    "recruiting",
+    "hiring",
+    "self-hosted",
+    "docker",
+    "docker-compose",
+    "caddy",
+    "devops"
+  ],
+  "homepage": "https://github.com/Vytral/harly#readme",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/Vytral/harly.git",
+    "directory": "tooling/harly"
+  },
+  "bugs": {
+    "url": "https://github.com/Vytral/harly/issues"
+  },
+  "engines": {
+    "node": ">=20.12.0"
+  },
+  "publishConfig": {
+    "access": "public"
+  },
+  "files": [
+    "dist",
+    "README.md"
+  ],
+  "bin": {
+    "harly": "dist/index.js"
+  },
+  "scripts": {
+    "build": "esbuild src/index.ts --bundle --packages=external --platform=node --format=esm --target=node20 --outfile=dist/index.js",
+    "typecheck": "tsc --noEmit --module NodeNext --moduleResolution NodeNext --target ES2022 --types node src/index.ts",
+    "test": "pnpm build && node scripts/sync-release-assets.mjs --check && node --test test/*.test.mjs",
+    "test:backup-restore": "pnpm build && ./test/backup-restore.destructive.sh",
+    "pack:check": "pnpm build && npm pack --dry-run"
+  },
+  "devDependencies": {
+    "@types/node": "^20",
+    "esbuild": "^0.27.7",
+    "typescript": "^6.0.3"
+  },
+  "dependencies": {
+    "@clack/prompts": "^1.7.0",
+    "picocolors": "^1.1.1"
+  }
+}

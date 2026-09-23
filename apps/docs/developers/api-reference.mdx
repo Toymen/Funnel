@@ -1,0 +1,194 @@
+---
+title: "API resource reference"
+description: "Inventory of Harly REST resources, scopes, mutation semantics, and error statuses."
+---
+
+The live OpenAPI document at `/api/v1/openapi.json` defines the exact request
+and response schema. This page helps you choose the right resource and scope
+before opening the generated reference.
+
+<Frame caption="Generated OpenAPI reference with resources, scopes, and request examples.">
+  <img
+    src="/images/features/api-reference.webp"
+    alt="Harly API reference showing job endpoints, authorization, query parameters, and a JSON response."
+  />
+</Frame>
+
+## API key format
+
+API keys have the format `harly_{type}_{env}_{secret}`:
+
+| Part | Values | Meaning |
+| --- | --- | --- |
+| `type` | `sk` (secret), `pk` (publishable) | Key type — secret keys hold all scopes, publishable keys are browser-safe |
+| `env` | `live`, `test` | Environment |
+| `secret` | 43-char base64url | Cryptographically random, stored only as a SHA-256 hash |
+
+Example secret key: `harly_sk_live_AbCdEf123...`
+
+Publishable keys (`pk`) are limited to `jobs:read` and `applications:write` —
+the subset safe to expose in a browser. Use secret keys for all server-side
+integrations.
+
+## Resources
+
+| Area | Common operations | Required scopes |
+| --- | --- | --- |
+| Jobs | List, read, publish, close | `jobs:read`, `jobs:write` |
+| Candidates | List, create, update, delete, notes, tags, files | `candidates:read`, `candidates:write`, `notes:read`, `notes:write`, `tags:read`, `tags:write`, `files:read` |
+| Applications | List, create, move, reject, hire, bulk create | `applications:read`, `applications:write` |
+| Interviews | List, create, update, cancel, complete | `interviews:read`, `interviews:write` |
+| Offers | Draft, send, decide, withdraw | `offers:read`, `offers:write` |
+| Scorecards | Create, read | `scorecards:read`, `scorecards:write` |
+| Tasks | List, create, update | `tasks:read`, `tasks:write` |
+| Talent pool | List, create, assign | `pool:read`, `pool:write` |
+| Activity events | Read timeline | `activity:read` |
+| Stages | Read, update pipeline stages | `stages:read`, `stages:write` |
+| Webhooks | CRUD endpoints, view deliveries, replay | `webhooks:read`, `webhooks:write` |
+| API keys | List, create, rotate, delete | `api_keys:read`, `api_keys:write` |
+| Automations | List, read runs | `automations:read`, `automations:write` |
+
+## Mutation examples
+
+### List jobs
+
+```bash
+curl --fail-with-body \
+  -H 'Authorization: Bearer harly_sk_live_YOUR_KEY' \
+  -H 'Accept: application/json' \
+  'https://hiring.example.com/api/v1/jobs?limit=25'
+```
+
+```json
+{
+  "data": [
+    {
+      "id": "job_01j1abc",
+      "title": "Product Designer",
+      "status": "open",
+      "department": "Design",
+      "location": "Remote"
+    }
+  ],
+  "meta": {
+    "pagination": {
+      "hasMore": true,
+      "limit": 25,
+      "nextCursor": "eyJjcmVhdGVkQXQiOiIyMDI2LTA3LTI3VDEyOjAwOjAwWiIsImlkIjoiam9iXzAxajFhYmMifQ"
+    }
+  }
+}
+```
+
+### Create a candidate
+
+```bash
+curl --fail-with-body -X POST \
+  'https://hiring.example.com/api/v1/candidates' \
+  -H 'Authorization: Bearer harly_sk_live_YOUR_KEY' \
+  -H 'Content-Type: application/json' \
+  --data '{
+    "firstName": "Test",
+    "lastName": "Candidate",
+    "email": "test@example.com"
+  }'
+```
+
+### Move an application
+
+Use `toStageId` (not `stageId`) and always include an idempotency key on mutations:
+
+```bash
+curl --fail-with-body -X POST \
+  'https://hiring.example.com/api/v1/applications/app_01j1abc/move' \
+  -H 'Authorization: Bearer harly_sk_live_YOUR_KEY' \
+  -H 'Content-Type: application/json' \
+  -H 'Idempotency-Key: move-app_01j1abc-2026-07-27T12:00:00Z' \
+  --data '{"toStageId":"stage_interview"}'
+```
+
+### Reject an application
+
+```bash
+curl --fail-with-body -X POST \
+  'https://hiring.example.com/api/v1/applications/app_01j1abc/reject' \
+  -H 'Authorization: Bearer harly_sk_live_YOUR_KEY' \
+  -H 'Content-Type: application/json' \
+  --data '{"reason":"Not a fit at this time"}'
+```
+
+### Rotate an API key
+
+```bash
+curl --fail-with-body -X POST \
+  'https://hiring.example.com/api/v1/api-keys/key_01j1abc/rotate' \
+  -H 'Authorization: Bearer harly_sk_live_YOUR_KEY'
+```
+
+A rotation issues a new raw key value and invalidates the previous one. The
+response includes `key` — the new raw value, shown once.
+
+## All scopes
+
+```text
+jobs:read          jobs:write
+candidates:read    candidates:write
+applications:read  applications:write
+interviews:read    interviews:write
+offers:read        offers:write
+scorecards:read    scorecards:write
+tasks:read         tasks:write
+notes:read         notes:write
+tags:read          tags:write
+stages:read        stages:write
+activity:read
+pool:read          pool:write
+files:read
+webhooks:read      webhooks:write
+api_keys:read      api_keys:write
+automations:read   automations:write
+```
+
+## Errors
+
+| Status | Meaning | Client action |
+| ---: | --- | --- |
+| `400` | Malformed request | Fix the request before retrying |
+| `401` | Missing or invalid key | Rotate or replace the key |
+| `403` | Missing scope or workspace access | Request the narrowest required scope |
+| `404` | Resource not found in the workspace | Reconcile IDs and workspace |
+| `409` | Conflict or idempotency collision | Inspect the error before retrying |
+| `422` | Valid JSON with invalid fields | Show validation details to the operator |
+| `429` | Rate limited | Back off and respect `Retry-After` |
+
+Use synthetic data in examples and integration tests. Never place a real resume
+or candidate email in a public README or issue.
+
+## Public jobs and applications
+
+These routes are intended for career sites, custom application forms, and the
+Harly embed widget. They are CORS-enabled and do not require a secret key, but
+each request must be scoped to a workspace with `?workspace=<slug>` or a
+publishable key (`pk_`). See the [public API guide](/developers/api-overview)
+for request and response examples.
+
+| Method | Path | Workspace selector | Purpose |
+| --- | --- | --- | --- |
+| `GET` | `/api/public/v1/jobs` | `workspace` or `pk_` | List open, published jobs |
+| `GET` | `/api/public/v1/jobs/{slug}` | `workspace` or `pk_` | Fetch a public job and application configuration |
+| `POST` | `/api/public/v1/jobs/{slug}/applications` | `workspace` or `pk_` | Submit an application |
+| `POST` | `/api/public/v1/resume/presign` | `workspace` or `pk_` | Create a resume upload URL |
+| `POST` | `/api/public/v1/image/presign` | `workspace` or `pk_` | Create a profile-image upload URL |
+
+Publishable keys are limited to `jobs:read` and `applications:write`. They are
+safe to expose in browser code, but they are not authentication for a person;
+they only identify and scope the workspace. Never expose a secret key.
+
+The public list endpoint accepts `department`, `location`, `workplaceType`,
+and `q` filters. Public application submissions return `201`; validation
+failures return `422`, failed CAPTCHA checks return `403`, unavailable jobs
+return `404`, and rate-limited clients receive `429` with `Retry-After`.
+
+<Card title="OpenAPI document" icon="brackets-curly" href="/developers/api-overview">
+  Fetch `/api/v1/openapi.json` from your Harly instance for the full generated contract.
+</Card>

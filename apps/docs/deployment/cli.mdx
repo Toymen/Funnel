@@ -1,0 +1,368 @@
+---
+title: "Deploy with the Harly CLI"
+description: "Install, deploy, operate, and automate self-hosted Harly with @harly/cli v0.4.0."
+---
+
+The Harly CLI installs and operates a self-hosted Harly deployment. It
+generates the Docker Compose topology, creates independent runtime secrets,
+waits for service readiness, and provides safe day-two operations such as
+backups and upgrades.
+
+## What you will learn
+
+- Check a host before installing Harly.
+- Generate and launch a local Docker deployment.
+- Automate the installer from CI or an agent without unexpected prompts.
+- Provision Railway or prepare Fly.io and DigitalOcean deployments.
+- Interpret JSON results, exit codes, and readiness failures.
+
+## Prerequisites
+
+For a local VPS installation, install:
+
+- Node.js 20.12 or newer.
+- Docker Engine 24 or newer.
+- Docker Compose 2.20 or newer.
+- At least 5 GB of free disk space by default.
+- A public DNS record when using Caddy or an external HTTPS proxy.
+
+Run the host check first:
+
+```bash
+npx --yes @harly/cli check
+```
+
+The check reports Docker, Compose, memory, disk, firewall, and the public
+ports used by the selected deployment topology.
+
+## Install Harly locally
+
+### Run the guided installer
+
+```bash
+npx --yes @harly/cli
+```
+
+On a fresh host, the menu opens the installer. It asks for the public URL,
+proxy mode, owner email, organization name, storage provider, and resource
+profile. Before writing files it shows a complete summary.
+
+The installer then:
+
+1. Validates Docker, Compose, ports, disk, memory, firewall, and DNS.
+2. Resolves a pinned Harly release image.
+3. Creates `.env`, `compose.yaml`, `Caddyfile`, `harly.config.json`, and local operator documentation.
+4. Generates independent runtime secrets and protects `.env` with mode `0600`.
+5. Optionally pulls images and launches the services.
+6. Waits for PostgreSQL, migrations, the web app, the scheduler, and Caddy.
+7. Checks `/api/health/ready` and reports `Harly is ready` only after it succeeds.
+
+### Generate configuration without launching
+
+```bash
+npx @harly/cli init ./harly \
+  --url https://careers.example.com \
+  --proxy caddy \
+  --email owner@example.com \
+  --organization "Acme Inc."
+```
+
+`init` writes configuration but does not pull images or start containers. Run:
+
+```bash
+npx @harly/cli launch ./harly --yes
+```
+
+To do both steps in one command, add `--launch` to `init`.
+
+## Configure installer inputs
+
+Public values can be passed as flags:
+
+| Flag | Values |
+| --- | --- |
+| `--url <origin>` | Complete HTTP(S) origin, such as `https://careers.example.com`. A protocol is required. |
+| `--domain <hostname>` | Convenience form normalized to an HTTPS origin. |
+| `--proxy <mode>` | `caddy`, `external`, or `local`. |
+| `--port <number>` | Host port for `external` and `local`. |
+| `--email <address>` | Initial owner email. |
+| `--organization <name>` | Organization display name. |
+| `--storage <provider>` | `local` or `s3`. |
+| `--resource-profile <profile>` | `compact`, `standard`, or `performance`. |
+| `--image <reference>` | Exact tag or digest. `latest` is rejected. |
+| `--output-dir <directory>` | Alias for the `init` positional directory. |
+| `--launch` | Launch after generation. |
+| `--no-launch` | Generate only. |
+
+`init ./harly` and `init --output-dir ./harly` refer to the same target. If
+both are provided with different paths, the command fails instead of choosing
+one silently.
+
+S3 values should come from the environment:
+
+```bash
+HARLY_INITIAL_ADMIN_EMAIL=owner@example.com \
+STORAGE_PROVIDER=s3 \
+S3_BUCKET=harly-production \
+S3_REGION=auto \
+S3_ACCESS_KEY_ID=... \
+S3_SECRET_ACCESS_KEY=... \
+npx @harly/cli init ./harly \
+  --url https://careers.example.com \
+  --non-interactive
+```
+
+The supported environment values are:
+
+| Variable | Purpose |
+| --- | --- |
+| `HARLY_URL` | Public origin when `--url` is not supplied. |
+| `HARLY_PROXY_MODE` | Proxy mode when `--proxy` is not supplied. |
+| `HARLY_PORT` | Host port. |
+| `HARLY_INITIAL_ADMIN_EMAIL` | Initial owner email. |
+| `HARLY_ORGANIZATION` | Organization name. |
+| `HARLY_RESOURCE_PROFILE` | Resource profile. |
+| `HARLY_IMAGE_REF` | Pinned image override. |
+| `STORAGE_PROVIDER` | `local` or `s3`. |
+| `S3_BUCKET` | S3 bucket name. |
+| `S3_REGION` | S3 region, default `auto`. |
+| `S3_ACCESS_KEY_ID` | S3 access key. |
+| `S3_SECRET_ACCESS_KEY` | S3 secret key. |
+| `S3_ENDPOINT` | Optional S3-compatible endpoint. |
+| `S3_PUBLIC_URL` | Optional public object URL. |
+
+## Automate the CLI
+
+Global flags work before or after a subcommand when unambiguous:
+
+```text
+--json --verbose --non-interactive --yes --dry-run --force --timeout <seconds>
+```
+
+Use `--non-interactive` in CI and agent workflows. It never prompts; missing
+values fail before host or provider operations begin.
+
+### JSON output
+
+`--json` disables prompts and loaders. stdout contains exactly one JSON document
+for success, failure, and cancellation. Human diagnostics, when enabled, are
+written to stderr only.
+
+Example dry run:
+
+```bash
+npx @harly/cli --json init ./harly \
+  --dry-run \
+  --url http://127.0.0.1:3000 \
+  --proxy local \
+  --email owner@example.com
+```
+
+The result is versioned:
+
+```json
+{
+  "schemaVersion": 1,
+  "ok": true,
+  "status": "dry-run",
+  "command": "init",
+  "sideEffects": false,
+  "artifacts": [".env", "compose.yaml", "harly.config.json"]
+}
+```
+
+Failures use the same schema:
+
+```json
+{
+  "schemaVersion": 1,
+  "ok": false,
+  "status": "failed",
+  "command": "init",
+  "error": {
+    "code": "MISSING_ARGUMENT",
+    "message": "--email or HARLY_INITIAL_ADMIN_EMAIL is required."
+  }
+}
+```
+
+Stable error codes include `INVALID_ARGUMENT`, `MISSING_SECRET`,
+`PREFLIGHT_FAILED`, `READINESS_TIMEOUT`, and `PARTIAL_PROVISIONING`.
+
+### Secrets and stdin
+
+Never pass secrets as ordinary flags. Use environment variables or one
+explicit stdin source per execution:
+
+```bash
+printf '%s\n' "$RAILWAY_TOKEN" |
+  npx @harly/cli --json deploy railway --railway-token-stdin \
+    --project-name harly-production \
+    --email owner@example.com
+```
+
+The CLI never accepts a JSON blob of secrets, never reads stdin implicitly,
+and never prints secrets in JSON, logs, or error messages.
+
+### Dry runs
+
+`--dry-run --json` resolves the configuration and lists artifacts and planned
+remote operations. It does not:
+
+- Write files or create directories.
+- Download images.
+- Run Docker Compose.
+- Call provider APIs.
+- Create cloud resources.
+- Save secrets.
+
+## Deploy to managed platforms
+
+### Railway
+
+Railway is the fully automated cloud provider. Set secrets through the
+environment and run:
+
+```bash
+RAILWAY_TOKEN=... \
+S3_BUCKET=harly-production \
+S3_ACCESS_KEY_ID=... \
+S3_SECRET_ACCESS_KEY=... \
+npx --yes @harly/cli deploy railway \
+  --project-name harly-production \
+  --email owner@example.com \
+  --non-interactive
+```
+
+The CLI creates the project, managed PostgreSQL, volume, web service,
+scheduler, migration service, runtime variables, domain, and deployments. It
+waits for the public readiness endpoint before returning `status: "ready"`.
+
+Railway secrets are not saved locally by default. Add `--save-env` only when a
+local copy is explicitly required:
+
+```bash
+npx @harly/cli deploy railway --save-env
+```
+
+The resulting file has mode `0600`, and the CLI prints a warning. If Railway
+fails after creating resources, JSON includes `status: "failed"`,
+`error.code: "PARTIAL_PROVISIONING"`, `resourcesCreated`, and recovery steps.
+Resources are not deleted automatically.
+
+When `--url` or `--domain` is supplied, the generated Railway domain remains
+the verified deployment URL. The requested custom domain is returned as
+`requestedUrl` with an explicit follow-up step to attach and verify it in
+Railway.
+
+### Railway Config as Code
+
+The repository also includes [`railway.toml`](https://github.com/vytral/harly/blob/main/railway.toml). Railway detects
+this file automatically and applies its Dockerfile, web start command,
+readiness path, and restart policy to the current service deployment. This is a
+service-level configuration file, not a full project manifest: it does not
+create PostgreSQL, the scheduler, or the migration service. Use the CLI API
+flow above when you need the complete Harly topology.
+
+### Fly.io and DigitalOcean
+
+These providers currently use a preparation flow and finish with
+`status: "ready-to-deploy"`:
+
+```bash
+npx @harly/cli deploy fly prepare \
+  --url https://careers.example.com \
+  --email owner@example.com
+
+npx @harly/cli deploy digitalocean prepare \
+  --url https://careers.example.com \
+  --email owner@example.com
+```
+
+The CLI writes `fly.toml` or `app.yaml`, validates the resolved configuration,
+and prints the exact provider commands still required. It does not create
+provider resources. The repository's [`.do/app.yaml`](https://github.com/vytral/harly/blob/main/.do/app.yaml) is the
+canonical DigitalOcean App Platform spec and can also be used directly with
+`doctl apps create --spec .do/app.yaml` or
+`doctl apps update APP_ID --spec .do/app.yaml`; it provisions the multi-service
+App Platform topology. Use `--save-env` if you explicitly need a local `0600`
+secrets file.
+
+## Operate an installation
+
+### Check readiness
+
+```bash
+npx @harly/cli doctor ./harly
+npx @harly/cli --json doctor ./harly
+```
+
+Use `doctor --fix` only in an interactive terminal. It can restart stopped
+services or bring the Compose project back up.
+
+### Back up before updates
+
+```bash
+npx @harly/cli backup ./harly
+npx @harly/cli update ./harly --to 0.4.0
+```
+
+The update flow creates a rollback archive, pulls the pinned image, runs the
+database migration once, restarts the services, and waits for readiness.
+
+### Restore or uninstall
+
+```bash
+npx @harly/cli restore ./harly/backups/harly-2026-01-01.tar.gz ./harly --force
+npx @harly/cli uninstall ./harly
+```
+
+Restore replaces the current database and uploads. Back up first. The
+`--remove-data` option for uninstall permanently removes PostgreSQL and upload
+volumes; it is intentionally separate from the default uninstall behavior.
+
+## Exit codes
+
+| Code | Meaning |
+| --- | --- |
+| `0` | Successful completion. |
+| `1` | Operational failure. |
+| `2` | Invalid usage or configuration. |
+| `130` | Ctrl+C cancellation. |
+
+## Troubleshooting
+
+### Caddy cannot bind ports 80 or 443
+
+Check the process reported by the installer. Stop or reconfigure the existing
+proxy, or use `--proxy external` and forward traffic to the Harly host port.
+
+### DNS validation fails
+
+Create an A record for the public hostname and allow propagation. Verify it
+from the VPS with:
+
+```bash
+dig +short A careers.example.com
+```
+
+### The public readiness check times out
+
+Run:
+
+```bash
+npx @harly/cli doctor ./harly
+docker compose -f ./harly/compose.yaml ps
+docker compose -f ./harly/compose.yaml logs --tail=100 app scheduler migrate
+```
+
+Check the domain, firewall, database migration, and proxy mode before retrying.
+
+## Related pages
+
+- [Self-hosting overview](/self-hosting/overview)
+- [Proxy modes](/self-hosting/proxy-modes)
+- [Managed cloud deployments](/deployment/cloud)
+- [Configuration reference](/deployment/configuration)
+- [Operations](/self-hosting/operations)
+- [Backups](/operations/backups)
