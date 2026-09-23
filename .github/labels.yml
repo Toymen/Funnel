@@ -1,0 +1,12 @@
+# Projekt-Labels. Werden durch .github/workflows/labels.yml angelegt/aktualisiert.
+- { name: epic, color: "5319e7", description: "Übergeordnetes Vorhaben" }
+- { name: bewerber-ux, color: "f2b705", description: "Bewerbungsstrecke, Verständlichkeit, Barrierearmut" }
+- { name: i18n, color: "1d3a8a", description: "Übersetzungen, Leichte Sprache, RTL" }
+- { name: design, color: "e99695", description: "Gestaltung, Animation, Illustration" }
+- { name: analytics, color: "0e8a16", description: "Funnel-Tracking und Auswertung" }
+- { name: mobile, color: "c5def5", description: "Mobile Ansicht" }
+- { name: admin, color: "bfdadc", description: "HR-Backend" }
+- { name: deployment, color: "d4c5f9", description: "Raspberry Pi, Docker, Backups" }
+- { name: compliance, color: "b60205", description: "Datenschutz, Aufbewahrung, Audit" }
+- { name: dependencies, color: "0366d6", description: "Dependabot-Updates" }
+- { name: upstream, color: "cccccc", description: "Übernahme von Harly-Updates" }
