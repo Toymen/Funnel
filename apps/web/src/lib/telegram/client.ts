@@ -13,11 +13,19 @@ type TelegramResponse<T> = {
   description?: string;
 };
 
+/** Bot-Tokens haben das Format <bot-id>:<secret>; Methoden sind reine Namen. */
+const BOT_TOKEN = /^\d{3,20}:[A-Za-z0-9_-]{20,100}$/;
+const METHOD = /^[A-Za-z]{1,40}$/;
+
 async function telegramFetch<T>(
   botToken: string,
   method: string,
   body?: Record<string, unknown>,
 ): Promise<T> {
+  // Verhindert, dass ein manipuliertes Token andere Pfade erreicht (CodeQL js/request-forgery).
+  if (!BOT_TOKEN.test(botToken) || !METHOD.test(method)) {
+    throw new Error("Invalid Telegram bot token.");
+  }
   const controller = new AbortController();
   const timeout = setTimeout(() => controller.abort(), 8000);
   try {
