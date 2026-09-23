@@ -1,0 +1,210 @@
+---
+title: "Quickstart"
+description: "Install Harly on a fresh VPS with the guided CLI in under 15 minutes."
+---
+
+## What you will build
+
+A running Harly installation with PostgreSQL, the scheduler, HTTPS via Caddy,
+and an owner workspace. The installer keeps the application on port `3000`
+behind the proxy you select.
+
+## Requirements
+
+| Requirement | Version |
+| --- | --- |
+| Linux host | 64-bit, `amd64` or `arm64` |
+| RAM | 2 GB minimum + 1 GB swap, 4 GB recommended |
+| Disk | 5 GB free minimum, 20 GB recommended (plus uploads and backups) |
+| Docker Engine | 24+ |
+| Docker Compose | 2.20+ |
+| Node.js | 20.12+ (for `npx`) |
+
+See [self-hosting overview](/self-hosting/overview) for full sizing, DNS, and
+firewall setup before you install.
+
+<Frame caption="Harly after installation: a candidate pipeline using synthetic demo data.">
+  <img
+    src="/images/features/candidates-pipeline.webp"
+    alt="Harly candidate list with filters and pipeline stages using synthetic demo data."
+  />
+</Frame>
+
+<Steps>
+  <Step title="Point DNS at your VPS">
+    Create an `A` record for your domain or subdomain pointing at the VPS
+    public IPv4 address:
+
+    ```bash
+    # Create the A record in your DNS provider, then verify propagation:
+    dig +short A careers.example.com
+    # Should return your VPS IP address
+    ```
+
+    Add an `AAAA` record only if IPv6 is configured and reachable. Caddy cannot
+    issue a certificate until the hostname resolves to this server.
+
+    <Note>
+      Do not continue until `dig` returns the correct IP. Caddy will fail the
+      TLS challenge if DNS has not propagated.
+    </Note>
+  </Step>
+
+  <Step title="Open required firewall ports">
+    Allow inbound TCP `80` and TCP `443` in your VPS firewall or cloud security
+    group. Also allow UDP `443` if you want HTTP/3.
+
+    No other service or Docker container may already publish port `80` or `443`.
+    If another proxy owns those ports, use [external proxy mode](/self-hosting/proxy-modes)
+    instead.
+  </Step>
+
+  <Step title="Run the installer">
+    From any directory on the VPS:
+
+    ```bash
+    npx @harly/cli
+    ```
+
+    The guided installer:
+
+    1. Checks the server for Docker, Compose, Node, free disk, and RAM.
+    2. Asks for the public URL (`https://careers.example.com`).
+    3. Asks for the first owner email.
+    4. Generates all secrets and writes `.env` with mode `0600`.
+    5. Pulls the Harly image from the registry.
+    6. Runs database migrations.
+    7. Starts the app, scheduler, and Caddy.
+    8. Waits for the readiness endpoint to return `200`.
+
+    <Tip>
+      The installer saves `.env` and `harly.config.json` in the current
+      directory. Run it from a stable directory — for example `/opt/harly` —
+      so backups and updates always work from the same path.
+    </Tip>
+  </Step>
+
+  <Step title="Create the first owner account">
+    Visit `https://careers.example.com/setup` and enter the setup secret
+    (`HARLY_SETUP_SECRET`) when prompted. Create the account with the email
+    matching `HARLY_INITIAL_ADMIN_EMAIL`.
+
+    <Warning>
+      Keep `HARLY_SETUP_SECRET` private. If `/setup` is unavailable, verify
+      that the owner account has not already been claimed and confirm the value
+      in `.env` with `npx @harly/cli setup-secret`.
+    </Warning>
+
+    <Note>
+      `/setup` is available exactly once. After the owner account is created,
+      the route becomes unavailable and registration is invite-only.
+    </Note>
+  </Step>
+</Steps>
+
+## Verify the installation
+
+Run these from the installation directory:
+
+```bash
+npx @harly/cli doctor
+docker compose ps
+curl -fsS https://careers.example.com/api/health/ready
+```
+
+| Check | Expected result |
+| --- | --- |
+| `doctor` | All services reported healthy |
+| `compose ps` | `app`, `scheduler`, `caddy`, `postgres` all `Up` |
+| `/api/health/ready` | HTTP `200` |
+
+If the page loads but `/api/health/ready` fails, see
+[troubleshooting](/operations/troubleshooting) before inviting the team.
+
+## Common install errors
+
+### Caddy will not obtain a certificate
+
+**Symptom:** installer or `doctor` reports a stuck TLS challenge.
+
+**Cause:** DNS has not propagated, or another process holds port 80 or 443.
+**Fix:**
+
+```bash
+dig +short A careers.example.com       # must return your VPS IP
+ss -tlnp | grep -E ':80|:443'          # must show only Caddy
+docker compose restart caddy
+```
+
+### Installer reports insufficient memory
+
+**Symptom:** preflight warns about RAM.
+
+**Cause:** less than 2 GB RAM without swap.
+**Fix:** enable 1 GB swap so the installer selects the `compact` profile, or
+force it explicitly in `.env`:
+
+```dotenv
+HARLY_RESOURCE_PROFILE=compact
+```
+
+Or override individual limits:
+
+```dotenv
+HARLY_APP_MEMORY=1024m
+HARLY_APP_NODE_OPTIONS=--max-old-space-size=640
+HARLY_POSTGRES_MEMORY=384m
+HARLY_MIGRATE_MEMORY=512m
+HARLY_SCHEDULER_MEMORY=192m
+HARLY_CADDY_MEMORY=128m
+```
+
+### Readiness endpoint returns 503
+
+**Symptom:** `curl /api/health/ready` returns `503`.
+
+**Cause:** database unavailable or migration incomplete.
+**Fix:**
+
+```bash
+docker compose logs --tail=50 migrate app postgres
+docker compose ps
+```
+
+Confirm `postgres` is `Up (healthy)` before the app starts.
+
+### Setup page not available
+
+**Symptom:** visiting `/setup` returns 404 or "not found".
+
+**Cause:** owner account was already claimed, or the route is disabled.
+**Fix:** sign in with the owner email you configured, or check
+`HARLY_SETUP_SECRET` in `.env`.
+
+## Re-running the installer
+
+Run from the installation directory at any time to open the management menu:
+
+```bash
+npx @harly/cli
+```
+
+Re-running `init` preserves `.env` and secrets. Modified templates are
+preserved unless `--force` is supplied; `--force` still never rotates `.env`.
+
+## Next steps
+
+<CardGroup cols={2}>
+  <Card title="First workspace" icon="building" href="/getting-started/first-workspace">
+    Configure the team, pipeline, roles, and first job.
+  </Card>
+  <Card title="Proxy modes" icon="route" href="/self-hosting/proxy-modes">
+    Use Caddy, an external proxy, or local-only.
+  </Card>
+  <Card title="Configuration" icon="sliders" href="/deployment/configuration">
+    Required secrets, storage, email, and integrations.
+  </Card>
+  <Card title="Operations" icon="wrench" href="/self-hosting/operations">
+    Health checks, scheduler, backups, and upgrades.
+  </Card>
+</CardGroup>

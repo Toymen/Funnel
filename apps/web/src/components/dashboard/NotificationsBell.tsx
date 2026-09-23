@@ -1,0 +1,340 @@
+"use client";
+
+import { useCallback, useState, useTransition } from "react";
+import type { Route } from "next";
+import { useRouter } from "next/navigation";
+import { CheckCheck, Eye, EyeOff, Trash2 } from "lucide-react";
+
+import {
+  markAllNotificationsRead,
+  markNotificationRead,
+  markNotificationUnread,
+  deleteNotification,
+  deleteAllNotifications,
+} from "@/features/notifications/actions";
+import type { NotificationItem } from "@/features/notifications/data";
+import { NotificationTypeIconSmall } from "@/features/notifications/notification-icons";
+import { ActorAvatar } from "@/features/notifications/actor-avatar";
+import { Button } from "@/components/ui/button";
+import {
+  DropdownMenu,
+  DropdownMenuContent,
+  DropdownMenuItem,
+  DropdownMenuTrigger,
+} from "@/components/ui/dropdown-menu";
+import {
+  Popover,
+  PopoverContent,
+  PopoverTrigger,
+} from "@/components/ui/popover";
+import { RelativeTime } from "@/lib/date-hydration";
+import { cn } from "@/lib/utils";
+import { useRealtimeEvent } from "@/components/dashboard/RealtimeProvider";
+
+/** Top-bar bell with unread badge and a quick peek at recent notifications. */
+export function NotificationsBell({
+  notifications,
+  unreadCount,
+}: {
+  notifications: NotificationItem[];
+  unreadCount: number;
+}) {
+  const router = useRouter();
+  const [items, setItems] = useState(notifications);
+  const [count, setCount] = useState(unreadCount);
+  const [open, setOpen] = useState(false);
+  const [isPending, startTransition] = useTransition();
+  const [error, setError] = useState<string | null>(null);
+  const unread = count;
+
+  const reloadNotifications = useCallback(async () => {
+    const response = await fetch("/api/notifications?limit=50", {
+      cache: "no-store",
+    });
+    if (!response.ok) return;
+    const data = (await response.json()) as {
+      notifications: NotificationItem[];
+      unreadCount: number;
+    };
+    setItems(data.notifications);
+    setCount(data.unreadCount);
+  }, []);
+
+  useRealtimeEvent("notifications.invalidate", reloadNotifications);
+
+  function openItem(item: NotificationItem) {
+    setOpen(false);
+    setError(null);
+    startTransition(async () => {
+      if (!item.read) {
+        try {
+          const result = await markNotificationRead({
+            notificationId: item.id,
+          });
+          if (!result.success) setError("Could not mark notification as read.");
+        } catch {
+          setError("Could not mark notification as read.");
+        }
+      }
+      if (item.href) {
+        router.push(item.href as Route);
+      }
+      await reloadNotifications();
+    });
+  }
+
+  function toggleRead(e: React.MouseEvent, item: NotificationItem) {
+    e.stopPropagation();
+    setError(null);
+    startTransition(async () => {
+      try {
+        const result = item.read
+          ? await markNotificationUnread({ notificationId: item.id })
+          : await markNotificationRead({ notificationId: item.id });
+        if (!result.success) {
+          setError("Could not update notification.");
+          return;
+        }
+      } catch {
+        setError("Could not update notification.");
+        return;
+      }
+      await reloadNotifications();
+    });
+  }
+
+  function dismiss(e: React.MouseEvent, item: NotificationItem) {
+    e.stopPropagation();
+    setError(null);
+    startTransition(async () => {
+      try {
+        const result = await deleteNotification({ notificationId: item.id });
+        if (!result.success) {
+          setError("Could not delete notification.");
+          return;
+        }
+      } catch {
+        setError("Could not delete notification.");
+        return;
+      }
+      await reloadNotifications();
+    });
+  }
+
+  function markAll() {
+    setError(null);
+    startTransition(async () => {
+      try {
+        const result = await markAllNotificationsRead();
+        if (!result.success) {
+          setError("Could not mark notifications as read.");
+          return;
+        }
+      } catch {
+        setError("Could not mark notifications as read.");
+        return;
+      }
+      await reloadNotifications();
+    });
+  }
+
+  function removeAll() {
+    if (!window.confirm("Delete all notifications? This cannot be undone."))
+      return;
+    setError(null);
+    startTransition(async () => {
+      try {
+        const result = await deleteAllNotifications();
+        if (!result.success) {
+          setError("Could not delete all notifications.");
+          return;
+        }
+      } catch {
+        setError("Could not delete all notifications.");
+        return;
+      }
+      setOpen(false);
+      await reloadNotifications();
+    });
+  }
+
+  return (
+    <Popover open={open} onOpenChange={setOpen}>
+      <PopoverTrigger asChild>
+        <Button
+          variant="ghost"
+          size="icon"
+          className="relative text-muted-foreground"
+          aria-label={
+            unread > 0 ? `Notifications (${unread} unread)` : "Notifications"
+          }
+        >
+          <svg
+            xmlns="http://www.w3.org/2000/svg"
+            width="18"
+            height="18"
+            viewBox="0 0 24 24"
+            fill="none"
+            stroke="currentColor"
+            strokeWidth="1.5"
+            strokeLinecap="round"
+            strokeLinejoin="round"
+          >
+            <path d="M6 8a6 6 0 0 1 12 0c0 7 3 9 3 9H3s3-2 3-9" />
+            <path d="M10.3 21a1.94 1.94 0 0 0 3.4 0" />
+          </svg>
+          {unread > 0 ? (
+            <span className="absolute right-1.5 top-1.5 flex size-2 rounded-full bg-primary ring-2 ring-background" />
+          ) : null}
+        </Button>
+      </PopoverTrigger>
+      <PopoverContent align="end" className="w-96 p-0">
+        <div className="flex items-center justify-between gap-3 border-b px-4 py-3">
+          <p className="text-sm font-semibold">Notifications</p>
+          <div className="flex items-center gap-1">
+            {unread > 0 ? (
+              <Button
+                size="sm"
+                variant="ghost"
+                className="h-7 text-xs text-muted-foreground"
+                onClick={markAll}
+                disabled={isPending}
+              >
+                <CheckCheck className="size-3.5" />
+                Mark all read
+              </Button>
+            ) : null}
+            <Button
+              size="sm"
+              variant="ghost"
+              className="h-7 text-xs text-muted-foreground"
+              onClick={removeAll}
+              disabled={isPending}
+            >
+              <Trash2 className="size-3.5" />
+              Clear all
+            </Button>
+          </div>
+        </div>
+        {error ? (
+          <p
+            role="alert"
+            className="border-b px-4 py-2 text-xs text-destructive"
+          >
+            {error}
+          </p>
+        ) : null}
+
+        {items.length === 0 ? (
+          <p className="px-4 py-8 text-center text-sm text-muted-foreground">
+            You&apos;re all caught up. No notifications yet.
+          </p>
+        ) : (
+          <div className="max-h-96 overflow-y-auto">
+            {items.map((item, index) => (
+              <button
+                key={item.id}
+                type="button"
+                onClick={() => openItem(item)}
+                disabled={isPending}
+                className={cn(
+                  "group flex w-full items-start gap-2.5 px-4 py-3 text-left transition-colors hover:bg-muted/50",
+                  index > 0 && "border-t border-border/60",
+                  !item.read && "bg-primary/[0.03]",
+                )}
+              >
+                <span className="relative mt-0.5">
+                  <NotificationTypeIconSmall type={item.type} />
+                  {item.actorAvatar ? (
+                    <span className="absolute -bottom-1 -right-1">
+                      <ActorAvatar
+                        name={item.actorName}
+                        avatar={item.actorAvatar}
+                        size="sm"
+                      />
+                    </span>
+                  ) : null}
+                </span>
+                <span className="min-w-0 flex-1">
+                  <span
+                    className={cn(
+                      "block truncate text-[13px]",
+                      item.read ? "text-muted-foreground" : "font-medium",
+                    )}
+                  >
+                    {item.title}
+                  </span>
+                  {item.body ? (
+                    <span className="mt-0.5 block truncate text-xs text-muted-foreground">
+                      {item.body}
+                    </span>
+                  ) : null}
+                  <span className="mt-0.5 block text-xs text-muted-foreground">
+                    <RelativeTime value={item.createdAt} />
+                  </span>
+                </span>
+                <span className="flex shrink-0 items-center gap-1">
+                  {!item.read ? (
+                    <span className="size-1.5 rounded-full bg-primary" />
+                  ) : null}
+                  <DropdownMenu>
+                    <DropdownMenuTrigger asChild>
+                      <span
+                        role="button"
+                        tabIndex={-1}
+                        onClick={(e) => e.stopPropagation()}
+                        className="flex size-6 items-center justify-center rounded-md text-muted-foreground opacity-0 transition-opacity hover:bg-muted hover:text-foreground group-hover:opacity-100 data-[state=open]:opacity-100"
+                      >
+                        <svg
+                          xmlns="http://www.w3.org/2000/svg"
+                          width="14"
+                          height="14"
+                          viewBox="0 0 24 24"
+                          fill="none"
+                          stroke="currentColor"
+                          strokeWidth="2"
+                          strokeLinecap="round"
+                          strokeLinejoin="round"
+                        >
+                          <circle cx="12" cy="12" r="1" />
+                          <circle cx="19" cy="12" r="1" />
+                          <circle cx="5" cy="12" r="1" />
+                        </svg>
+                      </span>
+                    </DropdownMenuTrigger>
+                    <DropdownMenuContent align="end">
+                      <DropdownMenuItem
+                        onClick={(e) => toggleRead(e, item)}
+                        disabled={isPending}
+                      >
+                        {item.read ? (
+                          <>
+                            <EyeOff className="size-4" />
+                            Mark as unread
+                          </>
+                        ) : (
+                          <>
+                            <Eye className="size-4" />
+                            Mark as read
+                          </>
+                        )}
+                      </DropdownMenuItem>
+                      <DropdownMenuItem
+                        onClick={(e) => dismiss(e, item)}
+                        disabled={isPending}
+                        className="text-destructive focus:text-destructive"
+                      >
+                        <Trash2 className="size-4" />
+                        Delete
+                      </DropdownMenuItem>
+                    </DropdownMenuContent>
+                  </DropdownMenu>
+                </span>
+              </button>
+            ))}
+          </div>
+        )}
+      </PopoverContent>
+    </Popover>
+  );
+}

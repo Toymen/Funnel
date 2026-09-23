@@ -1,0 +1,145 @@
+import { ApiError } from "@harly/api";
+import { after } from "next/server";
+
+import {
+  createPublicApplication,
+  getPublicJobApplicationContext,
+} from "@/features/applications/data";
+import { sendApplicationReceivedEmails } from "@/features/applications/notifications";
+import { scheduleAutoScore } from "@/features/applications/auto-score";
+import { scheduleAutoDuplicateCheck } from "@/features/applications/auto-duplicates";
+import {
+  createApplicationFormSchema,
+  validateApplicationQuestionAnswers,
+} from "@/lib/validations/applications";
+import { resolvePublicWorkspace } from "@/server/api/public";
+import { clientIp, enforceRateLimit } from "@/server/api/ratelimit";
+import { verifyCaptchaToken } from "@/lib/captcha";
+import { apiOk, corsPreflight, withApi } from "@/server/api/respond";
+
+export const runtime = "nodejs";
+export const maxDuration = 60;
+
+type Context = { params: Promise<{ slug: string }> };
+
+/**
+ * POST /api/public/v1/jobs/{slug}/applications , submit an application from a
+ * custom form or the embed widget. CORS-open; rate-limited + honeypot-guarded.
+ */
+export const POST = withApi(
+  async (request, context) => {
+    const remoteIp = clientIp(request);
+    await enforceRateLimit(`public:apply:${remoteIp}`, {
+      limit: 10,
+      windowMs: 60_000,
+    });
+
+    const { slug } = await (context as Context).params;
+    const workspace = await resolvePublicWorkspace(
+      request,
+      "applications:write",
+    );
+
+    const body = (await request.json().catch(() => null)) as Record<
+      string,
+      unknown
+    > | null;
+    if (!body || typeof body !== "object") {
+      throw ApiError.badRequest("Expected a JSON body.");
+    }
+
+    // Anti-bot: the public apply API is the documented custom-form / embed
+    // entrypoint, so the CAPTCHA challenge MUST be enforced here too (not
+    // only in the Server Action). When a global secret is configured this is
+    // mandatory for every workspace; the token is supplied by the embed widget.
+    // `captchaToken` is the current key; `turnstileToken` stays accepted so
+    // older embedded widgets keep working.
+    const token = body.captchaToken ?? body.turnstileToken;
+    const tokenStr =
+      typeof token === "string" && token.length > 0 ? token : null;
+    const captchaOk = await verifyCaptchaToken(
+      tokenStr,
+      workspace.workspaceId,
+      clientIp(request),
+    );
+    if (!captchaOk) {
+      throw ApiError.forbidden(
+        "Verification failed. Complete the challenge and try again.",
+      );
+    }
+
+    // Honeypot: real users never fill this hidden field.
+    if (typeof body._hp === "string" && body._hp.trim().length > 0) {
+      throw ApiError.badRequest("Rejected.");
+    }
+
+    const jobContext = await getPublicJobApplicationContext({
+      jobSlug: slug,
+      workspaceSlug: workspace.slug,
+    });
+    if (!jobContext) {
+      throw ApiError.notFound("Job not available.");
+    }
+
+    const schema = createApplicationFormSchema(jobContext.applicationConfig);
+    const parsed = schema.safeParse(body);
+    if (!parsed.success) {
+      throw ApiError.unprocessable(
+        "Validation failed.",
+        parsed.error.flatten().fieldErrors,
+      );
+    }
+
+    const questionErrors = validateApplicationQuestionAnswers(
+      parsed.data.questionAnswers,
+      jobContext.applicationConfig.questions,
+    );
+    if (Object.keys(questionErrors).length > 0) {
+      throw ApiError.unprocessable("Some answers are invalid.", questionErrors);
+    }
+
+    const consentGiven = body.consentGiven === true;
+    if (jobContext.applicationConfig.legalConfigured && !consentGiven) {
+      throw ApiError.unprocessable(
+        "You must agree to the privacy policy to submit your application.",
+      );
+    }
+
+    const result = await createPublicApplication(
+      { jobSlug: slug, workspaceSlug: workspace.slug },
+      parsed.data,
+      {
+        consent: consentGiven
+          ? {
+              consentText: jobContext.applicationConfig.consentText,
+              ipAddress: remoteIp,
+              userAgent: request.headers.get("user-agent"),
+            }
+          : null,
+      },
+    );
+    if (!result.ok) {
+      throw ApiError.conflict(result.message);
+    }
+
+    // Wait until the durable email outbox rows exist before acknowledging the
+    // application. Delivery itself remains retryable by the outbox worker.
+    await sendApplicationReceivedEmails(result.email);
+    after(async () => {
+      await Promise.allSettled([
+        scheduleAutoScore(result.applicationId, jobContext.workspaceId),
+        scheduleAutoDuplicateCheck(result.candidateId, jobContext.workspaceId),
+      ]);
+    });
+
+    return apiOk(
+      { received: true, message: "Application received." },
+      { cors: true, status: 201 },
+    );
+  },
+  { cors: true },
+);
+
+export function OPTIONS() {
+  return corsPreflight();
+}

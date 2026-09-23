@@ -1,0 +1,141 @@
+{
+  "$schema": "https://mintlify.com/docs.json",
+  "theme": "mint",
+  "name": "Harly",
+  "colors": {
+    "primary": "#2a331a",
+    "light": "#bfdc82",
+    "dark": "#7e9650"
+  },
+  "favicon": "/logo/light.svg",
+  "navigation": {
+    "groups": [
+      {
+        "group": "Get started",
+        "icon": "rocket",
+        "pages": [
+          "introduction",
+          "quickstart",
+          "getting-started/first-workspace",
+          "getting-started/daily-workflow"
+        ]
+      },
+      {
+        "group": "Tutorials",
+        "icon": "graduation-cap",
+        "pages": [
+          "tutorials/first-hire",
+          "tutorials/setup-integrations",
+          "tutorials/api-integration"
+        ]
+      },
+      {
+        "group": "Using Harly",
+        "icon": "compass",
+        "pages": [
+          "product/overview",
+          "product/jobs",
+          "product/candidates-and-pipeline",
+          "product/interviews-and-scheduling",
+          "product/offers-and-signatures",
+          "product/inbox-and-email",
+          "product/tasks-and-scorecards",
+          "product/documents",
+          "product/career-page",
+          "product/candidate-portal",
+          "product/reports-and-analytics",
+          "product/ai-features"
+        ]
+      },
+      {
+        "group": "Deploy Harly",
+        "icon": "server",
+        "pages": [
+          "self-hosting/overview",
+          "self-hosting/proxy-modes",
+          "deployment/cli",
+          "deployment/cloud",
+          "deployment/configuration"
+        ]
+      },
+      {
+        "group": "Integrations",
+        "icon": "plug",
+        "pages": [
+          "integrations/overview",
+          "integrations/join",
+          "integrations/greenhouse",
+          "integrations/workable",
+          "integrations/ashby",
+          "integrations/lever",
+          "integrations/email",
+          "integrations/google-calendar",
+          "integrations/microsoft",
+          "integrations/video",
+          "integrations/notifications",
+          "integrations/signatures",
+          "integrations/storage"
+        ]
+      },
+      {
+        "group": "Security",
+        "icon": "shield-check",
+        "pages": [
+          "security/access-control",
+          "security/sso-scim",
+          "security/privacy"
+        ]
+      },
+      {
+        "group": "API and automation",
+        "icon": "code",
+        "pages": [
+          "developers/api-overview",
+          "developers/api-reference",
+          "developers/webhooks",
+          "developers/realtime",
+          "developers/automations"
+        ]
+      },
+      {
+        "group": "API Reference",
+        "icon": "brackets-curly",
+        "openapi": "openapi.json"
+      },
+      {
+        "group": "Operations",
+        "icon": "wrench",
+        "pages": [
+          "self-hosting/operations",
+          "operations/backups",
+          "operations/troubleshooting",
+          "operations/screenshots"
+        ]
+      }
+    ]
+  },
+  "logo": {
+    "light": "/logo/light.svg",
+    "dark": "/logo/dark.svg"
+  },
+  "navbar": {
+    "links": [
+      {
+        "label": "GitHub",
+        "href": "https://github.com/vytral/harly"
+      }
+    ]
+  },
+  "anchors": [
+    {
+      "name": "GitHub",
+      "icon": "github",
+      "url": "https://github.com/vytral/harly"
+    }
+  ],
+  "footer": {
+    "socials": {
+      "github": "https://github.com/vytral/harly"
+    }
+  }
+}
