@@ -10,3 +10,6 @@
 - { name: compliance, color: "b60205", description: "Datenschutz, Aufbewahrung, Audit" }
 - { name: dependencies, color: "0366d6", description: "Dependabot-Updates" }
 - { name: upstream, color: "cccccc", description: "Übernahme von Harly-Updates" }
+- { name: npm, color: "cb3837", description: "npm/pnpm-Abhängigkeiten" }
+- { name: docker, color: "2496ed", description: "Docker-Images" }
+- { name: github-actions, color: "2088ff", description: "GitHub-Actions-Versionen" }

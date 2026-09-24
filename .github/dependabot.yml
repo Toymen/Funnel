@@ -1,42 +1,129 @@
+# Dependabot – Best-Practice-Konfiguration (Bier-Schneider-Fork von Harly)
+#
+# Leitlinien (siehe docs/bier-schneider/DEPENDENCIES.md):
+#  1. Reifezeit: Updates erst, wenn die Version mindestens 7 Tage alt ist
+#     (cooldown). Schützt vor zurückgezogenen oder kompromittierten Releases.
+#     Sicherheitsupdates sind davon ausgenommen und kommen sofort.
+#  2. Node.js nur in LTS-Versionen (gerade Hauptversionen). Ungerade
+#     „Current“-Releases (23, 25, 27 …) werden ignoriert.
+#  3. Gruppierung: Minor/Patch pro Ökosystem gebündelt, Sicherheitsupdates
+#     separat gebündelt → wenige, gut reviewbare PRs.
+#  4. Feste Zeitzone und Uhrzeit, PR-Limit, Conventional-Commit-Präfixe und
+#     Labels → planbare, saubere Historie.
+#  Zusätzlich: Major-Updates von Datenbank und Laufzeit werden bewusst manuell
+#  geplant (Migrationen, Pi-Kompatibilität).
+
 version: 2
 
 updates:
+  # ── npm (pnpm-Workspace) ─────────────────────────────────────────────────
   - package-ecosystem: npm
     directory: /
     schedule:
       interval: weekly
       day: monday
-      time: "04:00"
+      time: "06:00"
+      timezone: Europe/Berlin
     open-pull-requests-limit: 5
+    # package.json-Ranges mit anheben, damit Manifest und Lockfile übereinstimmen.
+    versioning-strategy: increase
     cooldown:
       default-days: 7
       semver-major-days: 14
       semver-minor-days: 7
-      semver-patch-days: 3
+      semver-patch-days: 7
+    commit-message:
+      prefix: "deps"
+      prefix-development: "deps-dev"
+      include: scope
     labels:
       - dependencies
+      - npm
     groups:
+      security:
+        applies-to: security-updates
+        patterns: ["*"]
       production:
+        applies-to: version-updates
         dependency-type: production
-        update-types:
-          - minor
-          - patch
+        update-types: [minor, patch]
       development:
+        applies-to: version-updates
         dependency-type: development
-        update-types:
-          - minor
-          - patch
+        update-types: [minor, patch]
+    ignore:
+      # Node-Typen nur für LTS-Linien (gerade Hauptversionen).
+      - dependency-name: "@types/node"
+        versions: [">=21.0.0 <22.0.0", ">=23.0.0 <24.0.0", ">=25.0.0 <26.0.0", ">=27.0.0 <28.0.0", ">=29.0.0 <30.0.0"]
+      # Das Next.js-Major wird gemeinsam mit Harly-Upstream geplant.
+      - dependency-name: "next"
+        update-types: ["version-update:semver-major"]
+      - dependency-name: "eslint-config-next"
+        update-types: ["version-update:semver-major"]
 
+  # ── GitHub Actions ───────────────────────────────────────────────────────
   - package-ecosystem: github-actions
     directory: /
     schedule:
       interval: weekly
+      day: monday
+      time: "06:00"
+      timezone: Europe/Berlin
+    open-pull-requests-limit: 5
+    cooldown:
+      default-days: 7
+    commit-message:
+      prefix: "ci"
     labels:
       - dependencies
+      - github-actions
+    groups:
+      actions:
+        patterns: ["*"]
 
+  # ── Docker (Dockerfile + Compose) ────────────────────────────────────────
   - package-ecosystem: docker
-    directory: /
+    directories:
+      - /
+      - /tooling/docker
     schedule:
       interval: weekly
+      day: monday
+      time: "06:00"
+      timezone: Europe/Berlin
+    open-pull-requests-limit: 3
+    cooldown:
+      default-days: 7
+    commit-message:
+      prefix: "docker"
     labels:
       - dependencies
+      - docker
+    ignore:
+      # Node nur als LTS: ungerade „Current“-Releases ignorieren.
+      - dependency-name: "node"
+        versions: [">=23 <24", ">=25 <26", ">=27 <28", ">=29 <30"]
+      # PostgreSQL-Major-Upgrades brauchen Dump/Restore → manuell planen.
+      - dependency-name: "postgres"
+        update-types: ["version-update:semver-major"]
+
+  - package-ecosystem: docker-compose
+    directories:
+      - /
+      - /tooling/docker
+    schedule:
+      interval: weekly
+      day: monday
+      time: "06:00"
+      timezone: Europe/Berlin
+    open-pull-requests-limit: 3
+    cooldown:
+      default-days: 7
+    commit-message:
+      prefix: "docker"
+    labels:
+      - dependencies
+      - docker
+    ignore:
+      - dependency-name: "postgres"
+        update-types: ["version-update:semver-major"]
