@@ -156,6 +156,29 @@ Umzug in vier Schritten:
 Zurück auf den Pi geht es genauso. Da beide Hosts dieselbe Image-Digest ziehen, laufen
 auf beiden exakt dieselben Container.
 
+### Linux oder Windows
+
+Die Container sind immer Linux-Container. Unter Windows führt Docker Desktop sie in
+WSL2 aus, am Image ändert sich nichts.
+
+| Schritt      | Linux-Workstation                  | Windows-Workstation                                                              |
+| ------------ | ---------------------------------- | -------------------------------------------------------------------------------- |
+| Docker       | installiert `install.sh` selbst    | Docker Desktop mit WSL2, WSL-Integration für Ubuntu aktivieren                   |
+| Skripte      | in einer normalen Shell            | in der WSL-Distribution (Ubuntu), nicht in PowerShell                            |
+| Einrichtung  | `sudo bash install.sh workstation` | gleich, in WSL                                                                   |
+| Deployment   | `DEPLOY_HOST=user@host deploy.sh`  | direkt in WSL: `DEPLOY_HOST=local deploy/selfhost/deploy.sh`                     |
+| Backup-Timer | systemd (automatisch)              | Windows-Aufgabenplanung: `wsl.exe -d Ubuntu -u root -- /opt/funnel/backup.sh`    |
+| Autostart    | Docker-Dienst                      | Docker Desktop „Start when you sign in“, Container mit `restart: unless-stopped` |
+
+Hinweise für Windows:
+
+- Das Repository in WSL klonen (`~/funnel`), nicht unter `C:\`. Das ist schneller, und
+  `.gitattributes` hält die Skripte ohnehin auf LF-Zeilenenden.
+- Den Arbeitsspeicher für WSL2 in `%UserProfile%\.wslconfig` mindestens so groß setzen wie
+  die Summe des Profils, z. B. `[wsl2]` / `memory=10GB`.
+- Ports 80/443 in der Windows-Firewall freigeben, wenn Caddy von außen erreichbar sein
+  soll.
+
 ## Backups
 
 - **Wann:** täglich um 03:15 über den systemd-Timer `funnel-backup.timer` und zusätzlich vor
