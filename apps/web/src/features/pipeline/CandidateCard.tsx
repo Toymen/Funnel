@@ -17,6 +17,7 @@ import {
   TooltipTrigger,
 } from "@/components/ui/tooltip";
 import type { PipelineApplication } from "@/features/pipeline/data";
+import { QuickApplyBadges } from "@/features/mobile-admin/QuickApplyBadges";
 import { useDaysSince } from "@/lib/date-hydration";
 import { cn } from "@/lib/utils";
 
@@ -226,6 +227,7 @@ export function CandidateCard({
                 <ApplicationStatusBadge status={application.status} />
               ) : null}
             </div>
+            <QuickApplyBadges info={application.quickApply ?? null} className="mt-1.5" />
           </div>
         </Link>
         {/*

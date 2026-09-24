@@ -55,6 +55,8 @@ import { Input } from "@/components/ui/input";
 import { FilterPill, FILTER_ALL } from "@/components/ui/FilterPill";
 import { BookmarkSimpleIcon } from "@/components/ui/icons/phosphor";
 import { cn } from "@/lib/utils";
+import { QuickApplyBadges } from "@/features/mobile-admin/QuickApplyBadges";
+import type { QuickApplyInfo } from "@/features/mobile-admin/quick-contact";
 
 export type CandidateRow = {
   id: string;
@@ -82,6 +84,8 @@ export type CandidateRow = {
   hasOpenPrivacyRequest: boolean;
   isReferred: boolean;
   isFeaturedReferral: boolean;
+  /** Bier-Schneider: Sprache/Modus der Kurzbewerbung (PRD §11). */
+  quickApply?: QuickApplyInfo | null;
 };
 
 type SortKey = "recent" | "oldest" | "modified" | "name";
@@ -767,6 +771,7 @@ export function CandidatesTable({
                         {[row.role, row.location].filter(Boolean).join(" · ") ||
                           row.email}
                       </p>
+                      <QuickApplyBadges info={row.quickApply ?? null} className="mt-1" />
                       {row.tags.length > 0 ? (
                         <div className="mt-1 flex flex-wrap items-center gap-1.5 text-[11px]">
                           {row.tags.slice(0, 3).map((t) => (
