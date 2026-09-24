@@ -236,6 +236,8 @@ Ergänzungen:
 - Primäraktionen sind mit dem Daumen erreichbar (untere Bildschirmhälfte).
 - Geprüft wird automatisiert per Playwright-Screenshots bei 390 × 844 in der CI.
 
+Umsetzung, Audit (vorher/nachher) und offene Punkte: [MOBILE-ADMIN.md](MOBILE-ADMIN.md).
+
 ## 12. Datenmodell
 
 Harlys Schema bleibt maßgeblich (`packages/db/src/schema.ts`). Ergänzungen:

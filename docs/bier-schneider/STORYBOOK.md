@@ -2,7 +2,9 @@
 
 Storybook zeigt die Oberflächen der öffentlichen Bier-Schneider-Seiten ohne Server,
 Datenbank und Netzwerk. Zuerst ist die 60-Sekunden-Bewerbung (Kurzbewerbung) drin.
-Die restlichen Seiten (Stellenliste, Stellenseite, Karriereseite, Admin-Bereiche)
+Dazu kommen unter „HR-Bereich/…“ die Handy-Bausteine des HR-Bereichs
+(Ein-Tipp-Kontakt, wischbares Kanban, siehe [MOBILE-ADMIN.md](MOBILE-ADMIN.md)).
+Die restlichen Seiten (Stellenliste, Stellenseite, Karriereseite, weitere Admin-Bereiche)
 kommen später dazu.
 
 - Framework: `@storybook/nextjs-vite` 10.6 (Vite, kein Turbopack)
