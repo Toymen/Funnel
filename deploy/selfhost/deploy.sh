@@ -8,7 +8,9 @@
 #          linux/arm64 + linux/amd64, gebaut von GitHub Actions bei jedem Merge)
 #
 # Umgebung:
-#   DEPLOY_HOST  SSH-Ziel, Standard: pi@bier-pi.local (alter Name: PI_HOST)
+#   DEPLOY_HOST  SSH-Ziel, Standard: pi@bier-pi.local (alter Name: PI_HOST).
+#                „local“ deployt auf diesen Rechner ohne SSH – z. B. auf einer
+#                Windows-Workstation direkt in WSL2 mit Docker Desktop.
 #   DEPLOY_DIR   Zielverzeichnis, Standard: /opt/funnel (alter Name: PI_DIR)
 set -euo pipefail
 
@@ -29,18 +31,27 @@ VERSION="${VERSION:0:19}"
 echo "→ Ziel: $DEPLOY_HOST:$DEPLOY_DIR"
 echo "→ Image: $IMAGE"
 
+FILES=(
+  "$ROOT/compose.yaml"
+  "$ROOT/Caddyfile"
+  "$ROOT/deploy/selfhost/backup.sh"
+  "$ROOT/deploy/selfhost/restore.sh"
+)
+
 # Nur Laufzeit-Dateien übertragen – kein Quellcode, kein Node auf dem Host.
-# shellcheck disable=SC2029  # Pfad soll lokal expandiert werden.
-ssh "$DEPLOY_HOST" "mkdir -p '$DEPLOY_DIR'"
-scp -q \
-  "$ROOT/compose.yaml" \
-  "$ROOT/Caddyfile" \
-  "$ROOT/deploy/selfhost/backup.sh" \
-  "$ROOT/deploy/selfhost/restore.sh" \
-  "$DEPLOY_HOST:$DEPLOY_DIR/"
+if [[ "$DEPLOY_HOST" == local ]]; then
+  mkdir -p "$DEPLOY_DIR"
+  cp "${FILES[@]}" "$DEPLOY_DIR/"
+  run_on_host() { bash -s; }
+else
+  # shellcheck disable=SC2029  # Pfad soll lokal expandiert werden.
+  ssh "$DEPLOY_HOST" "mkdir -p '$DEPLOY_DIR'"
+  scp -q "${FILES[@]}" "$DEPLOY_HOST:$DEPLOY_DIR/"
+  run_on_host() { ssh "$DEPLOY_HOST" bash -s; }
+fi
 
 # shellcheck disable=SC2087  # Variablen sollen lokal expandiert werden.
-ssh "$DEPLOY_HOST" bash -s <<REMOTE
+run_on_host <<REMOTE
 set -euo pipefail
 cd '$DEPLOY_DIR'
 test -f .env || { echo "Fehlt: $DEPLOY_DIR/.env – zuerst install.sh auf dem Host ausführen" >&2; exit 1; }
