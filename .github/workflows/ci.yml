@@ -331,6 +331,51 @@ jobs:
             packages/*/coverage
           if-no-files-found: ignore
 
+  # ─────────────────────────────────────────────────────────────────────────────
+  # 5. Storybook: statischer Build + Stories (inkl. play-Functions) in Chromium
+  # ─────────────────────────────────────────────────────────────────────────────
+  storybook:
+    name: Storybook build
+    runs-on: ubuntu-latest
+    needs: install
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: pnpm/action-setup@v4
+        with:
+          version: 9.15.0
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+          cache: pnpm
+
+      - name: Restore node_modules
+        uses: actions/cache/restore@v4
+        with:
+          path: |
+            node_modules
+            apps/*/node_modules
+            packages/*/node_modules
+            tooling/*/node_modules
+          key: node-modules-${{ runner.os }}-${{ hashFiles('pnpm-lock.yaml') }}
+
+      - name: Build Storybook
+        run: pnpm --filter web build-storybook
+
+      - name: Install Chromium for story tests
+        run: pnpm --filter web exec playwright install --with-deps chromium
+
+      - name: Test stories (Vitest browser mode)
+        run: pnpm --filter web test-storybook
+
+      - name: Upload Storybook
+        uses: actions/upload-artifact@v4
+        with:
+          name: storybook-static
+          path: apps/web/storybook-static
+          retention-days: 7
+
   migrations:
     name: PostgreSQL 16 migration chain
     runs-on: ubuntu-latest
