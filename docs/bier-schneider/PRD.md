@@ -287,7 +287,8 @@ pnpm dev (Next.js + Postgres)  ──►  PR → CI (Typen, Tests, Build,   dock
 - **Entwicklung auf Mac/PC:** `pnpm install`, `pnpm dev` (startet Postgres per Docker, Migrationen, Next.js). Siehe `docs/bier-schneider/ENTWICKLUNG.md`.
 - **Build:** GitHub Actions baut bei jedem Merge auf `main` das Image `ghcr.io/toymen/funnel:edge` für `linux/arm64`. Versions-Tags `v*` bauen `amd64` und `arm64`, mit SBOM, Provenance und Trivy-Scan.
 - **Alternativ lokal:** `docker buildx build --platform linux/arm64 -t ghcr.io/toymen/funnel:dev --push .`. Auf Apple Silicon läuft das nativ ohne Emulation.
-- **Pi:** Nur `compose.yaml`, `.env` und `Caddyfile` liegen dort. Ein Update ist `docker compose pull && docker compose up -d`. Kein Node, kein Git, kein Build auf dem Pi. Siehe `docs/bier-schneider/RASPBERRY-PI.md`.
+- **Pi:** Nur `compose.yaml`, `.env` und `Caddyfile` liegen dort. Ein Update ist `docker compose pull && docker compose up -d`. Kein Node, kein Git, kein Build auf dem Pi. Siehe `docs/bier-schneider/BETRIEB.md`.
+- **Workstation als Ausweichhost:** Das Image ist Multi-Arch (arm64 + amd64). Reicht der Pi nicht, laufen dieselben Container mit dem Host-Profil `workstation` (größere Limits) auf einer Workstation; Umzug per Backup/Restore.
 - **Hardware:** Raspberry Pi 5 mit 8 GB und NVMe-SSD. Raspberry Pi OS Lite 64 Bit.
 
 ## 16. Projektorganisation auf GitHub

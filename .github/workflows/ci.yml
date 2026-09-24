@@ -156,6 +156,20 @@ jobs:
           bash <(curl -sSfL "https://raw.githubusercontent.com/rhysd/actionlint/${ACTIONLINT_SHA}/scripts/download-actionlint.bash") "$ACTIONLINT_VERSION" "$RUNNER_TEMP"
           "$RUNNER_TEMP/actionlint" -color
 
+      # shellcheck ist auf ubuntu-latest vorinstalliert.
+      - name: shellcheck (Deploy-Skripte)
+        run: shellcheck -x deploy/selfhost/*.sh
+      - name: Compose-Konfiguration für Pi und Workstation prüfen
+        run: |
+          for profile in pi workstation; do
+            env_file="$RUNNER_TEMP/$profile.env"
+            { cat deploy/selfhost/env.example; echo; cat "deploy/selfhost/profile-$profile.env"; } \
+              | sed 's/__GENERATE__/ci-placeholder-secret/' > "$env_file"
+            docker compose -f compose.yaml --env-file "$env_file" config --quiet
+            COMPOSE_PROFILES='' docker compose -f compose.yaml --env-file "$env_file" config --quiet
+            echo "✓ Profil $profile"
+          done
+
   # ─────────────────────────────────────────────────────────────────────────────
   # 3. Type-check
   # ─────────────────────────────────────────────────────────────────────────────
@@ -463,6 +477,18 @@ jobs:
           COMPOSE_PROFILES=proxy docker compose config --quiet
       - name: Build runtime image
         run: docker build -t harly:ci .
+      - name: Image-Größe im Job-Summary ausweisen
+        run: |
+          bytes="$(docker image inspect harly:ci --format '{{.Size}}')"
+          mb=$(( bytes / 1024 / 1024 ))
+          {
+            echo "### Container-Image"
+            echo ""
+            echo "| Image | Größe (unkomprimiert) | Plattform |"
+            echo "|---|---:|---|"
+            echo "| harly:ci | ${mb} MB | $(docker image inspect harly:ci --format '{{.Os}}/{{.Architecture}}') |"
+          } >> "$GITHUB_STEP_SUMMARY"
+          echo "Image-Größe: ${mb} MB"
       - name: Scan image for HIGH and CRITICAL vulnerabilities
         uses: aquasecurity/trivy-action@v0.36.0
         with:

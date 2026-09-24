@@ -1,0 +1,11 @@
+[Unit]
+Description=Bier-Schneider Recruiting: Backup von Datenbank und Uploads
+Wants=docker.service
+After=docker.service
+
+[Service]
+Type=oneshot
+WorkingDirectory=/opt/funnel
+ExecStart=/opt/funnel/backup.sh
+Nice=10
+IOSchedulingClass=idle

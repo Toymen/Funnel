@@ -5,7 +5,10 @@
     X-Content-Type-Options "nosniff"
     X-Frame-Options "SAMEORIGIN"
     Referrer-Policy "strict-origin-when-cross-origin"
-    Permissions-Policy "camera=(), microphone=(), geolocation=()"
+    # Bier-Schneider: microphone=(self) für die Sprachnachricht in der
+    # Kurzbewerbung (PRD v2 §5.2). Kamera bleibt gesperrt – das Foto vom
+    # Führerschein nutzt die native Dateiauswahl (input capture), nicht getUserMedia.
+    Permissions-Policy "camera=(), microphone=(self), geolocation=()"
   }
   reverse_proxy app:3000
 }

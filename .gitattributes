@@ -1,0 +1,9 @@
+# Deploy-Dateien laufen in Linux-Containern bzw. unter bash (auch unter
+# Windows/WSL2) – immer LF, sonst bricht ein Windows-Checkout die Skripte.
+*.sh text eol=lf
+Caddyfile text eol=lf
+compose*.yaml text eol=lf
+*.env text eol=lf
+env.example text eol=lf
+deploy/selfhost/funnel-backup.* text eol=lf
+Dockerfile text eol=lf
