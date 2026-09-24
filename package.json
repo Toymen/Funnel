@@ -19,6 +19,7 @@
     "format:check": "prettier --check apps/web/src/features/quick-apply apps/web/src/features/funnel \"apps/web/src/app/(public)/apply\" \"apps/web/src/app/(public)/jobs/[slug]\" apps/web/src/app/api/public/funnel \"apps/web/src/app/(dashboard)/dashboard/reports/funnel\" apps/web/src/lib/notify/webhook-hosts.ts apps/web/src/lib/notify/webhook-hosts.test.ts apps/web/eslint.config.mjs apps/web/stylelint.config.mjs packages/db/scripts/seed-bier-schneider.ts docs/bier-schneider .github/workflows .prettierrc.json",
     "typecheck": "turbo typecheck",
     "test": "turbo test",
+    "storybook": "pnpm --filter web storybook",
     "docs:dev": "pnpm --dir apps/docs dev",
     "docs:validate": "pnpm --dir apps/docs validate",
     "docs:broken-links": "pnpm --dir apps/docs broken-links",
