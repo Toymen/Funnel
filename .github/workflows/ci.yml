@@ -156,6 +156,16 @@ jobs:
           bash <(curl -sSfL "https://raw.githubusercontent.com/rhysd/actionlint/${ACTIONLINT_SHA}/scripts/download-actionlint.bash") "$ACTIONLINT_VERSION" "$RUNNER_TEMP"
           "$RUNNER_TEMP/actionlint" -color
 
+      # shellcheck ist auf ubuntu-latest vorinstalliert.
+      - name: shellcheck (Raspberry-Pi-Skripte)
+        run: shellcheck -x deploy/raspberry-pi/*.sh
+
+      - name: Compose-Konfiguration für den Pi prüfen
+        run: |
+          sed 's/__GENERATE__/ci-placeholder-secret/' deploy/raspberry-pi/env.example > "$RUNNER_TEMP/pi.env"
+          docker compose -f compose.yaml --env-file "$RUNNER_TEMP/pi.env" config --quiet
+          COMPOSE_PROFILES= docker compose -f compose.yaml --env-file "$RUNNER_TEMP/pi.env" config --quiet
+
   # ─────────────────────────────────────────────────────────────────────────────
   # 3. Type-check
   # ─────────────────────────────────────────────────────────────────────────────
