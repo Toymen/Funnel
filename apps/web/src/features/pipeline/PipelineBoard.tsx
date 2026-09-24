@@ -23,16 +23,14 @@ import {
   updateStageEmailSettings,
 } from "@/features/pipeline/actions";
 import { bulkDecisionConfirmationMessage } from "@/features/pipeline/confirmation";
-import {
-  CandidateCard,
-  CandidateCardOverlay,
-} from "@/features/pipeline/CandidateCard";
+import { CandidateCardOverlay } from "@/features/pipeline/CandidateCard";
 import type {
   PipelineApplication,
   PipelineJobOption,
   PipelineStage,
 } from "@/features/pipeline/data";
 import { StageColumn } from "@/features/pipeline/StageColumn";
+import { MobilePipelineColumns } from "@/features/mobile-admin/MobilePipelineColumns";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import { Checkbox } from "@/components/ui/checkbox";
@@ -197,9 +195,6 @@ export function PipelineBoard({
   const [searchQuery, setSearchQuery] = useState("");
   const [hideEmptyColumns, setHideEmptyColumns] = useState(false);
   const [mutationPending, setMutationPending] = useState(false);
-  const [mobileStage, setMobileStage] = useState<string>(
-    initialStages[0]?.id ?? "",
-  );
   const sensors = useSensors(
     useSensor(PointerSensor, {
       activationConstraint: {
@@ -244,7 +239,6 @@ export function PipelineBoard({
   const visibleStages = hideEmptyColumns
     ? stages.filter((stage) => (filteredColumns.get(stage.id)?.length ?? 0) > 0)
     : stages;
-  const mobileApplications = filteredColumns.get(mobileStage) ?? [];
 
   function candidateLabel(applicationId: string) {
     const found = findApplicationStage(columns, applicationId);
@@ -435,17 +429,21 @@ export function PipelineBoard({
     }
   }
 
-  async function handleBulkMove(toStageId: string) {
-    if (mutationPending || selectedApplications.length === 0) {
+  async function handleBulkMove(
+    toStageId: string,
+    // Bier-Schneider: mobile Stufenauswahl verschiebt eine einzelne Karte (PRD §11.1).
+    movingApplications: PipelineApplication[] = selectedApplications,
+  ) {
+    if (mutationPending || movingApplications.length === 0) {
       return;
     }
 
     const previousColumns = cloneColumns(columns);
     const optimisticColumns = cloneColumns(columns);
-    const workspaceId = selectedApplications[0].workspaceId;
-    const movedIds = selectedApplications.map((application) => application.id);
+    const workspaceId = movingApplications[0].workspaceId;
+    const movedIds = movingApplications.map((application) => application.id);
 
-    for (const application of selectedApplications) {
+    for (const application of movingApplications) {
       removeApplication(
         optimisticColumns,
         application.currentStageId,
@@ -645,45 +643,19 @@ export function PipelineBoard({
         </div>
       ) : null}
 
-      {/* Mobile: stage selector + vertical card list */}
+      {/* Mobile: swipeable columns (scroll-snap) + stage select per card */}
       <div className="sm:hidden">
-        <Select value={mobileStage} onValueChange={setMobileStage}>
-          <SelectTrigger className="w-full">
-            <SelectValue placeholder="Select stage" />
-          </SelectTrigger>
-          <SelectContent>
-            {stages.map((stage) => (
-              <SelectItem key={stage.id} value={stage.id}>
-                <span className="flex items-center gap-2">
-                  <span
-                    className="size-2 shrink-0 rounded-full"
-                    style={{ backgroundColor: stage.color ?? "#a1a1aa" }}
-                  />
-                  {stage.name}
-                  <span className="text-muted-foreground">
-                    ({filteredColumns.get(stage.id)?.length ?? 0})
-                  </span>
-                </span>
-              </SelectItem>
-            ))}
-          </SelectContent>
-        </Select>
-        <div className="mt-3 space-y-2">
-          {mobileApplications.map((application) => (
-            <CandidateCard
-              key={application.id}
-              application={application}
-              selected={selectedIds.has(application.id)}
-              disabled={mutationPending}
-              onSelect={handleSelect}
-            />
-          ))}
-          {mobileApplications.length === 0 ? (
-            <div className="flex items-center justify-center rounded-[var(--radius-md)] bg-warm-paper p-8 text-center text-[13px] text-soft-ink">
-              No candidates in this stage
-            </div>
-          ) : null}
-        </div>
+        <MobilePipelineColumns
+          stages={visibleStages}
+          columns={filteredColumns}
+          disabled={mutationPending}
+          onMove={(applicationId, toStageId) => {
+            const found = findApplicationStage(columns, applicationId);
+            if (found && found.stageId !== toStageId) {
+              void handleBulkMove(toStageId, [found.application]);
+            }
+          }}
+        />
       </div>
 
       {/* Desktop: full board with DnD */}

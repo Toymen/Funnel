@@ -58,6 +58,12 @@ export const MOBILE_ADMIN_TEXT = {
     anytime: "jederzeit",
   } satisfies Record<CallbackWindow, string>,
   callbackHint: (window: string) => `Bitte ${window} anrufen`,
+  stageSelect: (name: string) => `Stufe für ${name} ändern`,
+  stageColumns: "Stufen",
+  stageColumnsHint: "Zum Blättern wischen",
+  emptyStage: "Keine Bewerbungen in dieser Stufe",
+  stageCount: (name: string, count: number) =>
+    `${name}, ${count} ${count === 1 ? "Bewerbung" : "Bewerbungen"}`,
 } as const;
 
 function isMode(value: unknown): value is QuickApplyMode {
