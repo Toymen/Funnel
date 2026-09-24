@@ -1,7 +1,7 @@
 "use client";
 
-import Link from "next/link";
 import type { Route } from "next";
+import Link from "next/link";
 import { useRouter } from "next/navigation";
 import { AlertTriangle, Filter, Footprints, Megaphone, Table2 } from "lucide-react";
 import { motion, useReducedMotion } from "motion/react";

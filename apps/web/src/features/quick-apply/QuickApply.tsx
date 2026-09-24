@@ -19,9 +19,9 @@ import { AnimatePresence, motion, useReducedMotion } from "motion/react";
 import { funnelSessionId, funnelUtm, trackFunnel } from "@/features/funnel/client";
 
 import {
+  type QuickApplyErrorKey,
   submitQuickApplicationAction,
   uploadQuickApplicationFileAction,
-  type QuickApplyErrorKey,
 } from "./actions";
 import type { QuickApplyJob } from "./data";
 import { languageInfo, QUICK_APPLY_LANGUAGES, type QuickApplyLanguage } from "./languages";
@@ -182,7 +182,7 @@ function VoiceRecorder({
     <div className="flex flex-col items-center gap-4">
       <button
         type="button"
-        onClick={recording ? stop : start}
+        onClick={recording ? stop : () => void start()}
         className={"bs-record " + (recording ? "bs-record--on" : "")}
         aria-pressed={recording}
       >
@@ -192,7 +192,11 @@ function VoiceRecorder({
       <p className="bs-hint tabular-nums" aria-live="polite">
         {recording ? format(t.voiceSeconds, { seconds: 60 - seconds }) : value ? t.voiceRecorded : null}
       </p>
-      {url && !recording ? <audio controls src={url} className="w-full" /> : null}
+      {url && !recording ? (
+        // Eigene Sprachnachricht zum Nachhören: Untertitel gibt es dafür nicht.
+        // eslint-disable-next-line jsx-a11y/media-has-caption -- Wiedergabe der eigenen Aufnahme, keine Untertitel verfügbar
+        <audio controls src={url} className="w-full" aria-label={t.voicePlayback} />
+      ) : null}
     </div>
   );
 }
@@ -263,7 +267,7 @@ export function QuickApply({
     return list;
   }, [draft.mode, job.questions]);
 
-  const screen = screens[Math.min(screenIndex, screens.length - 1)]!;
+  const screen = screens[Math.min(screenIndex, screens.length - 1)];
   const firstRoadScreen = 2;
   const roadStep = Math.max(0, screenIndex - firstRoadScreen);
   const roadTotal = screens.length - firstRoadScreen;
@@ -339,7 +343,7 @@ export function QuickApply({
 
     startTransition(async () => {
       const result = await submitQuickApplicationAction(form).catch(() => null);
-      if (!result || !result.ok) {
+      if (!result?.ok) {
         setError(result?.error ?? "errorGeneric");
         return;
       }

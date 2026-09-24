@@ -1,10 +1,10 @@
-import { notFound } from "next/navigation";
 import type { Metadata } from "next";
+import { notFound } from "next/navigation";
 
 import { ApplyForm } from "@/features/applications/ApplyForm";
-import { getPublicJobDetail } from "@/features/jobs/data";
-import { normalizeJobApplicationConfig } from "@/features/jobs/config";
 import { JobChrome } from "@/features/career-page/job/JobChrome";
+import { normalizeJobApplicationConfig } from "@/features/jobs/config";
+import { getPublicJobDetail } from "@/features/jobs/data";
 import { getQuickApplyJob } from "@/features/quick-apply/data";
 import { QuickApply } from "@/features/quick-apply/QuickApply";
 import { resolveQuickApplyLanguage } from "@/features/quick-apply/resolve-language";

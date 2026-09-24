@@ -1,11 +1,10 @@
 "use server";
 
+import { headers } from "next/headers";
+import { applications, candidateFiles, db } from "@harly/db";
+import { eq } from "drizzle-orm";
 import { createHmac, timingSafeEqual } from "node:crypto";
 
-import { eq } from "drizzle-orm";
-import { headers } from "next/headers";
-
-import { applications, candidateFiles, db } from "@harly/db";
 import { createPublicApplication } from "@/features/applications/data";
 import { sendApplicationReceivedEmails } from "@/features/applications/notifications";
 import { recordFunnelEvent } from "@/features/funnel/record";
@@ -68,9 +67,15 @@ function signUpload(applicationId: string, expiresAt: number): string {
 function verifyUpload(token: string, applicationId: string): boolean {
   const [id, expires, signature] = token.split(".");
   if (!id || !expires || !signature || id !== applicationId || Number(expires) < Date.now()) return false;
-  const expected = Buffer.from(signUpload(id, Number(expires)).split(".")[2]!);
+  const expected = Buffer.from(signUpload(id, Number(expires)).split(".")[2]);
   const actual = Buffer.from(signature);
   return expected.length === actual.length && timingSafeEqual(expected, actual);
+}
+
+/** Textfeld aus FormData; Dateien oder fehlende Felder ergeben `fallback`. */
+function formText(formData: FormData, key: string, fallback = ""): string {
+  const value = formData.get(key);
+  return typeof value === "string" ? value : fallback;
 }
 
 async function remoteIp(): Promise<string> {
@@ -140,7 +145,7 @@ export async function submitQuickApplicationAction(formData: FormData): Promise<
 
   let answers: Record<string, string> = {};
   try {
-    answers = JSON.parse(String(formData.get("answers") ?? "{}")) as Record<string, string>;
+    answers = JSON.parse(formText(formData, "answers", "{}")) as Record<string, string>;
   } catch {
     answers = {};
   }
@@ -260,8 +265,8 @@ export async function submitQuickApplicationAction(formData: FormData): Promise<
 
 /** Optionaler Upload nach dem Absenden (Führerschein-Foto, Lebenslauf). */
 export async function uploadQuickApplicationFileAction(formData: FormData): Promise<{ ok: boolean }> {
-  const applicationId = String(formData.get("applicationId") ?? "");
-  const token = String(formData.get("uploadToken") ?? "");
+  const applicationId = formText(formData, "applicationId");
+  const token = formText(formData, "uploadToken");
   const file = formData.get("file");
   if (!(file instanceof File) || !verifyUpload(token, applicationId)) return { ok: false };
   try {

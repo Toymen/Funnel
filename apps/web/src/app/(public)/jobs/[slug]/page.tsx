@@ -1,15 +1,15 @@
-import { notFound } from "next/navigation";
 import type { Metadata } from "next";
+import { notFound } from "next/navigation";
 
-import { getPublicJobDetail } from "@/features/jobs/data";
 import { JobChrome } from "@/features/career-page/job/JobChrome";
 import { JobOverviewBody } from "@/features/career-page/job/JobOverviewBody";
 import { publicJobMetadata } from "@/features/career-page/seo";
-import { isPortalEnabled } from "@/lib/portal-auth";
-import { getPublicWorkspaceSlug } from "@/lib/public-workspace";
+import { getPublicJobDetail } from "@/features/jobs/data";
 import { getQuickApplyJob } from "@/features/quick-apply/data";
 import { QuickApplyHero } from "@/features/quick-apply/QuickApplyHero";
 import { resolveQuickApplyLanguage } from "@/features/quick-apply/resolve-language";
+import { isPortalEnabled } from "@/lib/portal-auth";
+import { getPublicWorkspaceSlug } from "@/lib/public-workspace";
 
 import "@/features/quick-apply/quick-apply.css";
 

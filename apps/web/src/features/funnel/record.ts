@@ -1,14 +1,14 @@
 import "server-only";
 
+import { db, funnelEvents, jobs, organization } from "@harly/db";
 import { eq } from "drizzle-orm";
 
-import { db, funnelEvents, jobs, organization } from "@harly/db";
 import { getPublicWorkspaceSlug } from "@/lib/public-workspace";
 
 import {
-  normalizeSource,
   type BrowserFunnelEventInput,
   type FunnelEventType,
+  normalizeSource,
 } from "./events";
 
 type RecordInput = {
