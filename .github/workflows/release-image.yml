@@ -47,9 +47,9 @@ jobs:
         with:
           context: .
           push: true
-          # Zielplattform ist der Raspberry Pi (arm64). Versions-Tags bauen
-          # zusätzlich amd64 für Tests auf einem normalen Server/PC.
-          platforms: ${{ github.ref == 'refs/heads/main' && 'linux/arm64' || 'linux/amd64,linux/arm64' }}
+          # Ein Multi-Arch-Image für jeden Host: Raspberry Pi (arm64) und
+          # Workstation/Server (amd64). Docker wählt beim Pull automatisch.
+          platforms: linux/amd64,linux/arm64
           tags: ${{ steps.meta.outputs.tags }}
           labels: ${{ steps.meta.outputs.labels }}
           sbom: true

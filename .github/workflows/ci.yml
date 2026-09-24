@@ -473,6 +473,18 @@ jobs:
           COMPOSE_PROFILES=proxy docker compose config --quiet
       - name: Build runtime image
         run: docker build -t harly:ci .
+      - name: Image-Größe im Job-Summary ausweisen
+        run: |
+          bytes="$(docker image inspect harly:ci --format '{{.Size}}')"
+          mb=$(( bytes / 1024 / 1024 ))
+          {
+            echo "### Container-Image"
+            echo ""
+            echo "| Image | Größe (unkomprimiert) | Plattform |"
+            echo "|---|---:|---|"
+            echo "| harly:ci | ${mb} MB | $(docker image inspect harly:ci --format '{{.Os}}/{{.Architecture}}') |"
+          } >> "$GITHUB_STEP_SUMMARY"
+          echo "Image-Größe: ${mb} MB"
       - name: Scan image for HIGH and CRITICAL vulnerabilities
         uses: aquasecurity/trivy-action@v0.36.0
         with:
