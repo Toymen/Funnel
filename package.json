@@ -37,7 +37,7 @@
     "dotenv": "^17.4.2",
     "drizzle-kit": "^0.31.10",
     "drizzle-orm": "^0.45.2",
-    "esbuild": "^0.27.7",
+    "esbuild": "^0.28.2",
     "eslint": "^10.4.0",
     "markdownlint-cli2": "^0.23.3",
     "prettier": "^3.8.3",
@@ -50,7 +50,7 @@
     "overrides": {
       "@babel/core": "7.29.6",
       "drizzle-orm": "0.45.2",
-      "esbuild": "0.28.1",
+      "esbuild": "0.28.2",
       "ip-address": "10.4.0",
       "postcss": "8.5.25",
       "next>sharp": "0.35.4",
