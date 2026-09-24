@@ -91,3 +91,6 @@ public/images/figma-preview/
 /data/
 /backups/
 /models/
+
+# Storybook (pnpm --filter web build-storybook)
+storybook-static/
