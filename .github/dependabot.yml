@@ -102,7 +102,8 @@ updates:
     ignore:
       # Node nur als LTS: ungerade „Current“-Releases ignorieren.
       - dependency-name: "node"
-        versions: [">=23 <24", ">=25 <26", ">=27 <28", ">=29 <30"]
+        # Docker nutzt das Ruby-Gem-Format (Bedingungen mit Komma getrennt).
+        versions: [">= 23, < 24", ">= 25, < 26", ">= 27, < 28", ">= 29, < 30"]
       # PostgreSQL-Major-Upgrades brauchen Dump/Restore → manuell planen.
       - dependency-name: "postgres"
         update-types: ["version-update:semver-major"]
