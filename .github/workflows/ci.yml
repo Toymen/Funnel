@@ -109,6 +109,52 @@ jobs:
         run: pnpm lint
 
   # ─────────────────────────────────────────────────────────────────────────────
+  # 3b. Zusätzliche Checks für den eigenen Bier-Schneider-Code
+  #     (ESLint inkl. a11y, type-aware und i18n läuft oben in "Lint")
+  # ─────────────────────────────────────────────────────────────────────────────
+  lint-bier-schneider:
+    name: Lint (Bier-Schneider)
+    runs-on: ubuntu-latest
+    needs: install
+    env:
+      ACTIONLINT_VERSION: 1.7.12
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: pnpm/action-setup@v4
+        with:
+          version: 9.15.0
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+          cache: pnpm
+
+      - name: Restore node_modules
+        uses: actions/cache/restore@v4
+        with:
+          path: |
+            node_modules
+            apps/*/node_modules
+            packages/*/node_modules
+            tooling/*/node_modules
+          key: node-modules-${{ runner.os }}-${{ hashFiles('pnpm-lock.yaml') }}
+
+      - name: Prettier (eigene Pfade)
+        run: pnpm format:check
+
+      - name: Stylelint
+        run: pnpm lint:css
+
+      - name: markdownlint
+        run: pnpm lint:md
+
+      - name: actionlint
+        run: |
+          bash <(curl -sSfL "https://raw.githubusercontent.com/rhysd/actionlint/v${ACTIONLINT_VERSION}/scripts/download-actionlint.bash") "$ACTIONLINT_VERSION" "$RUNNER_TEMP"
+          "$RUNNER_TEMP/actionlint" -color
+
+  # ─────────────────────────────────────────────────────────────────────────────
   # 3. Type-check
   # ─────────────────────────────────────────────────────────────────────────────
   typecheck:
@@ -359,8 +405,9 @@ jobs:
           npx harly --help
       - name: Validate Compose profiles
         run: |
-          export HARLY_IMAGE="$(node -p 'const r=require("./release-manifest.json"); r.image + "@" + r.digest')"
-          export HARLY_VERSION="$(node -p 'require("./release-manifest.json").version')" HARLY_URL=https://ci.example.invalid
+          HARLY_IMAGE="$(node -p 'const r=require("./release-manifest.json"); r.image + "@" + r.digest')"
+          HARLY_VERSION="$(node -p 'require("./release-manifest.json").version')"
+          export HARLY_IMAGE HARLY_VERSION HARLY_URL=https://ci.example.invalid
           export POSTGRES_USER=harly POSTGRES_PASSWORD=harly POSTGRES_DB=harly
           export BETTER_AUTH_SECRET=aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa AI_ENCRYPTION_KEY=bbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbb
           export STORAGE_UPLOAD_SECRET=cccccccccccccccccccccccccccccccc CRON_SECRET=dddddddddddddddddddddddddddddddd
