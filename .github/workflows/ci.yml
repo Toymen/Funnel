@@ -166,7 +166,7 @@ jobs:
             { cat deploy/selfhost/env.example; echo; cat "deploy/selfhost/profile-$profile.env"; } \
               | sed 's/__GENERATE__/ci-placeholder-secret/' > "$env_file"
             docker compose -f compose.yaml --env-file "$env_file" config --quiet
-            COMPOSE_PROFILES= docker compose -f compose.yaml --env-file "$env_file" config --quiet
+            COMPOSE_PROFILES='' docker compose -f compose.yaml --env-file "$env_file" config --quiet
             echo "✓ Profil $profile"
           done
 
