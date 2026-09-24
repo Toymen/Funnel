@@ -1,4 +1,4 @@
-import { NextResponse, type NextRequest } from "next/server";
+import { type NextRequest,NextResponse } from "next/server";
 
 import { browserFunnelEventSchema } from "@/features/funnel/events";
 import { recordFunnelEvent } from "@/features/funnel/record";
@@ -20,7 +20,7 @@ export async function POST(request: NextRequest) {
     return new NextResponse(null, { status: 429 });
   }
 
-  const body = await request.json().catch(() => null);
+  const body: unknown = await request.json().catch(() => null);
   const parsed = browserFunnelEventSchema.safeParse(body);
   if (!parsed.success) return new NextResponse(null, { status: 400 });
 

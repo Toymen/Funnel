@@ -1,28 +1,28 @@
 import "server-only";
 
-import { and, asc, eq, gte, inArray, isNull, sql, type SQL } from "drizzle-orm";
-
 import {
   applicationQuestions,
-  applicationStageHistory,
   applications,
+  applicationStageHistory,
   db,
   funnelEvents,
-  jobStages,
   jobs,
+  jobStages,
 } from "@harly/db";
+import { and, asc, eq, gte, inArray, isNull, type SQL,sql } from "drizzle-orm";
+
 import { requirePermission } from "@/features/workspaces/permissions-server";
 
 import { normalizeSource } from "./events";
-import { rangeStart, type FunnelRange } from "./ranges";
 import {
   biggestDropOff,
   computeFunnel,
-  percent,
-  stageKeyForPipelineStage,
   type FunnelStage,
   type FunnelStageKey,
+  percent,
+  stageKeyForPipelineStage,
 } from "./metrics";
+import { type FunnelRange,rangeStart } from "./ranges";
 
 export type FunnelReportData = {
   range: FunnelRange;

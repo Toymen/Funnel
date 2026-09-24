@@ -35,10 +35,10 @@ export function percent(part: number, whole: number): number | null {
 
 export function computeFunnel(counts: Record<FunnelStageKey, number>): FunnelStage[] {
   const keys = Object.keys(FUNNEL_STAGE_LABELS) as FunnelStageKey[];
-  const first = counts[keys[0]!] ?? 0;
+  const first = counts[keys[0]] ?? 0;
   return keys.map((key, index) => {
     const count = counts[key] ?? 0;
-    const previous = index === 0 ? null : (counts[keys[index - 1]!] ?? 0);
+    const previous = index === 0 ? null : (counts[keys[index - 1]] ?? 0);
     return {
       key,
       label: FUNNEL_STAGE_LABELS[key],

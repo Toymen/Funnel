@@ -1,8 +1,8 @@
 import "server-only";
 
+import { db, jobQuickApply, type QuickApplyLocalization } from "@harly/db";
 import { eq } from "drizzle-orm";
 
-import { db, jobQuickApply, type QuickApplyLocalization } from "@harly/db";
 import { normalizeJobApplicationConfig } from "@/features/jobs/config";
 import { getPublicJobDetail } from "@/features/jobs/data";
 import { getPublicWorkspaceSlug } from "@/lib/public-workspace";
