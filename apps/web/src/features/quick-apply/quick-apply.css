@@ -1,0 +1,468 @@
+/*
+ * 60-Sekunden-Bewerbung – Gestaltung (PRD v2 §5.1, §6.2).
+ * Farben aus der Welt des Unternehmens: Kisten-Gelb, Brauerei-Blau, Asphalt.
+ * Ein mutiges Element (Straße + LKW), alles andere ruhig. Tap-Ziele ≥ 56 px,
+ * Schrift ≥ 18 px, Kontrast WCAG 2.2 AA. Nur hell – der öffentliche Bereich
+ * soll auf jedem Handy gleich aussehen.
+ */
+
+/* Selbst gehostete Schriften (SIL OFL 1.1) – keine Anfragen an Dritte (DSGVO). */
+@font-face {
+  font-family: "Atkinson Hyperlegible";
+  font-style: normal;
+  font-weight: 400;
+  font-display: swap;
+  src: url("/fonts/bier-schneider/atkinson-hyperlegible-latin-400-normal.woff2") format("woff2");
+  unicode-range: U+0000-00FF, U+0131, U+0152-0153, U+02BB-02BC, U+02C6, U+02DA, U+02DC, U+0304, U+0308, U+0329, U+2000-206F, U+20AC, U+2122, U+2191, U+2193, U+2212, U+2215, U+FEFF, U+FFFD;
+}
+@font-face {
+  font-family: "Atkinson Hyperlegible";
+  font-style: normal;
+  font-weight: 700;
+  font-display: swap;
+  src: url("/fonts/bier-schneider/atkinson-hyperlegible-latin-700-normal.woff2") format("woff2");
+  unicode-range: U+0000-00FF, U+0131, U+0152-0153, U+02BB-02BC, U+02C6, U+02DA, U+02DC, U+0304, U+0308, U+0329, U+2000-206F, U+20AC, U+2122, U+2191, U+2193, U+2212, U+2215, U+FEFF, U+FFFD;
+}
+@font-face {
+  font-family: "Atkinson Hyperlegible";
+  font-style: normal;
+  font-weight: 400;
+  font-display: swap;
+  src: url("/fonts/bier-schneider/atkinson-hyperlegible-latin-ext-400-normal.woff2") format("woff2");
+  unicode-range: U+0100-02BA, U+02BD-02C5, U+02C7-02CC, U+02CE-02D7, U+02DD-02FF, U+0304, U+0308, U+0329, U+1D00-1DBF, U+1E00-1E9F, U+1EF2-1EFF, U+2020, U+20A0-20AB, U+20AD-20C0, U+2113, U+2C60-2C7F, U+A720-A7FF;
+}
+@font-face {
+  font-family: "Atkinson Hyperlegible";
+  font-style: normal;
+  font-weight: 700;
+  font-display: swap;
+  src: url("/fonts/bier-schneider/atkinson-hyperlegible-latin-ext-700-normal.woff2") format("woff2");
+  unicode-range: U+0100-02BA, U+02BD-02C5, U+02C7-02CC, U+02CE-02D7, U+02DD-02FF, U+0304, U+0308, U+0329, U+1D00-1DBF, U+1E00-1E9F, U+1EF2-1EFF, U+2020, U+20A0-20AB, U+20AD-20C0, U+2113, U+2C60-2C7F, U+A720-A7FF;
+}
+@font-face {
+  font-family: "Noto Sans Arabic";
+  font-style: normal;
+  font-weight: 400;
+  font-display: swap;
+  src: url("/fonts/bier-schneider/noto-sans-arabic-arabic-400-normal.woff2") format("woff2");
+  unicode-range: U+0600-06FF, U+0750-077F, U+0870-088E, U+0890-0891, U+0897-08E1, U+08E3-08FF, U+200C-200E, U+2010-2011, U+204F, U+2E41, U+FB50-FDFF, U+FE70-FE74, U+FE76-FEFC;
+}
+@font-face {
+  font-family: "Noto Sans Arabic";
+  font-style: normal;
+  font-weight: 700;
+  font-display: swap;
+  src: url("/fonts/bier-schneider/noto-sans-arabic-arabic-700-normal.woff2") format("woff2");
+  unicode-range: U+0600-06FF, U+0750-077F, U+0870-088E, U+0890-0891, U+0897-08E1, U+08E3-08FF, U+200C-200E, U+2010-2011, U+204F, U+2E41, U+FB50-FDFF, U+FE70-FE74, U+FE76-FEFC;
+}
+
+.bs-quick {
+  --bs-crate: #f2b705;
+  --bs-crate-shade: #c99700;
+  --bs-bottle: #6b4a12;
+  --bs-brew: #1d3a8a;
+  --bs-brew-soft: #dfe7f7;
+  --bs-asphalt: #3a3f47;
+  --bs-lane: #ffffff;
+  --bs-sky: #eef3fa;
+  --bs-surface: #ffffff;
+  --bs-ink: #152033;
+  --bs-ink-soft: #4a5568;
+  --bs-line: #c9d3e3;
+  --bs-error: #b42318;
+  --bs-tyre: #1f2329;
+  --bs-hub: #c9ced6;
+  --bs-window: #bcd3f5;
+  --bs-puff: #c9ced6;
+
+  color-scheme: light;
+  display: flex;
+  min-height: 100dvh;
+  flex-direction: column;
+  background: var(--bs-sky);
+  color: var(--bs-ink);
+  /* Kyrillisch hat Atkinson nicht → System-Schrift als Fallback. */
+  font-family: "Atkinson Hyperlegible", "Noto Sans Arabic", system-ui, -apple-system, "Segoe UI", Roboto, sans-serif;
+  font-size: 1.125rem;
+  line-height: 1.5;
+}
+
+.bs-quick :focus-visible {
+  outline: 3px solid var(--bs-brew);
+  outline-offset: 3px;
+}
+
+.bs-top {
+  display: grid;
+  grid-template-columns: 3rem 1fr 3rem;
+  align-items: center;
+  gap: 0.5rem;
+  padding: 0.5rem 1rem;
+}
+
+.bs-top__job {
+  overflow: hidden;
+  text-align: center;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  font-size: 0.95rem;
+  color: var(--bs-ink-soft);
+}
+
+.bs-stage {
+  flex: 1;
+  width: 100%;
+  max-width: 34rem;
+  margin: 0 auto;
+  padding: 0.5rem 1rem 1rem;
+}
+
+.bs-screen {
+  display: flex;
+  flex-direction: column;
+  gap: 1.25rem;
+}
+
+.bs-question {
+  font-size: clamp(1.625rem, 6vw, 2rem);
+  font-weight: 700;
+  line-height: 1.2;
+  outline: none;
+}
+
+.bs-lead {
+  font-size: 1.25rem;
+}
+
+.bs-hint {
+  color: var(--bs-ink-soft);
+  font-size: 1rem;
+}
+
+.bs-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(9.5rem, 1fr));
+  gap: 0.75rem;
+}
+
+.bs-card {
+  display: flex;
+  min-height: 4.5rem;
+  align-items: center;
+  gap: 1rem;
+  border: 2px solid var(--bs-line);
+  border-radius: 1rem;
+  background: var(--bs-surface);
+  padding: 0.875rem 1rem;
+  text-align: start;
+  transition: border-color 120ms, background-color 120ms, transform 120ms;
+}
+
+.bs-card:active {
+  transform: scale(0.98);
+}
+
+.bs-card[aria-pressed="true"] {
+  border-color: var(--bs-brew);
+  background: var(--bs-brew-soft);
+}
+
+.bs-card--lang {
+  justify-content: center;
+  text-align: center;
+}
+
+.bs-card__icon {
+  display: grid;
+  width: 3.25rem;
+  height: 3.25rem;
+  flex-shrink: 0;
+  place-items: center;
+  border-radius: 0.875rem;
+  background: var(--bs-brew-soft);
+  color: var(--bs-brew);
+}
+
+.bs-card__title {
+  font-size: 1.25rem;
+  font-weight: 700;
+}
+
+.bs-card__hint {
+  color: var(--bs-ink-soft);
+  font-size: 1rem;
+}
+
+.bs-yesno {
+  display: flex;
+  min-height: 9rem;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 0.5rem;
+  border: 2px solid var(--bs-line);
+  border-radius: 1.25rem;
+  background: var(--bs-surface);
+  font-size: 1.375rem;
+  font-weight: 700;
+}
+
+.bs-yesno--yes {
+  color: var(--bs-brew);
+}
+
+.bs-yesno--no {
+  color: var(--bs-asphalt);
+}
+
+.bs-yesno[aria-pressed="true"] {
+  border-color: var(--bs-brew);
+  background: var(--bs-brew-soft);
+}
+
+.bs-label {
+  display: flex;
+  flex-direction: column;
+  gap: 0.375rem;
+  font-weight: 700;
+}
+
+.bs-input {
+  width: 100%;
+  min-height: 3.75rem;
+  border: 2px solid var(--bs-line);
+  border-radius: 0.875rem;
+  background: var(--bs-surface);
+  padding: 0 1rem;
+  font-size: 1.375rem;
+  color: var(--bs-ink);
+}
+
+.bs-input:focus {
+  border-color: var(--bs-brew);
+}
+
+.bs-consent {
+  display: flex;
+  align-items: flex-start;
+  gap: 0.875rem;
+  border: 2px solid var(--bs-line);
+  border-radius: 1rem;
+  background: var(--bs-surface);
+  padding: 1rem;
+}
+
+.bs-consent input {
+  width: 1.75rem;
+  height: 1.75rem;
+  flex-shrink: 0;
+  margin-top: 0.125rem;
+  accent-color: var(--bs-brew);
+}
+
+.bs-link {
+  align-self: flex-start;
+  min-height: 3rem;
+  color: var(--bs-brew);
+  font-weight: 700;
+  text-decoration: underline;
+  text-underline-offset: 4px;
+}
+
+.bs-panel {
+  border: 2px solid var(--bs-line);
+  border-radius: 1rem;
+  background: var(--bs-surface);
+  padding: 1rem;
+}
+
+.bs-error {
+  margin-top: 1rem;
+  border-inline-start: 4px solid var(--bs-error);
+  background: #fdecea;
+  padding: 0.75rem 1rem;
+  color: var(--bs-error);
+  font-weight: 700;
+}
+
+.bs-bottom {
+  position: sticky;
+  bottom: 0;
+  display: flex;
+  width: 100%;
+  max-width: 34rem;
+  flex-direction: column;
+  gap: 0.5rem;
+  margin: 0 auto;
+  background: linear-gradient(to top, var(--bs-sky) 85%, transparent);
+  padding: 0.75rem 1rem calc(1rem + env(safe-area-inset-bottom));
+}
+
+/* Die Hauptaktion: Kisten-Gelb, volle Breite, im Daumenbereich. */
+.bs-button {
+  position: relative;
+  display: flex;
+  width: 100%;
+  min-height: 3.75rem;
+  align-items: center;
+  justify-content: center;
+  gap: 0.625rem;
+  overflow: hidden;
+  border-radius: 999px;
+  background: var(--bs-crate);
+  padding: 0 1.5rem;
+  font-size: 1.25rem;
+  font-weight: 700;
+  color: var(--bs-ink);
+  transition: transform 120ms, opacity 120ms;
+}
+
+.bs-button:active {
+  transform: scale(0.98);
+}
+
+.bs-button:disabled {
+  opacity: 0.55;
+}
+
+.bs-button--ghost {
+  background: var(--bs-brew-soft);
+  color: var(--bs-brew);
+  cursor: pointer;
+}
+
+.bs-icon-button {
+  display: grid;
+  width: 3rem;
+  height: 3rem;
+  place-items: center;
+  border-radius: 999px;
+  color: var(--bs-brew);
+}
+
+.bs-icon-button:hover {
+  background: var(--bs-brew-soft);
+}
+
+.bs-record {
+  display: flex;
+  width: 11rem;
+  height: 11rem;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 0.5rem;
+  border-radius: 999px;
+  background: var(--bs-brew);
+  color: #ffffff;
+  font-weight: 700;
+  text-align: center;
+}
+
+.bs-record--on {
+  background: var(--bs-error);
+  animation: bs-pulse 1.2s ease-in-out infinite;
+}
+
+.bs-done-badge {
+  display: grid;
+  width: 4.5rem;
+  height: 4.5rem;
+  place-items: center;
+  border-radius: 999px;
+  background: var(--bs-crate);
+  color: var(--bs-ink);
+}
+
+@keyframes bs-pulse {
+  50% {
+    box-shadow: 0 0 0 12px rgb(180 35 24 / 0.18);
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .bs-record--on {
+    animation: none;
+  }
+  .bs-card,
+  .bs-button {
+    transition: none;
+  }
+}
+
+/* ── Kopfbereich der Stellenseite (PRD v2 §5.4) ─────────────────────────── */
+.bs-hero {
+  min-height: auto;
+  border-radius: 1.25rem;
+  margin-bottom: 1.5rem;
+}
+
+.bs-hero__inner {
+  display: flex;
+  width: 100%;
+  max-width: 34rem;
+  flex-direction: column;
+  gap: 1rem;
+  margin: 0 auto;
+  padding: 1.25rem 1rem 1.5rem;
+}
+
+.bs-hero__truck {
+  width: 7.5rem;
+}
+
+.bs-facts {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.5rem;
+}
+
+.bs-facts li {
+  display: flex;
+  min-height: 3rem;
+  align-items: center;
+  gap: 0.5rem;
+  border-radius: 999px;
+  background: var(--bs-surface);
+  padding: 0.5rem 1rem;
+  color: var(--bs-brew);
+  font-weight: 700;
+}
+
+.bs-langs {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: 0.25rem 0.75rem;
+  font-size: 1rem;
+}
+
+.bs-langs a {
+  display: inline-flex;
+  min-height: 2.75rem;
+  align-items: center;
+  color: var(--bs-ink-soft);
+}
+
+.bs-langs a[aria-current="true"] {
+  color: var(--bs-brew);
+  font-weight: 700;
+  text-decoration: underline;
+  text-underline-offset: 4px;
+}
+
+/* ── Eigene Stellenseite für Stellen mit Kurzbewerbung ──────────────────── */
+.bs-jobpage .bs-hero {
+  margin-bottom: 0;
+  border-radius: 0;
+}
+
+.bs-jobpage__details {
+  width: 100%;
+  max-width: 44rem;
+  margin: 0 auto;
+  border-radius: 1.25rem 1.25rem 0 0;
+  background: var(--bs-surface);
+  padding: 1.5rem 1rem 3rem;
+  font-size: 1rem;
+}
