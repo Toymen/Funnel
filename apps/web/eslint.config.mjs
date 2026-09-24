@@ -119,6 +119,8 @@ const eslintConfig = defineConfig([
   {
     name: "bier-schneider/applicant-ui-i18n",
     files: APPLICANT_UI,
+    // Stories sind Entwicklerwerkzeug (Bedienelemente, Rahmen), keine Bewerberoberfläche.
+    ignores: STORIES,
     plugins: { i18next },
     rules: {
       // Sichtbarer JSX-Text muss aus messages.ts kommen. Erlaubt ist Text ohne

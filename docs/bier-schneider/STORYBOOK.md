@@ -40,10 +40,10 @@ Das Viewport-Menü in der Toolbar bietet „Handy 360“, „Handy 390“, „Ta
 In `.storybook/preview.tsx` ersetzt `sb.mock(...)` diese Module durch die Dateien im
 jeweiligen `__mocks__/`-Ordner:
 
-| Modul | Mock |
-| --- | --- |
+| Modul                                 | Mock                                            |
+| ------------------------------------- | ----------------------------------------------- |
 | `src/features/quick-apply/actions.ts` | `src/features/quick-apply/__mocks__/actions.ts` |
-| `src/features/funnel/client.ts` | `src/features/funnel/__mocks__/client.ts` |
+| `src/features/funnel/client.ts`       | `src/features/funnel/__mocks__/client.ts`       |
 
 Die Mocks sind Spies (`fn()` aus `storybook/test`). Ihre Aufrufe stehen im Panel
 „Actions“. Das Absenden steuert eine Story über `parameters.quickApplyMock`:
