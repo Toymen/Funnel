@@ -1,0 +1,12 @@
+// markdownlint für die eigene Doku (docs/bier-schneider). Harly-Doku bleibt außen vor.
+{
+  "config": {
+    "default": true,
+    // Zeilenlänge regelt Prettier bzw. bleibt frei (lange Tabellenzeilen).
+    "MD013": false,
+    // <details>, <kbd> u. ä. sind in der Doku erlaubt.
+    "MD033": false,
+  },
+  "globs": ["docs/bier-schneider/**/*.md"],
+  "ignores": ["**/node_modules/**"],
+}

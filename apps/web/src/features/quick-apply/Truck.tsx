@@ -43,14 +43,7 @@ export function TruckSvg({
       {[0, 1, 2].map((col) =>
         [0, 1].map((row) => (
           <g key={`${col}-${row}`}>
-            <rect
-              x={7 + col * 25.5}
-              y={12 + row * 12}
-              width={23.5}
-              height={11}
-              rx={1.5}
-              fill="var(--bs-crate)"
-            />
+            <rect x={7 + col * 25.5} y={12 + row * 12} width={23.5} height={11} rx={1.5} fill="var(--bs-crate)" />
             {/* Flaschenhälse */}
             {[0, 1, 2, 3].map((b) => (
               <rect
@@ -63,22 +56,12 @@ export function TruckSvg({
                 fill="var(--bs-bottle)"
               />
             ))}
-            <rect
-              x={10 + col * 25.5}
-              y={15.5 + row * 12}
-              width={17.5}
-              height={2}
-              rx={1}
-              fill="var(--bs-crate-shade)"
-            />
+            <rect x={10 + col * 25.5} y={15.5 + row * 12} width={17.5} height={2} rx={1} fill="var(--bs-crate-shade)" />
           </g>
         )),
       )}
       {/* Fahrerhaus */}
-      <path
-        d="M86 18 h22 c4 0 7 2 9 5.5 l7 12 c.7 1.2 1 2.5 1 3.9 V44 c0 1.7-1.3 3-3 3 H86 Z"
-        fill="var(--bs-brew)"
-      />
+      <path d="M86 18 h22 c4 0 7 2 9 5.5 l7 12 c.7 1.2 1 2.5 1 3.9 V44 c0 1.7-1.3 3-3 3 H86 Z" fill="var(--bs-brew)" />
       <path d="M92 22 h14.5 c2 0 3.6 1 4.6 2.8 l4.6 8.2 H92 Z" fill="var(--bs-window)" />
       <rect x={120} y={39} width={5} height={3} rx={1} fill="var(--bs-crate)" />
       <rect x={82} y={40} width={10} height={4} rx={1} fill="var(--bs-asphalt)" />
@@ -188,15 +171,7 @@ export function RoadProgress({
  * Der LKW fährt einmal über die ganze Seite (beim Absenden, PRD v2 §6.1).
  * Blockiert nie: pointer-events-none, max. 900 ms, danach onDone.
  */
-export function DriveAcross({
-  active,
-  rtl = false,
-  onDone,
-}: {
-  active: boolean;
-  rtl?: boolean;
-  onDone?: () => void;
-}) {
+export function DriveAcross({ active, rtl = false, onDone }: { active: boolean; rtl?: boolean; onDone?: () => void }) {
   const reduce = useReducedMotion();
 
   useEffect(() => {

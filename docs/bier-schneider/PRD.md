@@ -10,17 +10,17 @@
 
 ## 0. Was ist neu gegenüber Version 1.0?
 
-| Thema | v1.0 | v2.0 |
-|---|---|---|
-| Codebasis | Eigenentwicklung (React-SPA + Fastify) | **Fork von Harly** (Next.js, Drizzle, PostgreSQL 16, MIT). HR-Backend, Pipeline, Reports und DSGVO-Werkzeuge sind schon vorhanden |
-| Zielgruppe Bewerbende | Standard-Formular | **Barrierearm**: wenig Deutschkenntnisse, sehr kurze Aufmerksamkeitsspanne |
-| Sprachen | Phase 2 | **MVP**: DE, Leichte Sprache, EN, PL, RO, UK, RU, TR, AR (RTL) |
-| Bewerbung | 4 Schritte, viele Pflichtfelder | **60-Sekunden-Bewerbung**: eine Frage pro Bildschirm. Pflicht sind nur Vorname und Telefon *oder* E-Mail. Alternativ Rückruf oder Sprachnachricht |
-| Gestaltung | neutral | **verspielt**: Ein LKW fährt über Button und Seite, sobald eine Eingabe gemacht wurde |
-| KI | ausgeschlossen | **optional einbindbar** (Scaffold), nie notwendig, nie zur Bewerberbewertung |
-| Deployment | Build auf dem Pi (`git pull && docker compose build`) | **Build auf Mac/PC bzw. in GitHub Actions**, der Pi zieht nur fertige arm64-Images |
-| Mobile | nicht spezifiziert | **Bewerber- und Admin-Ansicht mobil erstklassig** (ab 360 px) |
-| Projektorganisation | – | GitHub: Issues, Pull Requests, CI, CodeQL, Dependabot, Push Protection, GHCR |
+| Thema                 | v1.0                                                  | v2.0                                                                                                                                              |
+| --------------------- | ----------------------------------------------------- | ------------------------------------------------------------------------------------------------------------------------------------------------- |
+| Codebasis             | Eigenentwicklung (React-SPA + Fastify)                | **Fork von Harly** (Next.js, Drizzle, PostgreSQL 16, MIT). HR-Backend, Pipeline, Reports und DSGVO-Werkzeuge sind schon vorhanden                 |
+| Zielgruppe Bewerbende | Standard-Formular                                     | **Barrierearm**: wenig Deutschkenntnisse, sehr kurze Aufmerksamkeitsspanne                                                                        |
+| Sprachen              | Phase 2                                               | **MVP**: DE, Leichte Sprache, EN, PL, RO, UK, RU, TR, AR (RTL)                                                                                    |
+| Bewerbung             | 4 Schritte, viele Pflichtfelder                       | **60-Sekunden-Bewerbung**: eine Frage pro Bildschirm. Pflicht sind nur Vorname und Telefon _oder_ E-Mail. Alternativ Rückruf oder Sprachnachricht |
+| Gestaltung            | neutral                                               | **verspielt**: Ein LKW fährt über Button und Seite, sobald eine Eingabe gemacht wurde                                                             |
+| KI                    | ausgeschlossen                                        | **optional einbindbar** (Scaffold), nie notwendig, nie zur Bewerberbewertung                                                                      |
+| Deployment            | Build auf dem Pi (`git pull && docker compose build`) | **Build auf Mac/PC bzw. in GitHub Actions**, der Pi zieht nur fertige arm64-Images                                                                |
+| Mobile                | nicht spezifiziert                                    | **Bewerber- und Admin-Ansicht mobil erstklassig** (ab 360 px)                                                                                     |
+| Projektorganisation   | –                                                     | GitHub: Issues, Pull Requests, CI, CodeQL, Dependabot, Push Protection, GHCR                                                                      |
 
 ---
 
@@ -53,11 +53,11 @@ Neu hinzu kommen Zwischenstufen innerhalb der Bewerbung (Drop-off pro Frage), si
 
 ## 4. Benutzergruppen
 
-| Gruppe | Zugang | Neu in v2 |
-|---|---|---|
-| Bewerbende | ohne Account | Sprachwahl, Kurzbewerbung, Rückruf, Sprachnachricht |
-| Personalabteilung (HR) | Login (Harly: Passwort, MFA, Passkeys) | mobile Nutzung vom Handy aus, Ein-Tipp-Rückruf |
-| Administrator | Login, Rolle Owner/Admin | – |
+| Gruppe                 | Zugang                                 | Neu in v2                                           |
+| ---------------------- | -------------------------------------- | --------------------------------------------------- |
+| Bewerbende             | ohne Account                           | Sprachwahl, Kurzbewerbung, Rückruf, Sprachnachricht |
+| Personalabteilung (HR) | Login (Harly: Passwort, MFA, Passkeys) | mobile Nutzung vom Handy aus, Ein-Tipp-Rückruf      |
+| Administrator          | Login, Rolle Owner/Admin               | –                                                   |
 
 Harly bringt zusätzlich Rollen wie Hiring Manager, eigene Rollen und SSO mit. Sie werden im MVP nicht aktiv genutzt.
 
@@ -92,17 +92,17 @@ Optional nach dem Absenden: „Möchten Sie noch etwas hochladen?“ Hier sind L
 
 ### 5.3 Sprachen
 
-| Code | Sprache | Hinweis |
-|---|---|---|
-| `de` | Deutsch | Standard |
-| `de-easy` | Leichte Sprache | kurze Sätze, ein Gedanke pro Satz |
-| `en` | English | |
-| `pl` | Polski | |
-| `ro` | Română | |
-| `uk` | Українська | |
-| `ru` | Русский | |
-| `tr` | Türkçe | |
-| `ar` | العربية | **RTL-Layout**, der LKW fährt von rechts nach links |
+| Code      | Sprache         | Hinweis                                             |
+| --------- | --------------- | --------------------------------------------------- |
+| `de`      | Deutsch         | Standard                                            |
+| `de-easy` | Leichte Sprache | kurze Sätze, ein Gedanke pro Satz                   |
+| `en`      | English         |                                                     |
+| `pl`      | Polski          |                                                     |
+| `ro`      | Română          |                                                     |
+| `uk`      | Українська      |                                                     |
+| `ru`      | Русский         |                                                     |
+| `tr`      | Türkçe          |                                                     |
+| `ar`      | العربية         | **RTL-Layout**, der LKW fährt von rechts nach links |
 
 - Sprachwahl erfolgt über **Sprachnamen in eigener Schreibweise**, keine Flaggen (Flaggen stehen für Länder, nicht für Sprachen).
 - Die Sprache wird aus `Accept-Language` vorgeschlagen und kann jederzeit gewechselt werden.
@@ -156,12 +156,12 @@ Die Gestaltung folgt dem Skill `.claude/skills/frontend-design` (Apache-2.0):
 
 ## 7. Öffentlicher Bereich (Mapping auf Harly)
 
-| PRD | Route | Harly |
-|---|---|---|
-| Karriereseite | `/jobs` | vorhanden, wird um Sprachwahl und Piktogramme erweitert |
-| Stellendetail | `/jobs/:slug` | vorhanden, Kopfbereich nach §5.4 |
-| Bewerbung | `/apply/:slug` | Harly-Formular bleibt als „ausführliche Bewerbung“, **neu:** Kurzbewerbung als Standard |
-| Rechtstexte | `/legal/:page` | vorhanden (Workspace-Rechtstexte) |
+| PRD           | Route          | Harly                                                                                   |
+| ------------- | -------------- | --------------------------------------------------------------------------------------- |
+| Karriereseite | `/jobs`        | vorhanden, wird um Sprachwahl und Piktogramme erweitert                                 |
+| Stellendetail | `/jobs/:slug`  | vorhanden, Kopfbereich nach §5.4                                                        |
+| Bewerbung     | `/apply/:slug` | Harly-Formular bleibt als „ausführliche Bewerbung“, **neu:** Kurzbewerbung als Standard |
+| Rechtstexte   | `/legal/:page` | vorhanden (Workspace-Rechtstexte)                                                       |
 
 ## 8. Bewerbungs-ID
 
@@ -213,6 +213,7 @@ UTM-Parameter wie in v1 §20/§21. Neu kommt ein **QR-Link-Generator** im Admin-
 ## 11. HR-Bereich (Harly)
 
 Vorhanden und für das MVP genutzt:
+
 - Stellenverwaltung (erstellen, bearbeiten, veröffentlichen, pausieren, archivieren, duplizieren)
 - Bewerbungsfragen je Stelle
 - Pipeline/Kanban mit Stufen, historisierten Statuswechseln und Audit-Log
@@ -221,6 +222,7 @@ Vorhanden und für das MVP genutzt:
 - Dashboard
 
 Ergänzungen:
+
 - Badges für **Sprache** und **Modus** (Schnell, Rückruf, Sprachnachricht)
 - **Ein-Tipp-Aktionen** „Anrufen“ (`tel:`) und „SMS“ (`sms:`), bei Rückrufwunsch mit der Wunschzeit
 - **Audioplayer** für Sprachnachrichten, optional mit Transkript (§13)
@@ -238,16 +240,16 @@ Ergänzungen:
 
 Harlys Schema bleibt maßgeblich (`packages/db/src/schema.ts`). Ergänzungen:
 
-| Tabelle | Feld | Zweck |
-|---|---|---|
-| `applications` | `language` | gewählte Sprache |
-| `applications` | `apply_mode` | `quick` \| `full` \| `callback` \| `voice` |
-| `applications` | `callback_window` | `morning` \| `midday` \| `afternoon` \| `evening` \| `anytime` |
-| `applications` | `display_number` | `BS-2026-000001` |
-| `application_questions` | `translations` (jsonb) | Fragetext je Sprache |
-| `application_questions` | `icon` | Piktogramm-Schlüssel |
-| `jobs` | `translations` (jsonb) | Titel und Kurztexte je Sprache |
-| neu | `funnel_events` | siehe §9.2 |
+| Tabelle                 | Feld                   | Zweck                                                          |
+| ----------------------- | ---------------------- | -------------------------------------------------------------- |
+| `applications`          | `language`             | gewählte Sprache                                               |
+| `applications`          | `apply_mode`           | `quick` \| `full` \| `callback` \| `voice`                     |
+| `applications`          | `callback_window`      | `morning` \| `midday` \| `afternoon` \| `evening` \| `anytime` |
+| `applications`          | `display_number`       | `BS-2026-000001`                                               |
+| `application_questions` | `translations` (jsonb) | Fragetext je Sprache                                           |
+| `application_questions` | `icon`                 | Piktogramm-Schlüssel                                           |
+| `jobs`                  | `translations` (jsonb) | Titel und Kurztexte je Sprache                                 |
+| neu                     | `funnel_events`        | siehe §9.2                                                     |
 
 ## 13. Optionale KI (Scaffold)
 
@@ -290,42 +292,43 @@ pnpm dev (Next.js + Postgres)  ──►  PR → CI (Typen, Tests, Build,   dock
 
 ## 16. Projektorganisation auf GitHub
 
-| Funktion | Einsatz |
-|---|---|
-| Issues + Unter-Issues | Backlog, Epic #1 mit Arbeitspaketen |
-| Issue-Vorlagen | Bug, Feature, Bewerber-Feedback, Übersetzung prüfen |
-| Pull Requests | jede Änderung per PR mit Vorlage, CODEOWNERS-Review |
-| GitHub Actions CI | Lint, Typecheck, Tests, Production-Build, Postgres-Migrationskette, Image-Build + Trivy |
-| CodeQL | Sicherheitsanalyse bei jedem PR und wöchentlich |
-| Dependabot | wöchentliche Updates für npm, Actions und Docker, gruppiert, mit Cooldown |
-| Secret Scanning / Push Protection | aktiv. Hat bereits ein fremdes Token in der Harly-Historie abgefangen |
-| GHCR | arm64-Images für den Pi, mit Attestierung |
-| Labels als Code | `.github/labels.yml` + Workflow |
+| Funktion                          | Einsatz                                                                                 |
+| --------------------------------- | --------------------------------------------------------------------------------------- |
+| Issues + Unter-Issues             | Backlog, Epic #1 mit Arbeitspaketen                                                     |
+| Issue-Vorlagen                    | Bug, Feature, Bewerber-Feedback, Übersetzung prüfen                                     |
+| Pull Requests                     | jede Änderung per PR mit Vorlage, CODEOWNERS-Review                                     |
+| GitHub Actions CI                 | Lint, Typecheck, Tests, Production-Build, Postgres-Migrationskette, Image-Build + Trivy |
+| CodeQL                            | Sicherheitsanalyse bei jedem PR und wöchentlich                                         |
+| Dependabot                        | wöchentliche Updates für npm, Actions und Docker, gruppiert, mit Cooldown               |
+| Secret Scanning / Push Protection | aktiv. Hat bereits ein fremdes Token in der Harly-Historie abgefangen                   |
+| GHCR                              | arm64-Images für den Pi, mit Attestierung                                               |
+| Labels als Code                   | `.github/labels.yml` + Workflow                                                         |
 
 ## 17. Sicherheit, Datenschutz, Betrieb
 
 Die Anforderungen aus v1 §37–§45 gelten weiter. Harly deckt sie weitgehend ab: Argon2/Better Auth, MFA, Rate-Limits, Audit-Log, Einwilligungsnachweise, Aufbewahrungsfristen, Export, Löschung, Backups per CLI, Health-Checks.
 
 Ergänzend:
+
 - Sprachnachrichten sind personenbezogene Daten. Sie unterliegen derselben Löschfrist wie Dokumente, und im Datenschutzhinweis wird eigens auf die Aufnahme hingewiesen.
 - Funnel-Events enthalten keine IP-Adressen und setzen keine Cookies. Deshalb ist kein Cookie-Banner nötig; eine rechtliche Prüfung erfolgt über Issue #9.
 - Schriften, Icons und Illustrationen werden selbst gehostet. Die Seite lädt keine Drittanbieter-Ressourcen.
 
 ## 18. Open-Source-Komponenten
 
-| Komponente | Lizenz |
-|---|---|
-| Harly (Basis) | MIT |
-| Next.js, React, Tailwind CSS, Drizzle ORM | MIT / Apache-2.0 |
-| PostgreSQL | PostgreSQL License |
-| Caddy | Apache-2.0 |
-| Atkinson Hyperlegible, Noto Sans Arabic | SIL OFL 1.1 |
-| Lucide Icons | ISC |
-| frontend-design-Skill | Apache-2.0 |
-| Qwen3-1.7B-GGUF (optional) | Apache-2.0 |
-| faster-whisper-small (optional) | MIT |
-| llama.cpp (optional) | MIT |
-| Z-Image-Turbo / FLUX.1-schnell / OmniSVG (nur Asset-Erzeugung) | Apache-2.0 |
+| Komponente                                                     | Lizenz             |
+| -------------------------------------------------------------- | ------------------ |
+| Harly (Basis)                                                  | MIT                |
+| Next.js, React, Tailwind CSS, Drizzle ORM                      | MIT / Apache-2.0   |
+| PostgreSQL                                                     | PostgreSQL License |
+| Caddy                                                          | Apache-2.0         |
+| Atkinson Hyperlegible, Noto Sans Arabic                        | SIL OFL 1.1        |
+| Lucide Icons                                                   | ISC                |
+| frontend-design-Skill                                          | Apache-2.0         |
+| Qwen3-1.7B-GGUF (optional)                                     | Apache-2.0         |
+| faster-whisper-small (optional)                                | MIT                |
+| llama.cpp (optional)                                           | MIT                |
+| Z-Image-Turbo / FLUX.1-schnell / OmniSVG (nur Asset-Erzeugung) | Apache-2.0         |
 
 ## 19. MVP-Umfang
 

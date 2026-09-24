@@ -80,8 +80,8 @@ export function FunnelReport({ data }: { data: FunnelReportData }) {
       <header className="flex flex-col gap-3">
         <h1 className="text-2xl font-semibold text-near-ink">Recruiting-Funnel</h1>
         <p className="max-w-prose text-sm text-soft-ink">
-          Wie viele Menschen eine Stelle ansehen, die Bewerbung beginnen und abschicken – und wo sie
-          abspringen. Aufrufe und Starts werden anonym gezählt.
+          Wie viele Menschen eine Stelle ansehen, die Bewerbung beginnen und abschicken – und wo sie abspringen. Aufrufe
+          und Starts werden anonym gezählt.
         </p>
         {/* Filter in einer Zeile über den Diagrammen; auf dem Handy wischbar. */}
         <div className="flex flex-wrap items-center gap-2">
@@ -127,8 +127,8 @@ export function FunnelReport({ data }: { data: FunnelReportData }) {
         >
           <AlertTriangle className="mt-0.5 size-5 shrink-0 text-danger-rust" aria-hidden />
           <p className="text-sm text-near-ink">
-            Größter Verlust: nur <strong>{pct(data.leak.fromPrevious)}</strong> kommen von der
-            vorherigen Stufe zu <strong>„{data.leak.label}“</strong>.
+            Größter Verlust: nur <strong>{pct(data.leak.fromPrevious)}</strong> kommen von der vorherigen Stufe zu{" "}
+            <strong>„{data.leak.label}“</strong>.
           </p>
         </div>
       ) : null}
@@ -145,15 +145,15 @@ export function FunnelReport({ data }: { data: FunnelReportData }) {
               <li
                 key={stage.key}
                 title={`${stage.label}: ${fmt.format(stage.count)}${
-                  stage.fromPrevious === null ? "" : ` · ${pct(stage.fromPrevious)} von vorher · ${pct(stage.fromStart)} gesamt`
+                  stage.fromPrevious === null
+                    ? ""
+                    : ` · ${pct(stage.fromPrevious)} von vorher · ${pct(stage.fromStart)} gesamt`
                 }`}
                 className="grid grid-cols-1 gap-1 sm:grid-cols-[minmax(170px,200px)_1fr_auto] sm:items-center sm:gap-4"
               >
                 <span className="flex items-baseline justify-between gap-2 sm:block">
                   <span className="text-sm font-medium text-near-ink">{stage.label}</span>
-                  <span className="text-sm tabular-nums text-near-ink sm:hidden">
-                    {fmt.format(stage.count)}
-                  </span>
+                  <span className="text-sm tabular-nums text-near-ink sm:hidden">{fmt.format(stage.count)}</span>
                 </span>
                 <Bar value={stage.count} max={max} index={i} />
                 <span className="flex gap-3 text-xs tabular-nums text-soft-ink sm:w-40 sm:justify-end sm:text-sm">
@@ -218,10 +218,22 @@ export function FunnelReport({ data }: { data: FunnelReportData }) {
             <li key={row.jobId} className="py-3">
               <p className="font-medium text-near-ink">{row.title}</p>
               <dl className="mt-1 grid grid-cols-4 gap-2 text-xs text-soft-ink">
-                <div><dt>Aufrufe</dt><dd className="tabular-nums text-near-ink">{fmt.format(row.views)}</dd></div>
-                <div><dt>Bew.</dt><dd className="tabular-nums text-near-ink">{fmt.format(row.applications)}</dd></div>
-                <div><dt>Quote</dt><dd className="tabular-nums text-near-ink">{pct(row.conversion)}</dd></div>
-                <div><dt>Eingest.</dt><dd className="tabular-nums text-near-ink">{fmt.format(row.hires)}</dd></div>
+                <div>
+                  <dt>Aufrufe</dt>
+                  <dd className="tabular-nums text-near-ink">{fmt.format(row.views)}</dd>
+                </div>
+                <div>
+                  <dt>Bew.</dt>
+                  <dd className="tabular-nums text-near-ink">{fmt.format(row.applications)}</dd>
+                </div>
+                <div>
+                  <dt>Quote</dt>
+                  <dd className="tabular-nums text-near-ink">{pct(row.conversion)}</dd>
+                </div>
+                <div>
+                  <dt>Eingest.</dt>
+                  <dd className="tabular-nums text-near-ink">{fmt.format(row.hires)}</dd>
+                </div>
               </dl>
             </li>
           ))}

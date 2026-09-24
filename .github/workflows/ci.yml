@@ -22,7 +22,6 @@ env:
   BETTER_AUTH_SECRET: ci-test-secret-do-not-use-in-production
   NODE_ENV: test
 
-
 jobs:
   # ─────────────────────────────────────────────────────────────────────────────
   # 1. Install + cache dependencies (shared across all jobs)

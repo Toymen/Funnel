@@ -56,7 +56,12 @@ const START: SeedQuestion = {
     ar: "متى يمكنك البدء؟",
   },
   optionLabels: {
-    "de-easy": { sofort: "Sofort", "in 1 Monat": "In 1 Monat", "in 2–3 Monaten": "In 2 bis 3 Monaten", später: "Später" },
+    "de-easy": {
+      sofort: "Sofort",
+      "in 1 Monat": "In 1 Monat",
+      "in 2–3 Monaten": "In 2 bis 3 Monaten",
+      später: "Später",
+    },
     en: { sofort: "Right away", "in 1 Monat": "In 1 month", "in 2–3 Monaten": "In 2–3 months", später: "Later" },
     pl: { sofort: "Od razu", "in 1 Monat": "Za miesiąc", "in 2–3 Monaten": "Za 2–3 miesiące", später: "Później" },
     ro: { sofort: "Imediat", "in 1 Monat": "Într-o lună", "in 2–3 Monaten": "În 2–3 luni", später: "Mai târziu" },
@@ -72,8 +77,10 @@ const JOBS: SeedJob[] = [
     slug: "lkw-fahrer",
     title: "LKW-Fahrer (m/w/d)",
     icon: "truck",
-    description: "<p>Sie beliefern Gastronomie, Getränkemärkte und Feste in der Region mit Getränken. Jeden Abend sind Sie wieder zu Hause.</p><h3>Ihre Aufgaben</h3><ul><li>Getränke an Kunden in der Region ausliefern</li><li>Leergut zurücknehmen</li><li>Fahrzeug sauber und sicher halten</li></ul>",
-    requirements: "<ul><li>Führerschein Klasse CE</li><li>Berufskraftfahrer-Qualifikation (Modul 95)</li><li>Freundlicher Umgang mit Kunden</li></ul>",
+    description:
+      "<p>Sie beliefern Gastronomie, Getränkemärkte und Feste in der Region mit Getränken. Jeden Abend sind Sie wieder zu Hause.</p><h3>Ihre Aufgaben</h3><ul><li>Getränke an Kunden in der Region ausliefern</li><li>Leergut zurücknehmen</li><li>Fahrzeug sauber und sicher halten</li></ul>",
+    requirements:
+      "<ul><li>Führerschein Klasse CE</li><li>Berufskraftfahrer-Qualifikation (Modul 95)</li><li>Freundlicher Umgang mit Kunden</li></ul>",
     benefits: "<ul><li>Kein Fernverkehr – abends zu Hause</li><li>Moderne LKW</li><li>Unbefristeter Vertrag</li></ul>",
     salaryMin: 3100,
     payLabel: null,
@@ -113,7 +120,10 @@ const JOBS: SeedJob[] = [
       START,
     ],
     localizations: {
-      "de-easy": { title: "LKW-Fahrer", summary: "Sie fahren mit dem LKW. Sie bringen Getränke zu Kunden. Am Abend sind Sie zu Hause." },
+      "de-easy": {
+        title: "LKW-Fahrer",
+        summary: "Sie fahren mit dem LKW. Sie bringen Getränke zu Kunden. Am Abend sind Sie zu Hause.",
+      },
       en: { title: "Truck driver", summary: "You deliver drinks in the region. You are home every evening." },
       pl: { title: "Kierowca ciężarówki", summary: "Dowozisz napoje w regionie. Każdego wieczoru jesteś w domu." },
       ro: { title: "Șofer de camion", summary: "Livrați băuturi în regiune. În fiecare seară sunteți acasă." },
@@ -127,7 +137,8 @@ const JOBS: SeedJob[] = [
     slug: "lagermitarbeiter",
     title: "Lagermitarbeiter (m/w/d)",
     icon: "warehouse",
-    description: "<p>Sie stellen Getränke-Bestellungen zusammen und beladen unsere LKW. Anlernen ist möglich.</p><h3>Ihre Aufgaben</h3><ul><li>Bestellungen kommissionieren</li><li>LKW be- und entladen</li><li>Leergut sortieren</li></ul>",
+    description:
+      "<p>Sie stellen Getränke-Bestellungen zusammen und beladen unsere LKW. Anlernen ist möglich.</p><h3>Ihre Aufgaben</h3><ul><li>Bestellungen kommissionieren</li><li>LKW be- und entladen</li><li>Leergut sortieren</li></ul>",
     requirements: "<ul><li>Staplerschein von Vorteil</li><li>Bereitschaft zur Schichtarbeit</li></ul>",
     benefits: "<ul><li>Einarbeitung im Team</li><li>Staplerschein bezahlen wir</li><li>Sicherer Arbeitsplatz</li></ul>",
     salaryMin: null,
@@ -168,13 +179,28 @@ const JOBS: SeedJob[] = [
       START,
     ],
     localizations: {
-      "de-easy": { title: "Arbeit im Lager", summary: "Sie packen Getränke für Kunden. Sie laden die LKW. Wir zeigen Ihnen alles." },
+      "de-easy": {
+        title: "Arbeit im Lager",
+        summary: "Sie packen Getränke für Kunden. Sie laden die LKW. Wir zeigen Ihnen alles.",
+      },
       en: { title: "Warehouse worker", summary: "You pick drinks orders and load our trucks. We train you." },
-      pl: { title: "Pracownik magazynu", summary: "Kompletujesz zamówienia napojów i ładujesz ciężarówki. Przyuczymy Cię." },
+      pl: {
+        title: "Pracownik magazynu",
+        summary: "Kompletujesz zamówienia napojów i ładujesz ciężarówki. Przyuczymy Cię.",
+      },
       ro: { title: "Lucrător în depozit", summary: "Pregătiți comenzi de băuturi și încărcați camioane. Vă instruim." },
-      uk: { title: "Працівник складу", summary: "Ви комплектуєте замовлення напоїв і завантажуєте вантажівки. Ми все покажемо." },
-      ru: { title: "Работник склада", summary: "Вы собираете заказы напитков и загружаете грузовики. Мы всему научим." },
-      tr: { title: "Depo çalışanı", summary: "İçecek siparişlerini hazırlar ve kamyonları yüklersiniz. Size öğretiriz." },
+      uk: {
+        title: "Працівник складу",
+        summary: "Ви комплектуєте замовлення напоїв і завантажуєте вантажівки. Ми все покажемо.",
+      },
+      ru: {
+        title: "Работник склада",
+        summary: "Вы собираете заказы напитков и загружаете грузовики. Мы всему научим.",
+      },
+      tr: {
+        title: "Depo çalışanı",
+        summary: "İçecek siparişlerini hazırlar ve kamyonları yüklersiniz. Size öğretiriz.",
+      },
       ar: { title: "عامل مستودع", summary: "تجهز طلبات المشروبات وتحمّل الشاحنات. نحن ندربك." },
     },
   },
@@ -182,8 +208,10 @@ const JOBS: SeedJob[] = [
     slug: "kaufmaennischer-mitarbeiter",
     title: "Kaufmännischer Mitarbeiter (m/w/d)",
     icon: "office",
-    description: "<p>Sie nehmen Bestellungen an, betreuen Kunden am Telefon und organisieren Touren mit.</p><h3>Ihre Aufgaben</h3><ul><li>Bestellungen erfassen</li><li>Kunden am Telefon beraten</li><li>Touren mit der Disposition planen</li></ul>",
-    requirements: "<ul><li>Kaufmännische Ausbildung</li><li>Gute Deutschkenntnisse</li><li>Sicher am Computer</li></ul>",
+    description:
+      "<p>Sie nehmen Bestellungen an, betreuen Kunden am Telefon und organisieren Touren mit.</p><h3>Ihre Aufgaben</h3><ul><li>Bestellungen erfassen</li><li>Kunden am Telefon beraten</li><li>Touren mit der Disposition planen</li></ul>",
+    requirements:
+      "<ul><li>Kaufmännische Ausbildung</li><li>Gute Deutschkenntnisse</li><li>Sicher am Computer</li></ul>",
     benefits: "<ul><li>Gleitzeit</li><li>Teilzeit möglich</li><li>Kurze Wege im Familienunternehmen</li></ul>",
     salaryMin: null,
     payLabel: "nach Vereinbarung",
@@ -191,7 +219,10 @@ const JOBS: SeedJob[] = [
     employmentType: "full_time",
     questions: [START],
     localizations: {
-      "de-easy": { title: "Arbeit im Büro", summary: "Sie arbeiten im Büro. Sie nehmen Bestellungen an. Sie sprechen mit Kunden am Telefon." },
+      "de-easy": {
+        title: "Arbeit im Büro",
+        summary: "Sie arbeiten im Büro. Sie nehmen Bestellungen an. Sie sprechen mit Kunden am Telefon.",
+      },
       en: { title: "Office clerk", summary: "You take orders and help customers on the phone." },
       pl: { title: "Pracownik biurowy", summary: "Przyjmujesz zamówienia i obsługujesz klientów telefonicznie." },
       ro: { title: "Funcționar comercial", summary: "Preluați comenzi și consiliați clienții la telefon." },
@@ -284,13 +315,19 @@ async function main() {
           .where(and(eq(schema.jobs.workspaceId, workspace.id), eq(schema.jobs.slug, seed.slug)))
           .limit(1);
         const jobId = existing
-          ? (await tx.update(schema.jobs).set(values).where(eq(schema.jobs.id, existing.id)).returning({ id: schema.jobs.id }))[0]!.id
+          ? (
+              await tx
+                .update(schema.jobs)
+                .set(values)
+                .where(eq(schema.jobs.id, existing.id))
+                .returning({ id: schema.jobs.id })
+            )[0]!.id
           : (await tx.insert(schema.jobs).values(values).returning({ id: schema.jobs.id }))[0]!.id;
 
         if (!existing) {
-          await tx.insert(schema.jobStages).values(
-            STAGES.map((stage, index) => ({ workspaceId: workspace.id, jobId, order: index + 1, ...stage })),
-          );
+          await tx
+            .insert(schema.jobStages)
+            .values(STAGES.map((stage, index) => ({ workspaceId: workspace.id, jobId, order: index + 1, ...stage })));
         }
         for (const [index, q] of seed.questions.entries()) {
           await tx

@@ -2,7 +2,7 @@ import "server-only";
 
 import { headers } from "next/headers";
 
-import { isQuickApplyLanguage, type QuickApplyLanguage,suggestLanguage } from "./languages";
+import { isQuickApplyLanguage, type QuickApplyLanguage, suggestLanguage } from "./languages";
 
 /**
  * Sprache für die Bewerberseiten: ?lang=… hat Vorrang, sonst Vorschlag aus
