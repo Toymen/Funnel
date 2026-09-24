@@ -37,8 +37,7 @@ const APPLICANT_UI = ["src/features/quick-apply/**/*.tsx"];
 /** Attribute, deren Wert sichtbar ist oder vorgelesen wird. */
 const VISIBLE_ATTRIBUTES =
   "placeholder|title|alt|label|aria-label|aria-description|aria-valuetext|aria-roledescription";
-const LITERAL_TEXT_MESSAGE =
-  "Sichtbarer Text gehört in features/quick-apply/messages.ts (alle 9 Sprachen).";
+const LITERAL_TEXT_MESSAGE = "Sichtbarer Text gehört in features/quick-apply/messages.ts (alle 9 Sprachen).";
 
 const STORIES = ["**/*.stories.@(ts|tsx|js|jsx|mjs|cjs)", "**/*.story.@(ts|tsx|js|jsx|mjs|cjs)"];
 
@@ -125,10 +124,7 @@ const eslintConfig = defineConfig([
       // Sichtbarer JSX-Text muss aus messages.ts kommen. Erlaubt ist Text ohne
       // Buchstaben (Zahlen, Satzzeichen, Symbole, Emoji). Sprachnamen kommen
       // aus languages.ts ({l.name}) und sind damit ebenfalls erlaubt.
-      "i18next/no-literal-string": [
-        "error",
-        { mode: "jsx-text-only", words: { exclude: [/^[^\p{L}]*$/u] } },
-      ],
+      "i18next/no-literal-string": ["error", { mode: "jsx-text-only", words: { exclude: [/^[^\p{L}]*$/u] } }],
       // Ergänzung: auch Klartext in sichtbaren/vorgelesenen Attributen
       // (placeholder, aria-label, title …) und als {"Text"} im JSX verbieten.
       // Werte ohne Buchstaben (z. B. "0151 1234567") bleiben erlaubt.

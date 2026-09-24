@@ -67,7 +67,9 @@ export function trackFunnel(
     const url = "/api/public/funnel";
     const blob = new Blob([body], { type: "application/json" });
     if (!navigator.sendBeacon?.(url, blob)) {
-      void fetch(url, { method: "POST", body, keepalive: true, headers: { "content-type": "application/json" } }).catch(() => {});
+      void fetch(url, { method: "POST", body, keepalive: true, headers: { "content-type": "application/json" } }).catch(
+        () => {},
+      );
     }
   } catch {
     // Tracking darf die Bewerbung nie blockieren.

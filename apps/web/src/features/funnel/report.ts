@@ -9,7 +9,7 @@ import {
   jobs,
   jobStages,
 } from "@harly/db";
-import { and, asc, eq, gte, inArray, isNull, type SQL,sql } from "drizzle-orm";
+import { and, asc, eq, gte, inArray, isNull, type SQL, sql } from "drizzle-orm";
 
 import { requirePermission } from "@/features/workspaces/permissions-server";
 
@@ -22,7 +22,7 @@ import {
   percent,
   stageKeyForPipelineStage,
 } from "./metrics";
-import { type FunnelRange,rangeStart } from "./ranges";
+import { type FunnelRange, rangeStart } from "./ranges";
 
 export type FunnelReportData = {
   range: FunnelRange;
@@ -50,10 +50,7 @@ export type FunnelReportData = {
  * Bewerbungen über das ausführliche Formular), spätere Stufen aus der
  * Pipeline-Historie.
  */
-export async function getFunnelReport(input: {
-  range: FunnelRange;
-  jobId?: string | null;
-}): Promise<FunnelReportData> {
+export async function getFunnelReport(input: { range: FunnelRange; jobId?: string | null }): Promise<FunnelReportData> {
   const { organization } = await requirePermission("reports:read");
   const workspaceId = organization.id;
   const since = rangeStart(input.range);
@@ -169,9 +166,7 @@ export async function getFunnelReport(input: {
   };
   const stages = computeFunnel(counts);
 
-  const steps = stepRows
-    .filter((s) => s.step)
-    .sort((a, b) => (a.stepIndex ?? 0) - (b.stepIndex ?? 0));
+  const steps = stepRows.filter((s) => s.step).sort((a, b) => (a.stepIndex ?? 0) - (b.stepIndex ?? 0));
   const firstStep = steps[0]?.sessions ?? 0;
 
   const appsBySource = new Map<string, number>();

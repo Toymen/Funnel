@@ -31,11 +31,16 @@ export async function generateMetadata({
     ? await getPublicJobDetail({ jobSlug: slug, workspaceSlug })
     : null;
   return detail
-    ? publicJobMetadata(detail.workspace, detail.config, detail.job, { path: "" })
+    ? publicJobMetadata(detail.workspace, detail.config, detail.job, {
+        path: "",
+      })
     : {};
 }
 
-export default async function JobDetailPage({ params, searchParams }: JobDetailPageProps) {
+export default async function JobDetailPage({
+  params,
+  searchParams,
+}: JobDetailPageProps) {
   const { slug } = await params;
   const { lang } = (await searchParams) ?? {};
   const [workspaceSlug, portalEnabled] = await Promise.all([

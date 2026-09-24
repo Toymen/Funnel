@@ -5,11 +5,7 @@ import { eq } from "drizzle-orm";
 
 import { getPublicWorkspaceSlug } from "@/lib/public-workspace";
 
-import {
-  type BrowserFunnelEventInput,
-  type FunnelEventType,
-  normalizeSource,
-} from "./events";
+import { type BrowserFunnelEventInput, type FunnelEventType, normalizeSource } from "./events";
 
 type RecordInput = {
   eventType: FunnelEventType;
@@ -25,11 +21,7 @@ type RecordInput = {
 /** Arbeitsbereich zur Stelle – bzw. der öffentliche Arbeitsbereich ohne Stelle. */
 async function resolveWorkspaceId(jobId?: string | null): Promise<string | null> {
   if (jobId) {
-    const [job] = await db
-      .select({ workspaceId: jobs.workspaceId })
-      .from(jobs)
-      .where(eq(jobs.id, jobId))
-      .limit(1);
+    const [job] = await db.select({ workspaceId: jobs.workspaceId }).from(jobs).where(eq(jobs.id, jobId)).limit(1);
     return job?.workspaceId ?? null;
   }
   const slug = await getPublicWorkspaceSlug();

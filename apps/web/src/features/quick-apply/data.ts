@@ -74,21 +74,14 @@ function pick(
  * Lädt eine veröffentlichte Stelle für die 60-Sekunden-Bewerbung inkl.
  * Übersetzungen aus job_quick_apply (PRD v2 §5.3, §12).
  */
-export async function getQuickApplyJob(
-  jobSlug: string,
-  language: QuickApplyLanguage,
-): Promise<QuickApplyJob | null> {
+export async function getQuickApplyJob(jobSlug: string, language: QuickApplyLanguage): Promise<QuickApplyJob | null> {
   const workspaceSlug = await getPublicWorkspaceSlug();
   if (!workspaceSlug) return null;
   const detail = await getPublicJobDetail({ jobSlug, workspaceSlug });
   if (!detail) return null;
   const { job, workspace } = detail;
 
-  const [settings] = await db
-    .select()
-    .from(jobQuickApply)
-    .where(eq(jobQuickApply.jobId, job.id))
-    .limit(1);
+  const [settings] = await db.select().from(jobQuickApply).where(eq(jobQuickApply.jobId, job.id)).limit(1);
   if (settings && !settings.enabled) return null;
 
   const l10n = pick(settings?.localizations ?? {}, language);

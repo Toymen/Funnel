@@ -1,4 +1,4 @@
-import { type NextRequest,NextResponse } from "next/server";
+import { type NextRequest, NextResponse } from "next/server";
 
 import { browserFunnelEventSchema } from "@/features/funnel/events";
 import { recordFunnelEvent } from "@/features/funnel/record";

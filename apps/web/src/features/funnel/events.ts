@@ -47,10 +47,7 @@ export const browserFunnelEventSchema = z.object({
   utmMedium: utmValue,
   utmCampaign: utmValue,
   metadata: z
-    .record(
-      z.string().max(40),
-      z.union([z.string().max(100), z.number(), z.boolean()]),
-    )
+    .record(z.string().max(40), z.union([z.string().max(100), z.number(), z.boolean()]))
     .refine((value) => Object.keys(value).length <= 10, "Too many metadata keys.")
     .optional(),
 });

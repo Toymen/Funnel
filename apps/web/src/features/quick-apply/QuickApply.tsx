@@ -18,11 +18,7 @@ import { AnimatePresence, motion, useReducedMotion } from "motion/react";
 
 import { funnelSessionId, funnelUtm, trackFunnel } from "@/features/funnel/client";
 
-import {
-  type QuickApplyErrorKey,
-  submitQuickApplicationAction,
-  uploadQuickApplicationFileAction,
-} from "./actions";
+import { type QuickApplyErrorKey, submitQuickApplicationAction, uploadQuickApplicationFileAction } from "./actions";
 import type { QuickApplyJob } from "./data";
 import { languageInfo, QUICK_APPLY_LANGUAGES, type QuickApplyLanguage } from "./languages";
 import { format, QUICK_APPLY_MESSAGES, type QuickApplyMessages } from "./messages";
@@ -376,7 +372,8 @@ export function QuickApply({
   })();
 
   const primary = (() => {
-    if (screen === "name") return { label: t.next, action: () => (draft.firstName.trim() ? next() : setError("errorFirstName")) };
+    if (screen === "name")
+      return { label: t.next, action: () => (draft.firstName.trim() ? next() : setError("errorFirstName")) };
     if (screen === "contact")
       return {
         label: t.next,
@@ -635,7 +632,11 @@ export function QuickApply({
                                   onClick={() => setAnswer(option.value, true)}
                                   className={"bs-yesno " + (isYes ? "bs-yesno--yes" : "bs-yesno--no")}
                                 >
-                                  {isYes ? <ThumbsUp className="size-12" aria-hidden /> : <ThumbsDown className="size-12" aria-hidden />}
+                                  {isYes ? (
+                                    <ThumbsUp className="size-12" aria-hidden />
+                                  ) : (
+                                    <ThumbsDown className="size-12" aria-hidden />
+                                  )}
                                   <span>{isYes ? t.yes : t.no}</span>
                                 </button>
                               );

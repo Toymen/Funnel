@@ -1,0 +1,25 @@
+{
+  "$schema": "https://json.schemastore.org/prettierrc",
+  "semi": true,
+  "singleQuote": false,
+  "trailingComma": "all",
+  "arrowParens": "always",
+  "endOfLine": "lf",
+  "overrides": [
+    {
+      "files": [
+        "apps/web/src/features/quick-apply/**",
+        "apps/web/src/features/funnel/**",
+        "apps/web/src/app/api/public/funnel/**",
+        "apps/web/src/app/\\(dashboard\\)/dashboard/reports/funnel/**",
+        "apps/web/src/lib/notify/webhook-hosts*",
+        "apps/web/eslint.config.mjs",
+        "apps/web/stylelint.config.mjs",
+        "packages/db/scripts/seed-bier-schneider.ts"
+      ],
+      "options": {
+        "printWidth": 120
+      }
+    }
+  ]
+}

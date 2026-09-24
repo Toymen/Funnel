@@ -13,47 +13,64 @@
   font-weight: 400;
   font-display: swap;
   src: url("/fonts/bier-schneider/atkinson-hyperlegible-latin-400-normal.woff2") format("woff2");
-  unicode-range: U+0000-00FF, U+0131, U+0152-0153, U+02BB-02BC, U+02C6, U+02DA, U+02DC, U+0304, U+0308, U+0329, U+2000-206F, U+20AC, U+2122, U+2191, U+2193, U+2212, U+2215, U+FEFF, U+FFFD;
+  unicode-range:
+    U+0000-00FF, U+0131, U+0152-0153, U+02BB-02BC, U+02C6, U+02DA, U+02DC, U+0304, U+0308, U+0329, U+2000-206F, U+20AC,
+    U+2122, U+2191, U+2193, U+2212, U+2215, U+FEFF, U+FFFD;
 }
+
 @font-face {
   font-family: "Atkinson Hyperlegible";
   font-style: normal;
   font-weight: 700;
   font-display: swap;
   src: url("/fonts/bier-schneider/atkinson-hyperlegible-latin-700-normal.woff2") format("woff2");
-  unicode-range: U+0000-00FF, U+0131, U+0152-0153, U+02BB-02BC, U+02C6, U+02DA, U+02DC, U+0304, U+0308, U+0329, U+2000-206F, U+20AC, U+2122, U+2191, U+2193, U+2212, U+2215, U+FEFF, U+FFFD;
+  unicode-range:
+    U+0000-00FF, U+0131, U+0152-0153, U+02BB-02BC, U+02C6, U+02DA, U+02DC, U+0304, U+0308, U+0329, U+2000-206F, U+20AC,
+    U+2122, U+2191, U+2193, U+2212, U+2215, U+FEFF, U+FFFD;
 }
+
 @font-face {
   font-family: "Atkinson Hyperlegible";
   font-style: normal;
   font-weight: 400;
   font-display: swap;
   src: url("/fonts/bier-schneider/atkinson-hyperlegible-latin-ext-400-normal.woff2") format("woff2");
-  unicode-range: U+0100-02BA, U+02BD-02C5, U+02C7-02CC, U+02CE-02D7, U+02DD-02FF, U+0304, U+0308, U+0329, U+1D00-1DBF, U+1E00-1E9F, U+1EF2-1EFF, U+2020, U+20A0-20AB, U+20AD-20C0, U+2113, U+2C60-2C7F, U+A720-A7FF;
+  unicode-range:
+    U+0100-02BA, U+02BD-02C5, U+02C7-02CC, U+02CE-02D7, U+02DD-02FF, U+0304, U+0308, U+0329, U+1D00-1DBF, U+1E00-1E9F,
+    U+1EF2-1EFF, U+2020, U+20A0-20AB, U+20AD-20C0, U+2113, U+2C60-2C7F, U+A720-A7FF;
 }
+
 @font-face {
   font-family: "Atkinson Hyperlegible";
   font-style: normal;
   font-weight: 700;
   font-display: swap;
   src: url("/fonts/bier-schneider/atkinson-hyperlegible-latin-ext-700-normal.woff2") format("woff2");
-  unicode-range: U+0100-02BA, U+02BD-02C5, U+02C7-02CC, U+02CE-02D7, U+02DD-02FF, U+0304, U+0308, U+0329, U+1D00-1DBF, U+1E00-1E9F, U+1EF2-1EFF, U+2020, U+20A0-20AB, U+20AD-20C0, U+2113, U+2C60-2C7F, U+A720-A7FF;
+  unicode-range:
+    U+0100-02BA, U+02BD-02C5, U+02C7-02CC, U+02CE-02D7, U+02DD-02FF, U+0304, U+0308, U+0329, U+1D00-1DBF, U+1E00-1E9F,
+    U+1EF2-1EFF, U+2020, U+20A0-20AB, U+20AD-20C0, U+2113, U+2C60-2C7F, U+A720-A7FF;
 }
+
 @font-face {
   font-family: "Noto Sans Arabic";
   font-style: normal;
   font-weight: 400;
   font-display: swap;
   src: url("/fonts/bier-schneider/noto-sans-arabic-arabic-400-normal.woff2") format("woff2");
-  unicode-range: U+0600-06FF, U+0750-077F, U+0870-088E, U+0890-0891, U+0897-08E1, U+08E3-08FF, U+200C-200E, U+2010-2011, U+204F, U+2E41, U+FB50-FDFF, U+FE70-FE74, U+FE76-FEFC;
+  unicode-range:
+    U+0600-06FF, U+0750-077F, U+0870-088E, U+0890-0891, U+0897-08E1, U+08E3-08FF, U+200C-200E, U+2010-2011, U+204F,
+    U+2E41, U+FB50-FDFF, U+FE70-FE74, U+FE76-FEFC;
 }
+
 @font-face {
   font-family: "Noto Sans Arabic";
   font-style: normal;
   font-weight: 700;
   font-display: swap;
   src: url("/fonts/bier-schneider/noto-sans-arabic-arabic-700-normal.woff2") format("woff2");
-  unicode-range: U+0600-06FF, U+0750-077F, U+0870-088E, U+0890-0891, U+0897-08E1, U+08E3-08FF, U+200C-200E, U+2010-2011, U+204F, U+2E41, U+FB50-FDFF, U+FE70-FE74, U+FE76-FEFC;
+  unicode-range:
+    U+0600-06FF, U+0750-077F, U+0870-088E, U+0890-0891, U+0897-08E1, U+08E3-08FF, U+200C-200E, U+2010-2011, U+204F,
+    U+2E41, U+FB50-FDFF, U+FE70-FE74, U+FE76-FEFC;
 }
 
 .bs-quick {
@@ -63,9 +80,9 @@
   --bs-brew: #1d3a8a;
   --bs-brew-soft: #dfe7f7;
   --bs-asphalt: #3a3f47;
-  --bs-lane: #ffffff;
+  --bs-lane: #fff;
   --bs-sky: #eef3fa;
-  --bs-surface: #ffffff;
+  --bs-surface: #fff;
   --bs-ink: #152033;
   --bs-ink-soft: #4a5568;
   --bs-line: #c9d3e3;
@@ -81,8 +98,16 @@
   flex-direction: column;
   background: var(--bs-sky);
   color: var(--bs-ink);
+
   /* Kyrillisch hat Atkinson nicht → System-Schrift als Fallback. */
-  font-family: "Atkinson Hyperlegible", "Noto Sans Arabic", system-ui, -apple-system, "Segoe UI", Roboto, sans-serif;
+  font-family:
+    "Atkinson Hyperlegible",
+    "Noto Sans Arabic",
+    system-ui,
+    -apple-system,
+    "Segoe UI",
+    Roboto,
+    sans-serif;
   font-size: 1.125rem;
   line-height: 1.5;
 }
@@ -155,7 +180,10 @@
   background: var(--bs-surface);
   padding: 0.875rem 1rem;
   text-align: start;
-  transition: border-color 120ms, background-color 120ms, transform 120ms;
+  transition:
+    border-color 120ms,
+    background-color 120ms,
+    transform 120ms;
 }
 
 .bs-card:active {
@@ -314,7 +342,9 @@
   font-size: 1.25rem;
   font-weight: 700;
   color: var(--bs-ink);
-  transition: transform 120ms, opacity 120ms;
+  transition:
+    transform 120ms,
+    opacity 120ms;
 }
 
 .bs-button:active {
@@ -354,7 +384,7 @@
   gap: 0.5rem;
   border-radius: 999px;
   background: var(--bs-brew);
-  color: #ffffff;
+  color: #fff;
   font-weight: 700;
   text-align: center;
 }
@@ -376,7 +406,7 @@
 
 @keyframes bs-pulse {
   50% {
-    box-shadow: 0 0 0 12px rgb(180 35 24 / 0.18);
+    box-shadow: 0 0 0 12px rgb(180 35 24 / 18%);
   }
 }
 
@@ -384,6 +414,7 @@
   .bs-record--on {
     animation: none;
   }
+
   .bs-card,
   .bs-button {
     transition: none;

@@ -22,7 +22,10 @@ type ApplyPageProps = {
   searchParams: Promise<{ full?: string; lang?: string }>;
 };
 
-export default async function ApplyPage({ params, searchParams }: ApplyPageProps) {
+export default async function ApplyPage({
+  params,
+  searchParams,
+}: ApplyPageProps) {
   const [{ slug }, { full, lang }] = await Promise.all([params, searchParams]);
 
   // Bier-Schneider: Standard ist die 60-Sekunden-Bewerbung (PRD v2 §5).
@@ -31,7 +34,13 @@ export default async function ApplyPage({ params, searchParams }: ApplyPageProps
     const { language, explicit } = await resolveQuickApplyLanguage(lang);
     const quickJob = await getQuickApplyJob(slug, language);
     if (quickJob) {
-      return <QuickApply job={quickJob} initialLanguage={language} languageChosen={explicit} />;
+      return (
+        <QuickApply
+          job={quickJob}
+          initialLanguage={language}
+          languageChosen={explicit}
+        />
+      );
     }
   }
 
@@ -43,7 +52,9 @@ export default async function ApplyPage({ params, searchParams }: ApplyPageProps
   if (!detail) notFound();
 
   const { job, workspace, config } = detail;
-  const applicationConfig = normalizeJobApplicationConfig(job.applicationConfig);
+  const applicationConfig = normalizeJobApplicationConfig(
+    job.applicationConfig,
+  );
   const [captcha, portalEnabled] = await Promise.all([
     resolveCaptchaSiteKey(workspace.id),
     isPortalEnabled(),
