@@ -53,6 +53,7 @@ import { getWorkspaceAiStatus } from "@/lib/ai/config";
 import { getWorkspaceCalStatus } from "@/lib/cal/config";
 import { getWorkspaceEsignStatus } from "@/lib/esign/config";
 import { candidateAvatarFallbackSrcs } from "@/lib/candidate-avatar";
+import { isPlaceholderEmail } from "@/features/quick-apply/schema";
 
 export const dynamic = "force-dynamic";
 
@@ -374,13 +375,15 @@ export default async function CandidateDetailPage({
 
                   {/* Contact + social , one compact inline row */}
                   <div className="flex flex-wrap items-center gap-x-4 gap-y-1.5 text-sm text-muted-foreground">
-                    <RedactLink
-                      href={`mailto:${candidate.email}`}
-                      className="inline-flex items-center gap-1.5 transition-colors hover:text-foreground"
-                    >
-                      <Mail className="size-4 shrink-0" strokeWidth={1.6} />
-                      {candidate.email}
-                    </RedactLink>
+                    {isPlaceholderEmail(candidate.email) ? null : (
+                      <RedactLink
+                        href={`mailto:${candidate.email}`}
+                        className="inline-flex min-w-0 items-center gap-1.5 break-all transition-colors hover:text-foreground"
+                      >
+                        <Mail className="size-4 shrink-0" strokeWidth={1.6} />
+                        {candidate.email}
+                      </RedactLink>
+                    )}
                     {candidate.phone ? (
                       <RedactLink
                         href={`tel:${candidate.phone}`}

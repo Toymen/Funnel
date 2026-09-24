@@ -112,9 +112,11 @@ export function TopBar({
           </div>
         ) : null}
 
-        {/* Centered regardless of how wide the two side clusters are. */}
-        <div className="pointer-events-none absolute inset-x-0 flex h-[var(--spacing-topbar)] items-center justify-center">
-          <div className="pointer-events-auto">
+        {/* Centered regardless of how wide the two side clusters are.
+            Below sm the pill joins the flex flow and truncates instead of
+            sliding under the right-hand icons (Bier-Schneider, PRD §11.1). */}
+        <div className="pointer-events-none absolute inset-x-0 flex h-[var(--spacing-topbar)] items-center justify-center max-sm:pointer-events-auto max-sm:static max-sm:min-w-0 max-sm:flex-1">
+          <div className="pointer-events-auto max-sm:min-w-0 max-sm:max-w-full max-sm:[&_*]:min-w-0">
             <NotificationIsland
               workspace={workspace}
               workspaceOptions={workspaceOptions}

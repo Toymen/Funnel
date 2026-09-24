@@ -24,6 +24,7 @@ import tseslint from "typescript-eslint";
 const OWN_CODE = [
   "src/features/quick-apply/**/*.{ts,tsx}",
   "src/features/funnel/**/*.{ts,tsx}",
+  "src/features/mobile-admin/**/*.{ts,tsx}",
   "src/app/(public)/apply/**/*.{ts,tsx}",
   "src/app/(public)/jobs/\\[slug\\]/**/*.{ts,tsx}",
   "src/app/api/public/funnel/**/*.{ts,tsx}",

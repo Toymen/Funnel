@@ -539,9 +539,12 @@ export function CandidateActionBar({
     return (
       <div className="flex items-center gap-1.5">
         {applicationSelector}
-        {email}
-        {schedule}
-        {evaluate}
+        {/* Mobile: only advance + reject fit next to the name (Bier-Schneider, PRD §11.1). */}
+        <span className="contents max-sm:hidden">
+          {email}
+          {schedule}
+          {evaluate}
+        </span>
         {reject}
         <MoveStageButton target={moveTarget} />
       </div>

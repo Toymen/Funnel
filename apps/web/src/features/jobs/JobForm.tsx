@@ -448,6 +448,9 @@ export function JobForm({
           />
         }
       >
+        {/* Mobile: section chips above the form instead of squeezed beside
+            it; from md the wrapper disappears (Bier-Schneider, PRD §11.1). */}
+        <div className="flex min-h-0 min-w-0 flex-1 flex-col md:contents">
         <JobEditorRail
           sections={RAIL_SECTIONS}
           scrollRootRef={scrollRef}
@@ -456,7 +459,7 @@ export function JobForm({
 
         <div
           ref={scrollRef}
-          className="flex w-full min-w-0 max-w-2xl shrink-0 flex-col overflow-y-auto"
+          className="flex w-full min-w-0 max-w-2xl shrink-0 flex-col overflow-y-auto max-md:min-h-0 max-md:flex-1 max-md:shrink"
         >
           {/*
             No `min-h-full` here on purpose , percentage min-height on a flex
@@ -571,6 +574,7 @@ export function JobForm({
               {primaryActions}
             </div>
           </div>
+        </div>
         </div>
 
         <JobLivePreview

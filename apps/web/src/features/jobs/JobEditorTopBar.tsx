@@ -78,7 +78,8 @@ export function JobEditorTopBar({
         <>
           {headerActions}
           {headerActions ? <span className="mx-0.5 h-5 w-px bg-border" aria-hidden="true" /> : null}
-          {actions}
+          {/* Mobile: "Save as draft" stays in the form footer only (Bier-Schneider, PRD §11.1). */}
+          <div className="contents max-sm:[&_button[value=draft]]:hidden">{actions}</div>
         </>
       }
     />

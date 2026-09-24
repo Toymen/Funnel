@@ -27,11 +27,14 @@ export function FocusModeTopBar({
         "supports-[backdrop-filter]:bg-paper-raised/55",
       )}
     >
-      <div className="flex min-w-0 flex-1 items-center">{left}</div>
+      {/* Below sm the side slots keep their content width and only the
+          center truncates, so the actions never slide over the title
+          (Bier-Schneider, PRD §11.1). */}
+      <div className="flex min-w-0 flex-1 items-center max-sm:flex-none">{left}</div>
       {center ? (
-        <div className="flex shrink-0 items-center justify-center">{center}</div>
+        <div className="flex shrink-0 items-center justify-center max-sm:min-w-0 max-sm:flex-1 max-sm:shrink">{center}</div>
       ) : null}
-      <div className="flex min-w-0 flex-1 items-center justify-end gap-2">
+      <div className="flex min-w-0 flex-1 items-center justify-end gap-2 max-sm:flex-none">
         {right}
       </div>
     </header>

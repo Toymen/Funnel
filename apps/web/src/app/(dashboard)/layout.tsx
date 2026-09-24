@@ -1,5 +1,8 @@
 import type { Metadata } from "next";
 
+// Bier-Schneider: Tap-Ziele ≥ 44 px auf dem Handy (PRD §11.1)
+import "@/features/mobile-admin/mobile-admin.css";
+
 import { HarlyAIProvider } from "@/components/dashboard/HarlyAIWidget";
 import { IconRail } from "@/components/dashboard/IconRail";
 import { PageTitleProvider } from "@/components/dashboard/PageTitleContext";
@@ -114,7 +117,7 @@ export default async function DashboardLayout({
                 taskDueCount={taskDueCount}
               />
               <PageTitleProvider>
-                <main className="min-h-0 w-full flex-1 overflow-y-auto px-4 pb-8 pt-2 md:px-7">
+                <main data-mobile-admin="" className="min-h-0 w-full flex-1 overflow-y-auto px-4 pb-8 pt-2 md:px-7">
                   {children}
                 </main>
               </PageTitleProvider>

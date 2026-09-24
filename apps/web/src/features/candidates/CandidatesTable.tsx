@@ -463,8 +463,8 @@ export function CandidatesTable({
   return (
     <div className="space-y-4">
       {/* Search */}
-      <div className="flex items-center gap-2">
-        <div className="relative flex-1">
+      <div className="flex flex-wrap items-center gap-2">
+        <div className="relative flex-1 max-sm:basis-full">
           <Search className="absolute left-4 top-1/2 size-4.5 -translate-y-1/2 text-muted-foreground" />
           <Input
             value={query}
