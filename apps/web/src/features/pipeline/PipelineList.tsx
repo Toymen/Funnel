@@ -22,6 +22,8 @@ import type {
   PipelineStage,
 } from "@/features/pipeline/data";
 import { ApplicationStatusBadge } from "@/components/ui/StatusBadge";
+import { QuickApplyBadges } from "@/features/mobile-admin/QuickApplyBadges";
+import { isPlaceholderEmail } from "@/features/quick-apply/schema";
 import { PipelineSpine } from "@/components/ui/PipelineSpine";
 import { UserAvatar } from "@/components/ui/UserAvatar";
 import { Button } from "@/components/ui/button";
@@ -290,9 +292,14 @@ export function PipelineList({
                       {fullName}
                     </p>
                     <p className="truncate text-xs text-muted-foreground">
-                      {a.candidateEmail}
-                      {a.source ? ` · via ${a.source}` : ""}
+                      {[
+                        isPlaceholderEmail(a.candidateEmail) ? null : a.candidateEmail,
+                        a.source ? `via ${a.source}` : null,
+                      ]
+                        .filter(Boolean)
+                        .join(" · ")}
                     </p>
+                    <QuickApplyBadges info={a.quickApply ?? null} className="mt-1" />
                   </div>
                 </Link>
                 <div className="col-start-2 min-w-0 sm:col-auto">

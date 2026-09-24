@@ -23,17 +23,18 @@ nicht einschalten.
 
 ## Eigene Pfade
 
-| Pfad                                                       | Inhalt                                 |
-| ---------------------------------------------------------- | -------------------------------------- |
-| `apps/web/src/features/quick-apply/**`                     | 60-Sekunden-Bewerbung, LKW, Texte      |
-| `apps/web/src/features/funnel/**`                          | Funnel-Tracking und Report             |
-| `apps/web/src/app/(public)/apply/**`                       | Bewerbungsseite (Harly-Datei, ergänzt) |
-| `apps/web/src/app/(public)/jobs/[slug]/**`                 | Stellenseite (Harly-Datei, ergänzt)    |
-| `apps/web/src/app/api/public/funnel/**`                    | Funnel-API                             |
-| `apps/web/src/app/(dashboard)/dashboard/reports/funnel/**` | Funnel-Report im Dashboard             |
-| `apps/web/src/lib/notify/webhook-hosts*`                   | SSRF-Härtung für Webhooks              |
-| `packages/db/scripts/seed-bier-schneider.ts`               | Seed-Daten (nur Prettier)              |
-| `docs/bier-schneider/**`                                   | Doku (Prettier, markdownlint)          |
+| Pfad                                                       | Inhalt                                   |
+| ---------------------------------------------------------- | ---------------------------------------- |
+| `apps/web/src/features/quick-apply/**`                     | 60-Sekunden-Bewerbung, LKW, Texte        |
+| `apps/web/src/features/funnel/**`                          | Funnel-Tracking und Report               |
+| `apps/web/src/features/mobile-admin/**`                    | HR-Bereich mobil (siehe MOBILE-ADMIN.md) |
+| `apps/web/src/app/(public)/apply/**`                       | Bewerbungsseite (Harly-Datei, ergänzt)   |
+| `apps/web/src/app/(public)/jobs/[slug]/**`                 | Stellenseite (Harly-Datei, ergänzt)      |
+| `apps/web/src/app/api/public/funnel/**`                    | Funnel-API                               |
+| `apps/web/src/app/(dashboard)/dashboard/reports/funnel/**` | Funnel-Report im Dashboard               |
+| `apps/web/src/lib/notify/webhook-hosts*`                   | SSRF-Härtung für Webhooks                |
+| `packages/db/scripts/seed-bier-schneider.ts`               | Seed-Daten (nur Prettier)                |
+| `docs/bier-schneider/**`                                   | Doku (Prettier, markdownlint)            |
 
 ## Werkzeuge
 

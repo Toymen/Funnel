@@ -53,6 +53,9 @@ import { getWorkspaceAiStatus } from "@/lib/ai/config";
 import { getWorkspaceCalStatus } from "@/lib/cal/config";
 import { getWorkspaceEsignStatus } from "@/lib/esign/config";
 import { candidateAvatarFallbackSrcs } from "@/lib/candidate-avatar";
+import { getQuickApplyByApplicationIds } from "@/features/mobile-admin/data";
+import { QuickContact, QuickContactBar } from "@/features/mobile-admin/QuickContact";
+import { isPlaceholderEmail } from "@/features/quick-apply/schema";
 
 export const dynamic = "force-dynamic";
 
@@ -207,7 +210,7 @@ export default async function CandidateDetailPage({
   const latestApplication = applications[0] ?? null;
   const avatarFallbackSrcs = candidateAvatarFallbackSrcs(candidate.email, candidate.githubUrl);
 
-  const [suspectCandidates, moveTargets] = await Promise.all([
+  const [suspectCandidates, moveTargets, quickApplyByApplication] = await Promise.all([
     // Fuzzy duplicate check (heuristic only, no AI at load time)
     findSuspectDuplicates(
       candidate.id,
@@ -226,7 +229,19 @@ export default async function CandidateDetailPage({
         ),
       })),
     ),
+    // Bier-Schneider: Sprache/Modus der Kurzbewerbung (PRD §11)
+    getQuickApplyByApplicationIds(latestApplication ? [latestApplication.id] : []),
   ]);
+  const quickApply = latestApplication
+    ? (quickApplyByApplication.get(latestApplication.id) ?? null)
+    : null;
+  const quickContact = {
+    name: fullName,
+    phone: candidate.phone,
+    email: candidate.email,
+    quickApply,
+    anonymized: aiStatus.resumeAnonymization,
+  };
 
   const railCandidates = scopedCandidates
     .slice()
@@ -374,13 +389,15 @@ export default async function CandidateDetailPage({
 
                   {/* Contact + social , one compact inline row */}
                   <div className="flex flex-wrap items-center gap-x-4 gap-y-1.5 text-sm text-muted-foreground">
-                    <RedactLink
-                      href={`mailto:${candidate.email}`}
-                      className="inline-flex items-center gap-1.5 transition-colors hover:text-foreground"
-                    >
-                      <Mail className="size-4 shrink-0" strokeWidth={1.6} />
-                      {candidate.email}
-                    </RedactLink>
+                    {isPlaceholderEmail(candidate.email) ? null : (
+                      <RedactLink
+                        href={`mailto:${candidate.email}`}
+                        className="inline-flex min-w-0 items-center gap-1.5 break-all transition-colors hover:text-foreground"
+                      >
+                        <Mail className="size-4 shrink-0" strokeWidth={1.6} />
+                        {candidate.email}
+                      </RedactLink>
+                    )}
                     {candidate.phone ? (
                       <RedactLink
                         href={`tel:${candidate.phone}`}
@@ -513,6 +530,8 @@ export default async function CandidateDetailPage({
           </IdentityShield>
           </CandidateStickyHeader>
 
+          <QuickContact {...quickContact} />
+
           <DuplicateDetectionCard
             candidateId={candidate.id}
             suspects={suspectCandidates}
@@ -577,6 +596,7 @@ export default async function CandidateDetailPage({
 
         <CandidateActivityRail activity={serializedActivity} />
       </div>
+      <QuickContactBar {...quickContact} />
     </div>
   );
 }

@@ -1,0 +1,45 @@
+/*
+ * HR-Bereich auf dem Handy (PRD §11.1): Tap-Ziele mindestens 44 px.
+ *
+ * Harly nutzt kompakte Bedienelemente (32–36 px). Statt jede Harly-Datei
+ * anzufassen, vergrößert diese Datei die gemeinsamen UI-Bausteine aus
+ * src/components/ui nur
+ *   - innerhalb des Dashboard-Inhalts (main[data-mobile-admin]),
+ *   - auf Touch-Geräten (pointer: coarse) und
+ *   - unterhalb von 640 px (Tailwind sm).
+ * Am Desktop bleibt alles unverändert.
+ */
+@media (width < 40rem) and (pointer: coarse) {
+  /*
+   * Button erkennt man an data-variant + data-size (button.tsx). data-slot allein
+   * reicht nicht: als asChild-Trigger (Dropdown, Popover) überschreibt Radix ihn.
+   */
+  main[data-mobile-admin]
+    :is([data-slot="select-trigger"], [data-slot="tabs-trigger"]) {
+    min-height: 44px;
+  }
+
+  /* Text-Buttons sind ohnehin breiter; min-width trifft praktisch nur Icon-Buttons. */
+  main[data-mobile-admin] [data-variant][data-size] {
+    min-width: 44px;
+    min-height: 44px;
+  }
+
+  main[data-mobile-admin] [data-slot="input"] {
+    min-height: 44px;
+  }
+
+  /* Checkboxen bleiben optisch klein, bekommen aber eine unsichtbare 44-px-Trefferfläche. */
+  main[data-mobile-admin] [data-slot="checkbox"] {
+    position: relative;
+  }
+
+  main[data-mobile-admin] [data-slot="checkbox"]::after {
+    content: "";
+    position: absolute;
+    inset: 50% auto auto 50%;
+    width: 44px;
+    height: 44px;
+    transform: translate(-50%, -50%);
+  }
+}

@@ -28,6 +28,7 @@ import { listWorkspaceMembers } from "@/features/jobs/hiring-team-data";
 import { getWorkspaceContext } from "@/features/workspaces/context";
 import { can } from "@/features/workspaces/permissions-server";
 import { candidateAvatarFallbackSrcs } from "@/lib/candidate-avatar";
+import { getQuickApplyByApplicationIds } from "@/features/mobile-admin/data";
 import { formatRelative, formatShort } from "@/lib/date";
 import { cn } from "@/lib/utils";
 
@@ -111,6 +112,13 @@ const initialImportSource: ImportSource | undefined =
     can("candidates:edit"),
   ]);
 
+  // Bier-Schneider: Sprache/Modus der Kurzbewerbung als Badge (PRD §11)
+  const quickApplyByApplication = await getQuickApplyByApplicationIds(
+    directory.rows.flatMap((candidate) =>
+      candidate.latestApplication ? [candidate.latestApplication.applicationId] : [],
+    ),
+  );
+
   const rows: CandidateRow[] = directory.rows.map((candidate) => {
     const applied = candidate.latestApplication?.appliedAt ?? null;
     return {
@@ -134,6 +142,9 @@ const initialImportSource: ImportSource | undefined =
       appliedAt: applied ? applied.getTime() : null,
       appliedLabel: applied ? appliedLabel(applied) : null,
       applicationId: candidate.latestApplication?.applicationId ?? null,
+      quickApply: candidate.latestApplication
+        ? (quickApplyByApplication.get(candidate.latestApplication.applicationId) ?? null)
+        : null,
       updatedAt: candidate.updatedAt.getTime(),
     };
   });

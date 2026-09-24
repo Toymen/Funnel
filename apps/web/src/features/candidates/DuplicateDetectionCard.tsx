@@ -109,10 +109,12 @@ export function DuplicateDetectionCard({
             Verify with AI
           </AiButton>
         ) : (
-          <div className="flex flex-wrap gap-2">
+          <div className="flex min-w-0 max-w-full flex-wrap gap-2">
             {suspects.map((s) => (
-              <Button key={s.candidateId} asChild size="sm" variant="outline">
-                <Link href={`/dashboard/candidates/${s.candidateId}`}>View {s.fullName}</Link>
+              <Button key={s.candidateId} asChild size="sm" variant="outline" className="max-w-full">
+                <Link href={`/dashboard/candidates/${s.candidateId}`}>
+                  <span className="truncate">View {s.fullName}</span>
+                </Link>
               </Button>
             ))}
           </div>

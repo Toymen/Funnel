@@ -26,6 +26,7 @@ import {
 import { getWorkspaceContext } from "@/features/workspaces/context";
 import { candidateAvatarFallbackSrcs } from "@/lib/candidate-avatar";
 import { statusForStageName } from "@/features/pipeline/state";
+import { parseQuickApply, type QuickApplyInfo } from "@/features/mobile-admin/quick-contact";
 
 export type PipelineJobOption = {
   id: string;
@@ -69,6 +70,8 @@ export type PipelineApplication = {
   aiSummary: string | null;
   aiUsedResume: boolean | null;
   isFeaturedReferral: boolean;
+  /** Bier-Schneider: Sprache/Modus der Kurzbewerbung (PRD §11). */
+  quickApply?: QuickApplyInfo | null;
 };
 
 export type PipelineData =
@@ -264,6 +267,7 @@ export async function getPipelineData(
         aiRecommendation: aiEvaluations.recommendation,
         aiSummary: aiEvaluations.summary,
         aiUsedResume: aiEvaluations.usedResume,
+        quickApply: sql<unknown>`${applications.snapshot} -> 'quickApply'`,
       })
       .from(applications)
       .innerJoin(
@@ -323,6 +327,7 @@ export async function getPipelineData(
     applications: jobApplications.map(({ candidateGithubUrl, ...application }) => ({
       ...application,
       isFeaturedReferral: featuredReferralCandidateIds.has(application.candidateId),
+      quickApply: parseQuickApply(application.quickApply),
       evaluationSource:
         application.evaluationSource === "rules"
           ? "rules"
