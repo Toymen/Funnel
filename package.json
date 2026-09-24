@@ -62,7 +62,7 @@
       "deepmerge-ts@<8": "8.0.2",
       "nodemailer@<9.1.0": "9.1.1",
       "vite": "7.3.6",
-      "vitest": "3.2.6"
+      "vitest": "3.2.7"
     },
     "packageExtensions": {
       "drizzle-orm": {
