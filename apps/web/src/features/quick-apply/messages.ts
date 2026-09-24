@@ -46,6 +46,7 @@ export type QuickApplyMessages = {
   voiceAgain: string;
   voiceRecorded: string;
   voicePlayback: string;
+  progressLabel: string;
   voiceUnsupported: string;
   voiceSeconds: string;
   privacyQuestion: string;
@@ -113,6 +114,7 @@ const de: QuickApplyMessages = {
   voiceAgain: "Neu aufnehmen",
   voiceRecorded: "Aufnahme fertig",
   voicePlayback: "Ihre Aufnahme anhören",
+  progressLabel: "Fortschritt der Bewerbung",
   voiceUnsupported: "Ihr Handy kann hier nicht aufnehmen. Bitte wählen Sie „Ruft mich an“.",
   voiceSeconds: "{seconds} Sekunden",
   privacyQuestion: "Fast fertig!",
@@ -158,6 +160,7 @@ const deEasy: QuickApplyMessages = {
   callbackQuestion: "Wann sollen wir Sie anrufen?",
   voiceQuestion: "Sagen Sie etwas über sich. Zum Beispiel: Was haben Sie schon gearbeitet?",
   voicePlayback: "Hier hören Sie Ihre Aufnahme.",
+  progressLabel: "So weit sind Sie mit der Bewerbung.",
   privacyQuestion: "Gleich fertig!",
   privacyAccept: "Bier-Schneider darf meine Angaben für die Bewerbung benutzen. Ich bin einverstanden.",
   send: "Bewerbung schicken",
@@ -210,6 +213,7 @@ const en: QuickApplyMessages = {
   voiceAgain: "Record again",
   voiceRecorded: "Recording ready",
   voicePlayback: "Listen to your recording",
+  progressLabel: "Application progress",
   voiceUnsupported: "Your phone cannot record here. Please choose “Call me”.",
   voiceSeconds: "{seconds} seconds",
   privacyQuestion: "Almost done!",
@@ -277,6 +281,7 @@ const pl: QuickApplyMessages = {
   voiceAgain: "Nagraj ponownie",
   voiceRecorded: "Nagranie gotowe",
   voicePlayback: "Odsłuchaj swoje nagranie",
+  progressLabel: "Postęp aplikacji",
   voiceUnsupported: "Twój telefon nie może tu nagrywać. Wybierz „Zadzwońcie do mnie”.",
   voiceSeconds: "{seconds} sekund",
   privacyQuestion: "Prawie gotowe!",
@@ -344,6 +349,7 @@ const ro: QuickApplyMessages = {
   voiceAgain: "Înregistrați din nou",
   voiceRecorded: "Înregistrare gata",
   voicePlayback: "Ascultați înregistrarea",
+  progressLabel: "Progresul aplicației",
   voiceUnsupported: "Telefonul nu poate înregistra aici. Alegeți „Sunați-mă”.",
   voiceSeconds: "{seconds} secunde",
   privacyQuestion: "Aproape gata!",
@@ -411,6 +417,7 @@ const uk: QuickApplyMessages = {
   voiceAgain: "Записати знову",
   voiceRecorded: "Запис готовий",
   voicePlayback: "Прослухати ваш запис",
+  progressLabel: "Хід заявки",
   voiceUnsupported: "Ваш телефон не може тут записувати. Виберіть «Зателефонуйте мені».",
   voiceSeconds: "{seconds} секунд",
   privacyQuestion: "Майже готово!",
@@ -478,6 +485,7 @@ const ru: QuickApplyMessages = {
   voiceAgain: "Записать заново",
   voiceRecorded: "Запись готова",
   voicePlayback: "Прослушать вашу запись",
+  progressLabel: "Ход заявки",
   voiceUnsupported: "Ваш телефон не может здесь записывать. Выберите «Позвоните мне».",
   voiceSeconds: "{seconds} секунд",
   privacyQuestion: "Почти готово!",
@@ -545,6 +553,7 @@ const tr: QuickApplyMessages = {
   voiceAgain: "Yeniden kaydet",
   voiceRecorded: "Kayıt hazır",
   voicePlayback: "Kaydınızı dinleyin",
+  progressLabel: "Başvuru ilerlemesi",
   voiceUnsupported: "Telefonunuz burada kayıt yapamıyor. Lütfen “Beni arayın”ı seçin.",
   voiceSeconds: "{seconds} saniye",
   privacyQuestion: "Neredeyse bitti!",
@@ -612,6 +621,7 @@ const ar: QuickApplyMessages = {
   voiceAgain: "سجّل من جديد",
   voiceRecorded: "التسجيل جاهز",
   voicePlayback: "استمع إلى تسجيلك",
+  progressLabel: "تقدّم الطلب",
   voiceUnsupported: "لا يستطيع هاتفك التسجيل هنا. اختر «اتصلوا بي».",
   voiceSeconds: "{seconds} ثانية",
   privacyQuestion: "اقتربنا من النهاية!",

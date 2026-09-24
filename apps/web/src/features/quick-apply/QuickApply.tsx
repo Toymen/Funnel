@@ -711,6 +711,7 @@ export function QuickApply({
               step={roadStep}
               total={roadTotal}
               rtl={rtl}
+              name={t.progressLabel}
               label={format(t.stepOf, { current: Math.min(roadStep + 1, roadTotal), total: roadTotal })}
             />
           </>

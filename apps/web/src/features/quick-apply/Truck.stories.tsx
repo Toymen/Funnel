@@ -32,12 +32,13 @@ export const LkwFaehrt: StoryObj<typeof TruckSvg> = {
 
 export const Strasse: StoryObj<typeof RoadProgress> = {
   name: "RoadProgress",
-  args: { step: 2, total: 6, rtl: false, label: "" },
+  args: { step: 2, total: 6, rtl: false, label: "", name: QUICK_APPLY_MESSAGES.de.progressLabel },
   argTypes: {
     step: { control: { type: "range", min: 0, max: 10, step: 1 } },
     total: { control: { type: "range", min: 1, max: 10, step: 1 } },
     rtl: { control: "boolean" },
     label: { table: { disable: true } },
+    name: { table: { disable: true } },
   },
   render: (args) => {
     const label = format(QUICK_APPLY_MESSAGES.de.stepOf, {

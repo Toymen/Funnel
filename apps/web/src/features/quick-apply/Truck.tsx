@@ -97,11 +97,14 @@ export function RoadProgress({
   step,
   total,
   label,
+  name,
   rtl = false,
 }: {
   step: number;
   total: number;
   label: string;
+  /** Barrierefreier Name des Fortschrittsbalkens (übersetzt). */
+  name: string;
   rtl?: boolean;
 }) {
   const reduce = useReducedMotion();
@@ -119,6 +122,7 @@ export function RoadProgress({
     <div
       className="relative h-16 w-full select-none"
       role="progressbar"
+      aria-label={name}
       aria-valuemin={1}
       aria-valuemax={total}
       aria-valuenow={Math.min(step + 1, total)}
