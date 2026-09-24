@@ -1,18 +1,19 @@
 #!/usr/bin/env bash
-# Deployment vom Mac/PC auf den Raspberry Pi – auf dem Pi wird nichts gebaut.
+# Deployment vom Mac/PC auf den Host (Raspberry Pi oder Workstation) – auf dem
+# Host wird nichts gebaut.
 #
-#   deploy/raspberry-pi/deploy.sh [image]
+#   deploy/selfhost/deploy.sh [image]
 #
-#   image  Tag oder Digest, Standard: ghcr.io/toymen/funnel:edge (linux/arm64,
-#          gebaut von GitHub Actions bei jedem Merge auf main)
+#   image  Tag oder Digest, Standard: ghcr.io/toymen/funnel:edge (Multi-Arch
+#          linux/arm64 + linux/amd64, gebaut von GitHub Actions bei jedem Merge)
 #
 # Umgebung:
-#   PI_HOST  SSH-Ziel, Standard: pi@bier-pi.local
-#   PI_DIR   Zielverzeichnis, Standard: /opt/funnel
+#   DEPLOY_HOST  SSH-Ziel, Standard: pi@bier-pi.local (alter Name: PI_HOST)
+#   DEPLOY_DIR   Zielverzeichnis, Standard: /opt/funnel (alter Name: PI_DIR)
 set -euo pipefail
 
-PI_HOST="${PI_HOST:-pi@bier-pi.local}"
-PI_DIR="${PI_DIR:-/opt/funnel}"
+DEPLOY_HOST="${DEPLOY_HOST:-${PI_HOST:-pi@bier-pi.local}}"
+DEPLOY_DIR="${DEPLOY_DIR:-${PI_DIR:-/opt/funnel}}"
 IMAGE="${1:-ghcr.io/toymen/funnel:edge}"
 ROOT="$(cd "$(dirname "${BASH_SOURCE[0]}")/../.." && pwd)"
 
@@ -25,24 +26,24 @@ fi
 VERSION="${IMAGE##*[:@]}"
 VERSION="${VERSION:0:19}"
 
-echo "→ Ziel: $PI_HOST:$PI_DIR"
+echo "→ Ziel: $DEPLOY_HOST:$DEPLOY_DIR"
 echo "→ Image: $IMAGE"
 
-# Nur Laufzeit-Dateien übertragen – kein Quellcode, kein Node auf dem Pi.
+# Nur Laufzeit-Dateien übertragen – kein Quellcode, kein Node auf dem Host.
 # shellcheck disable=SC2029  # Pfad soll lokal expandiert werden.
-ssh "$PI_HOST" "mkdir -p '$PI_DIR'"
+ssh "$DEPLOY_HOST" "mkdir -p '$DEPLOY_DIR'"
 scp -q \
   "$ROOT/compose.yaml" \
   "$ROOT/Caddyfile" \
-  "$ROOT/deploy/raspberry-pi/backup.sh" \
-  "$ROOT/deploy/raspberry-pi/restore.sh" \
-  "$PI_HOST:$PI_DIR/"
+  "$ROOT/deploy/selfhost/backup.sh" \
+  "$ROOT/deploy/selfhost/restore.sh" \
+  "$DEPLOY_HOST:$DEPLOY_DIR/"
 
 # shellcheck disable=SC2087  # Variablen sollen lokal expandiert werden.
-ssh "$PI_HOST" bash -s <<REMOTE
+ssh "$DEPLOY_HOST" bash -s <<REMOTE
 set -euo pipefail
-cd '$PI_DIR'
-test -f .env || { echo "Fehlt: $PI_DIR/.env – zuerst install.sh auf dem Pi ausführen" >&2; exit 1; }
+cd '$DEPLOY_DIR'
+test -f .env || { echo "Fehlt: $DEPLOY_DIR/.env – zuerst install.sh auf dem Host ausführen" >&2; exit 1; }
 chmod +x backup.sh restore.sh
 sed -i -e 's#^HARLY_IMAGE=.*#HARLY_IMAGE=$IMAGE#' -e 's#^HARLY_VERSION=.*#HARLY_VERSION=$VERSION#' .env
 # Vor jedem Update ein Backup (nur wenn schon eine Datenbank läuft).

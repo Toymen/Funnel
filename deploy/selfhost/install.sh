@@ -1,15 +1,28 @@
 #!/usr/bin/env bash
-# Einmalige Einrichtung auf dem Raspberry Pi (Raspberry Pi OS Lite 64 Bit).
-# Aufruf auf dem Pi:  sudo bash install.sh
-# Installiert Docker, legt /opt/funnel an und erzeugt .env mit Zufalls-Secrets.
+# Einmalige Einrichtung auf dem Host – Raspberry Pi oder Workstation (Linux).
+# Aufruf auf dem Host:  sudo bash install.sh [pi|workstation]
+# Installiert Docker, legt /opt/funnel an und erzeugt .env mit Zufalls-Secrets
+# und den Ressourcen-Limits des Host-Profils. Ohne Argument wird das Profil aus
+# der Architektur geraten: aarch64 → pi, sonst workstation.
 set -euo pipefail
 
 APP_DIR="${APP_DIR:-/opt/funnel}"
 SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
 
-if [[ "$(uname -m)" != "aarch64" ]]; then
-  echo "Warnung: erwartet aarch64 (Raspberry Pi OS 64 Bit), gefunden: $(uname -m)" >&2
+case "$(uname -m)" in
+  aarch64 | arm64) default_profile=pi ;;
+  x86_64 | amd64) default_profile=workstation ;;
+  *)
+    echo "Nicht unterstützte Architektur: $(uname -m) (nur arm64 und amd64)" >&2
+    exit 1
+    ;;
+esac
+PROFILE="${1:-$default_profile}"
+if [[ ! -f "$SCRIPT_DIR/profile-$PROFILE.env" ]]; then
+  echo "Unbekanntes Profil '$PROFILE' – erlaubt: pi, workstation" >&2
+  exit 1
 fi
+echo "→ Host-Profil: $PROFILE"
 
 if ! command -v docker >/dev/null 2>&1; then
   echo "→ Docker installieren (offizielles Convenience-Skript)"
@@ -35,7 +48,7 @@ if [[ ! -f "$APP_DIR/.env" ]]; then
       line="${line//__GENERATE__/$(openssl rand -hex 32)}"
     fi
     printf '%s\n' "$line"
-  done < "$SCRIPT_DIR/env.example" > "$APP_DIR/.env"
+  done < <(cat "$SCRIPT_DIR/env.example"; echo; cat "$SCRIPT_DIR/profile-$PROFILE.env") > "$APP_DIR/.env"
   [[ -n "${SUDO_USER:-}" ]] && chown "$SUDO_USER:$SUDO_USER" "$APP_DIR/.env"
   echo "   Bitte HARLY_URL, HARLY_DOMAIN und HARLY_INITIAL_ADMIN_EMAIL in $APP_DIR/.env prüfen."
 else
@@ -51,4 +64,4 @@ if [[ -d /etc/systemd/system ]]; then
   echo "→ Backup-Timer aktiv: $(systemctl list-timers funnel-backup.timer --no-legend | head -1)"
 fi
 
-echo "Fertig. Nächster Schritt vom Mac/PC aus: deploy/raspberry-pi/deploy.sh"
+echo "Fertig. Nächster Schritt vom Mac/PC aus: DEPLOY_HOST=<user@host> deploy/selfhost/deploy.sh"
