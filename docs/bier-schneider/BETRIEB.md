@@ -1,14 +1,33 @@
-# Betrieb auf dem Raspberry Pi
+# Betrieb: Raspberry Pi oder Workstation
 
-Entwickelt wird auf dem Mac oder PC. Der Raspberry Pi **hostet nur**: Er lädt fertige
-`linux/arm64`-Images und startet sie. Auf dem Pi gibt es keinen Quellcode, kein Node und
-keinen Build.
+Entwickelt wird auf dem Mac oder PC. Der Host **hostet nur**: Er lädt fertige Images und
+startet sie. Auf dem Host gibt es keinen Quellcode, kein Node und keinen Build.
+
+Standard-Host ist ein Raspberry Pi 5. Wird er zu knapp, übernimmt eine Workstation mit
+denselben Containern (siehe [Workstation statt Pi](#workstation-statt-pi)).
 
 ```text
-Mac/PC ──git push──► GitHub (PR → CI → Merge) ──► GHCR ghcr.io/toymen/funnel:edge (arm64)
-   │                                                        │
-   └──── deploy/raspberry-pi/deploy.sh ──ssh──► Pi: docker compose pull && up -d
+Mac/PC ──git push──► GitHub (PR → CI → Merge) ──► GHCR ghcr.io/toymen/funnel:edge
+   │                                               (Multi-Arch: arm64 + amd64)
+   └──── deploy/selfhost/deploy.sh ──ssh──► Host: docker compose pull && up -d
 ```
+
+## Container
+
+Alles läuft als kleine, getrennte Container aus **einem** Image. Dienste mit demselben
+Image teilen sich die Layer auf der Platte.
+
+| Container   | Image                     | Aufgabe                                    |
+| ----------- | ------------------------- | ------------------------------------------ |
+| `app`       | `ghcr.io/toymen/funnel`   | Webseite und API (Next.js standalone)      |
+| `scheduler` | `ghcr.io/toymen/funnel`   | Hintergrundjobs, Löschfristen              |
+| `migrate`   | `ghcr.io/toymen/funnel`   | Datenbank-Migrationen, beendet sich danach |
+| `postgres`  | `postgres:16` (offiziell) | Datenbank                                  |
+| `caddy`     | `caddy:2` (offiziell)     | HTTPS, Profil `proxy`                      |
+
+Das App-Image nutzt den Next.js-Standalone-Output auf `node:22-bookworm-slim`, läuft als
+Benutzer `node` mit read-only Dateisystem und enthält kein npm. Die CI weist die
+Image-Größe bei jedem PR im Job-Summary aus.
 
 ## Hardware
 
@@ -31,12 +50,13 @@ und Backups automatisch auf der NVMe und nicht auf einer SD-Karte.
 
    ```bash
    git clone --depth 1 https://github.com/Toymen/Funnel /tmp/funnel
-   sudo bash /tmp/funnel/deploy/raspberry-pi/install.sh
+   sudo bash /tmp/funnel/deploy/selfhost/install.sh pi
    rm -rf /tmp/funnel
    ```
 
    Das Skript installiert Docker, legt `/opt/funnel` an, erzeugt `/opt/funnel/.env` mit
-   Zufalls-Secrets und aktiviert das tägliche Backup (03:15).
+   Zufalls-Secrets und den Limits aus `profile-pi.env` und aktiviert das tägliche Backup
+   (03:15).
 
 3. In `/opt/funnel/.env` die Werte `HARLY_URL`, `HARLY_DOMAIN` und
    `HARLY_INITIAL_ADMIN_EMAIL` anpassen.
@@ -53,8 +73,8 @@ und Backups automatisch auf der NVMe und nicht auf einer SD-Karte.
 ## Deployment (vom Mac/PC)
 
 ```bash
-PI_HOST=pi@bier-pi.local deploy/raspberry-pi/deploy.sh                # aktuelles main (edge)
-PI_HOST=pi@bier-pi.local deploy/raspberry-pi/deploy.sh ghcr.io/toymen/funnel:1.2.0
+DEPLOY_HOST=pi@bier-pi.local deploy/selfhost/deploy.sh                # aktuelles main (edge)
+DEPLOY_HOST=pi@bier-pi.local deploy/selfhost/deploy.sh ghcr.io/toymen/funnel:1.2.0
 ```
 
 Ablauf:
@@ -76,11 +96,13 @@ pnpm --filter @harly/db db:seed:bier-schneider
 
 ### Image lokal bauen (ohne GitHub Actions)
 
-Auf Apple Silicon läuft das nativ, auf einem x86-PC über QEMU (langsamer):
+Für den Pi `linux/arm64`, für eine x86-Workstation `linux/amd64`. Auf Apple Silicon ist
+arm64 nativ, auf einem x86-PC amd64 (die jeweils andere Architektur läuft über QEMU und
+ist langsamer):
 
 ```bash
-docker buildx build --platform linux/arm64 -t ghcr.io/toymen/funnel:local --push .
-PI_HOST=pi@bier-pi.local deploy/raspberry-pi/deploy.sh ghcr.io/toymen/funnel:local
+docker buildx build --platform linux/arm64,linux/amd64 -t ghcr.io/toymen/funnel:local --push .
+DEPLOY_HOST=pi@bier-pi.local deploy/selfhost/deploy.sh ghcr.io/toymen/funnel:local
 ```
 
 Ohne Registry geht es auch direkt per SSH:
@@ -103,7 +125,36 @@ Anschließend in der `.env` auf dem Pi `HARLY_IMAGE=funnel:local` setzen.
 | migrate       |     512 MB | läuft nur kurz beim Start              |
 | **Summe**     | **≈ 3 GB** | Rest für OS, Page-Cache, optionale KI  |
 
-Die Werte stehen in `.env` (`HARLY_*_MEMORY`) und lassen sich dort anpassen.
+Die Werte kommen aus `deploy/selfhost/profile-pi.env`, stehen danach in der `.env`
+(`HARLY_*_MEMORY`, `HARLY_*_CPUS`) und lassen sich dort anpassen.
+
+## Workstation statt Pi
+
+Dasselbe Image läuft auf jeder Linux-Workstation oder jedem Mini-Server mit Docker
+(amd64 oder arm64). Es ändern sich nur die Ressourcen-Limits.
+
+| Dienst    |    Pi 5 (8 GB) | Workstation (ab 16 GB) |
+| --------- | -------------: | ---------------------: |
+| app       | 1,5 GB / 2 CPU |           4 GB / 4 CPU |
+| postgres  |   1 GB / 1 CPU |           2 GB / 2 CPU |
+| scheduler |         256 MB |                 512 MB |
+| caddy     |         128 MB |                 256 MB |
+| migrate   |         512 MB |                   1 GB |
+
+Umzug in vier Schritten:
+
+1. Auf der Workstation: `sudo bash deploy/selfhost/install.sh workstation`
+   (ohne Argument wählt das Skript auf x86_64 automatisch `workstation`).
+2. Auf dem Pi ein letztes Backup ziehen (`./backup.sh`) und den Ordner auf die
+   Workstation kopieren.
+3. Auf der Workstation `./restore.sh backups/<ordner>` ausführen. Die `.env` aus dem
+   Backup übernimmt Secrets und Domain; nur den Block `HARLY_*_MEMORY/CPUS` durch
+   `profile-workstation.env` ersetzen.
+4. DNS bzw. Portweiterleitung auf die Workstation umstellen und deployen:
+   `DEPLOY_HOST=user@workstation deploy/selfhost/deploy.sh`.
+
+Zurück auf den Pi geht es genauso. Da beide Hosts dieselbe Image-Digest ziehen, laufen
+auf beiden exakt dieselben Container.
 
 ## Backups
 
@@ -112,7 +163,7 @@ Die Werte stehen in `.env` (`HARLY_*_MEMORY`) und lassen sich dort anpassen.
 - **Was:** Datenbank (`pg_dump`, custom format), Uploads-Volume, `.env`, `compose.yaml`,
   `Caddyfile` und Prüfsummen (`SHA256SUMS`)
 - **Wo:** `/opt/funnel/backups/JJJJ-MM-TT-HHMM/`, Aufbewahrung `BACKUP_KEEP_DAYS` (14 Tage)
-- **Kopie außerhalb des Pi:** `BACKUP_REMOTE=user@nas:/volume1/funnel` setzen, dann schreibt
+- **Kopie außerhalb des Hosts:** `BACKUP_REMOTE=user@nas:/volume1/funnel` setzen, dann schreibt
   das Skript per `rsync` dorthin. Die Backups enthalten Bewerberdaten und die `.env` mit
   Secrets. Das Ziel muss deshalb verschlüsselt und zugriffsbeschränkt sein.
 
