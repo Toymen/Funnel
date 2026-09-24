@@ -67,10 +67,10 @@ const truckDriverJobAr: QuickApplyJob = {
   payLabel: "من 3.100 € / شهريًا",
   hoursLabel: "الإثنين–الجمعة، 6–15",
   questions: [
-    { ...truckDriverJob.questions[0]!, label: "هل لديك رخصة قيادة من فئة CE؟" },
-    { ...truckDriverJob.questions[1]!, label: "هل تستطيع حمل صناديق المشروبات؟" },
+    { ...truckDriverJob.questions[0], label: "هل لديك رخصة قيادة من فئة CE؟" },
+    { ...truckDriverJob.questions[1], label: "هل تستطيع حمل صناديق المشروبات؟" },
     {
-      ...truckDriverJob.questions[2]!,
+      ...truckDriverJob.questions[2],
       label: "متى يمكنك أن تبدأ؟",
       options: [
         { value: "Sofort", label: "فورًا" },

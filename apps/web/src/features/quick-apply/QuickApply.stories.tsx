@@ -62,11 +62,11 @@ async function fillQuickFlow({ canvasElement, globals, step }: PlayContext, firs
     await userEvent.click(canvas.getByRole("button", { name: t.next }));
   });
   await step("Zwei Ja/Nein-Fragen und die Auswahlfrage", async () => {
-    await canvas.findByText(job.questions[0]!.label);
+    await canvas.findByText(job.questions[0].label);
     await userEvent.click(canvas.getByRole("button", { name: t.yes }));
-    await canvas.findByText(job.questions[1]!.label);
+    await canvas.findByText(job.questions[1].label);
     await userEvent.click(canvas.getByRole("button", { name: t.yes }));
-    await userEvent.click(await canvas.findByRole("button", { name: job.questions[2]!.options[0]!.label }));
+    await userEvent.click(await canvas.findByRole("button", { name: job.questions[2].options[0].label }));
   });
   await step("Datenschutz bestätigen", async () => {
     await userEvent.click(await canvas.findByRole("checkbox"));

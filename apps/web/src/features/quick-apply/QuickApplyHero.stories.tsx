@@ -2,6 +2,7 @@ import type { Decorator, Meta, StoryObj } from "@storybook/nextjs-vite";
 
 import { truckDriverJob, truckDriverJobFor } from "./fixtures";
 import { isQuickApplyLanguage } from "./languages";
+import { QUICK_APPLY_MESSAGES } from "./messages";
 import { QuickApplyHero } from "./QuickApplyHero";
 
 type Args = Omit<React.ComponentProps<typeof QuickApplyHero>, "language">;
@@ -11,7 +12,7 @@ const withJobPage: Decorator = (Story) => (
   <div className="bs-quick bs-jobpage">
     <Story />
     <div className="bs-jobpage__details" lang="de">
-      <p className="font-semibold">Mehr über die Stelle</p>
+      <p className="font-semibold">{QUICK_APPLY_MESSAGES.de.moreAboutJob}</p>
       <ul className="mt-2 list-disc ps-5">
         {truckDriverJob.highlights.map((h) => (
           <li key={h}>{h}</li>
@@ -58,7 +59,6 @@ export const Standard: Story = {};
 
 /** Ohne Kurzfakten und Beschreibung – nur Titel und Button. */
 export const OhneKurzfakten: Story = {
-  name: "Ohne Kurzfakten",
   args: { summary: null, payLabel: null, hoursLabel: null, location: null },
 };
 
