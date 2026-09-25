@@ -69,7 +69,7 @@ export function TrashJobActions({
         className="size-8 text-muted-foreground hover:text-destructive"
         onClick={() => setConfirmOpen(true)}
         disabled={isPending}
-        aria-label="Delete permanently"
+        aria-label="Endgültig löschen"
       >
         <Trash2 className="size-4" />
       </Button>
@@ -77,7 +77,7 @@ export function TrashJobActions({
       <Dialog open={confirmOpen} onOpenChange={setConfirmOpen}>
         <DialogContent>
           <DialogHeader>
-            <DialogTitle>Delete permanently?</DialogTitle>
+            <DialogTitle>Endgültig löschen?</DialogTitle>
             <DialogDescription>
               “{jobTitle}” will be removed for good. This can&apos;t be undone.
               Jobs with applications can&apos;t be deleted. Close them instead.
@@ -96,7 +96,7 @@ export function TrashJobActions({
               onClick={deleteForever}
               disabled={isPending}
             >
-              {isPending ? "Deleting…" : "Delete permanently"}
+              {isPending ? "Deleting…" : "Endgültig löschen"}
             </Button>
           </DialogFooter>
         </DialogContent>

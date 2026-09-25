@@ -19,19 +19,19 @@ import {
 
 const SECTION_TEMPLATES: Record<string, { title: string; body: string }[]> = {
   Engineering: [
-    { title: "What you'll do", body: "<ul><li>Ship features end to end</li><li>Collaborate on architecture</li></ul>" },
-    { title: "Requirements", body: "<ul><li>3+ years building web apps</li><li>Strong in TypeScript</li></ul>" },
-    { title: "Benefits", body: "<ul><li>Remote-first</li><li>Equity</li></ul>" },
+    { title: "Ihre Aufgaben", body: "<ul><li>Ship features end to end</li><li>Collaborate on architecture</li></ul>" },
+    { title: "Anforderungen", body: "<ul><li>3+ years building web apps</li><li>Strong in TypeScript</li></ul>" },
+    { title: "Vorteile", body: "<ul><li>Remote-first</li><li>Equity</li></ul>" },
   ],
   Sales: [
-    { title: "About the role", body: "<p>Own a pipeline and close deals.</p>" },
-    { title: "Requirements", body: "<ul><li>2+ years in B2B sales</li><li>CRM fluency</li></ul>" },
-    { title: "Compensation", body: "<p>Base + uncapped commission.</p>" },
+    { title: "Über die Stelle", body: "<p>Own a pipeline and close deals.</p>" },
+    { title: "Anforderungen", body: "<ul><li>2+ years in B2B sales</li><li>CRM fluency</li></ul>" },
+    { title: "Vergütung", body: "<p>Base + uncapped commission.</p>" },
   ],
   Generic: [
-    { title: "Responsibilities", body: "" },
-    { title: "Requirements", body: "" },
-    { title: "Benefits", body: "" },
+    { title: "Verantwortlichkeiten", body: "" },
+    { title: "Anforderungen", body: "" },
+    { title: "Vorteile", body: "" },
   ],
 };
 
@@ -108,7 +108,7 @@ export function DescriptionSection({
       const list = `<ul>${keywords.map((kw) => `<li>${escapeHtml(kw)}</li>`).join("")}</ul>`;
       const ri = base.findIndex((s) => /require/i.test(s.title));
       if (ri >= 0) base[ri] = { ...base[ri], body: list };
-      else base.push({ id: newSectionId(), title: "Requirements", body: list });
+      else base.push({ id: newSectionId(), title: "Anforderungen", body: list });
     }
 
     const roleName = title.trim() || "this role";
@@ -155,7 +155,7 @@ export function DescriptionSection({
     <section data-section="description">
       <div className="rounded-2xl border border-border/70 bg-card">
         <div className="flex items-center justify-between border-b px-5 py-3">
-          <p className="text-sm font-semibold">Description</p>
+          <p className="text-sm font-semibold">Beschreibung</p>
           <div className="flex items-center gap-2">
             <AiButton
               type="button"
@@ -178,7 +178,7 @@ export function DescriptionSection({
                 </Button>
               </DropdownMenuTrigger>
               <DropdownMenuContent align="end">
-                <DropdownMenuLabel>Replace with template</DropdownMenuLabel>
+                <DropdownMenuLabel>Durch Vorlage ersetzen</DropdownMenuLabel>
                 {Object.keys(SECTION_TEMPLATES).map((name) => (
                   <DropdownMenuItem
                     key={name}
@@ -194,7 +194,7 @@ export function DescriptionSection({
 
         <div className="space-y-5 p-5">
           <div className="space-y-2">
-            <Label>About the role</Label>
+            <Label>Über die Stelle</Label>
             <input type="hidden" name="description" value={description} />
             <RichTextEditor
               key={`description-${descriptionVersion}`}
@@ -211,7 +211,7 @@ export function DescriptionSection({
                 <Input
                   value={section.title}
                   onChange={(e) => updateSection(section.id, { title: e.target.value })}
-                  placeholder="Section title (e.g. Requirements)"
+                  placeholder="Abschnittstitel (z. B. Anforderungen)"
                   className="h-9 bg-card font-medium"
                 />
                 <Button
@@ -220,14 +220,14 @@ export function DescriptionSection({
                   size="icon"
                   className="size-8 shrink-0 text-muted-foreground hover:text-destructive"
                   onClick={() => removeSection(section.id)}
-                  aria-label="Remove section"
+                  aria-label="Abschnitt entfernen"
                 >
                   <Trash2 className="size-4" />
                 </Button>
               </div>
               <RichTextEditor
                 defaultValue={section.body}
-                placeholder="Write this section..."
+                placeholder="Diesen Abschnitt schreiben …"
                 minHeight="7rem"
                 onChange={(html) => updateSection(section.id, { body: html })}
               />

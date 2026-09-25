@@ -55,7 +55,7 @@ const SORT_LABELS: Record<string, string> = {
   recent: "Most recent",
   oldest: "Oldest",
   applicants: "Most applicants",
-  title: "Title A–Z",
+  title: "Titel A–Z",
 };
 
 export function JobsTable({ jobs }: { jobs: JobRow[] }) {
@@ -123,7 +123,7 @@ export function JobsTable({ jobs }: { jobs: JobRow[] }) {
         <Input
           value={query}
           onChange={(e) => setQuery(e.target.value)}
-          placeholder="Search jobs by title, department or location…"
+          placeholder="Stellen nach Titel, Abteilung oder Ort suchen …"
           className="h-11 rounded-full pl-11"
         />
       </div>
@@ -138,13 +138,13 @@ export function JobsTable({ jobs }: { jobs: JobRow[] }) {
           labelMap={STATUS_LABELS}
         />
         <FilterPill
-          label="Department"
+          label="Abteilung"
           value={dept}
           onChange={setDept}
           options={departments}
         />
         <FilterPill
-          label="Type"
+          label="Art"
           value={employment}
           onChange={setEmployment}
           options={EMPLOYMENT_OPTIONS}
@@ -153,7 +153,7 @@ export function JobsTable({ jobs }: { jobs: JobRow[] }) {
           )}
         />
         <FilterPill
-          label="Workplace"
+          label="Arbeitsort"
           value={workplace}
           onChange={setWorkplace}
           options={WORKPLACE_OPTIONS}
@@ -162,7 +162,7 @@ export function JobsTable({ jobs }: { jobs: JobRow[] }) {
           )}
         />
         <FilterPill
-          label="Sort"
+          label="Sortierung"
           value={sortKey}
           onChange={(v) => setSortKey(v as SortKey)}
           options={SORT_OPTIONS}

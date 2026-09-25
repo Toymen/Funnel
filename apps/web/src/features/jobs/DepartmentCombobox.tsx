@@ -75,7 +75,7 @@ export function DepartmentCombobox({
         >
           <Command>
             <CommandInput
-              placeholder="Search or create…"
+              placeholder="Suchen oder erstellen …"
               value={query}
               onValueChange={setQuery}
             />

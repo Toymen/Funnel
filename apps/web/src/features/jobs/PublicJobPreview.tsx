@@ -28,7 +28,7 @@ export function PublicJobPreview({ slug }: PublicJobPreviewProps) {
             variant={device === "desktop" ? "secondary" : "ghost"}
             size="icon"
             className="size-7"
-            aria-label="Desktop preview"
+            aria-label="Desktop-Vorschau"
             onClick={() => setDevice("desktop")}
           >
             <Monitor className="size-4" />
@@ -38,7 +38,7 @@ export function PublicJobPreview({ slug }: PublicJobPreviewProps) {
             variant={device === "mobile" ? "secondary" : "ghost"}
             size="icon"
             className="size-7"
-            aria-label="Mobile preview"
+            aria-label="Mobil-Vorschau"
             onClick={() => setDevice("mobile")}
           >
             <Smartphone className="size-4" />
@@ -48,7 +48,7 @@ export function PublicJobPreview({ slug }: PublicJobPreviewProps) {
             variant="ghost"
             size="icon"
             className="size-7"
-            aria-label="Refresh preview"
+            aria-label="Vorschau aktualisieren"
             onClick={() => setNonce((n) => n + 1)}
           >
             <RefreshCw className="size-4" />
@@ -59,7 +59,7 @@ export function PublicJobPreview({ slug }: PublicJobPreviewProps) {
         <iframe
           key={nonce}
           src={src}
-          title="Public job preview"
+          title="Öffentliche Stellenvorschau"
           className={cn(
             "h-[640px] rounded-lg border bg-white shadow-sm transition-all",
             device === "mobile" ? "w-[390px]" : "w-full",

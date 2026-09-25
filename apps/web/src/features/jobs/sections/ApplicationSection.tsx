@@ -17,18 +17,18 @@ const visibilityOptions: Array<{
 }> = [
   {
     value: "required",
-    label: "Required",
-    description: "Candidates must fill this field.",
+    label: "Erforderlich",
+    description: "Bewerbende müssen dieses Feld ausfüllen.",
   },
   {
     value: "optional",
     label: "Optional",
-    description: "Show it, but let candidates skip it.",
+    description: "Anzeigen, aber das Überspringen erlauben.",
   },
   {
     value: "disabled",
-    label: "Disabled",
-    description: "Hide it from the application form.",
+    label: "Deaktiviert",
+    description: "Im Bewerbungsformular ausblenden.",
   },
 ];
 
@@ -122,42 +122,42 @@ export function ApplicationSection({
   return (
     <div className="space-y-6">
       <FieldGroup
-        title="Personal information"
-        description="Name and email stay required. Configure the additional fields shown in the first section of the application form."
+        title="Persönliche Angaben"
+        description="Name und E-Mail bleiben erforderlich. Legen Sie die zusätzlichen Felder im ersten Abschnitt fest."
       >
         <VisibilityField
           name="applicationPhoneVisibility"
-          label="Phone"
+          label="Telefon"
           value={applicationConfig.sections.personal.phone}
         />
         <VisibilityField
           name="applicationAddressVisibility"
-          label="Address"
+          label="Adresse"
           value={applicationConfig.sections.personal.address}
         />
         <VisibilityField
           name="applicationPhotoVisibility"
-          label="Photo"
+          label="Foto"
           value={applicationConfig.sections.personal.photo}
-          description="Candidates can upload a profile photo."
+          description="Bewerbende können ein Profilfoto hochladen."
         />
         <VisibilityField
           name="applicationHeadlineVisibility"
-          label="Headline"
+          label="Kurzprofil"
           value={applicationConfig.sections.personal.headline}
-          description="Short professional title or summary."
+          description="Kurzer beruflicher Titel oder Zusammenfassung."
         />
       </FieldGroup>
 
       <FieldGroup
-        title="Profile"
-        description="Control resume and profile links."
+        title="Profil"
+        description="Lebenslauf und Profillinks festlegen."
       >
         <VisibilityField
           name="applicationResumeVisibility"
-          label="Resume / CV"
+          label="Lebenslauf"
           value={applicationConfig.sections.profile.resume}
-          description="Candidates can upload PDF, DOC, or DOCX."
+          description="Bewerbende können PDF-, DOC- oder DOCX-Dateien hochladen."
         />
         <VisibilityField
           name="applicationLinkedinVisibility"
@@ -171,34 +171,34 @@ export function ApplicationSection({
         />
         <VisibilityField
           name="applicationWebsiteVisibility"
-          label="Website / Portfolio"
+          label="Webseite / Portfolio"
           value={applicationConfig.sections.profile.websiteUrl}
         />
         <VisibilityField
           name="applicationEducationVisibility"
-          label="Education"
+          label="Ausbildung"
           value={applicationConfig.sections.profile.education}
-          description="Candidates can add one or more education entries."
+          description="Bewerbende können einen oder mehrere Ausbildungseinträge hinzufügen."
         />
         <VisibilityField
           name="applicationExperienceVisibility"
-          label="Experience"
+          label="Berufserfahrung"
           value={applicationConfig.sections.profile.experience}
-          description="Candidates can add one or more work experience entries."
+          description="Bewerbende können eine oder mehrere Berufserfahrungen hinzufügen."
         />
       </FieldGroup>
 
       <FieldGroup
         title="Details"
-        description="Additional written context and screening questions."
+        description="Zusätzliche Informationen und Fragen zur Vorauswahl."
       >
         <VisibilityField
           name="applicationCoverLetterVisibility"
-          label="Cover letter"
+          label="Anschreiben"
           value={applicationConfig.sections.details.coverLetter}
         />
         <div>
-          <h3 className="mb-3 text-sm font-semibold">Custom questions</h3>
+          <h3 className="mb-3 text-sm font-semibold">Eigene Fragen</h3>
           <JobQuestionBuilder
             initialQuestions={applicationConfig.questions}
             aiContext={aiContext}

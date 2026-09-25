@@ -10,9 +10,9 @@ import { updateJobStatusAction } from "./actions";
 import { Button } from "@/components/ui/button";
 
 const actionMeta: Record<string, { label: string; icon: typeof Send }> = {
-  draft: { label: "Move to draft", icon: FileEdit },
-  open: { label: "Publish", icon: Send },
-  closed: { label: "Close", icon: Archive },
+  draft: { label: "In Entwurf verschieben", icon: FileEdit },
+  open: { label: "Veröffentlichen", icon: Send },
+  closed: { label: "Schließen", icon: Archive },
 };
 
 const statusLabel: Record<string, string> = {
