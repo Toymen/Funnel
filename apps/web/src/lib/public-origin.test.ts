@@ -1,8 +1,20 @@
-import { describe, expect, it, vi } from "vitest";
+import { afterEach, describe, expect, it, vi } from "vitest";
 
 import { getEsignWebhookBaseUrl, getHarlyPublicOrigin } from "./public-origin";
 
 describe("public provider origin", () => {
+  afterEach(() => vi.unstubAllEnvs());
+
+  it("supports explicit loopback previews without allowing remote HTTP", () => {
+    vi.stubEnv("NODE_ENV", "production");
+    vi.stubEnv("HARLY_ALLOW_LOCAL_ORIGIN", "true");
+    vi.stubEnv("HARLY_URL", "http://localhost:3000");
+    expect(getHarlyPublicOrigin()).toBe("http://localhost:3000");
+    vi.stubEnv("HARLY_URL", "http://example.com");
+    expect(() => getHarlyPublicOrigin()).toThrow(/HTTPS/);
+    vi.stubEnv("HARLY_URL", "http://0.0.0.0:3000");
+    expect(() => getHarlyPublicOrigin()).toThrow(/reachable public hostname/);
+  });
   it("uses HARLY_URL and returns the origin only", () => {
     vi.stubEnv("NODE_ENV", "production");
     vi.stubEnv("HARLY_URL", "https://harly.example.com/ignored-path");
