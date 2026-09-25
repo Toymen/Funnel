@@ -45,8 +45,12 @@ export function getHarlyPublicOrigin(): string {
   if (url.protocol !== "http:" && url.protocol !== "https:") {
     throw new Error("HARLY_URL must use HTTP or HTTPS.");
   }
+  const isLocalPreview = process.env.HARLY_ALLOW_LOCAL_ORIGIN === "true" &&
+    (url.hostname === "localhost" || url.hostname === "[::1]" ||
+      /^127\.(?:0|[1-9]\d{0,2})\.(?:0|[1-9]\d{0,2})\.(?:0|[1-9]\d{0,2})$/.test(url.hostname));
   if (
     process.env.NODE_ENV === "production" &&
+    !isLocalPreview &&
     isUnsafeProductionHost(url.hostname)
   ) {
     if (process.env.NEXT_PHASE === "phase-production-build") {
@@ -57,7 +61,7 @@ export function getHarlyPublicOrigin(): string {
   if (url.username || url.password || url.search || url.hash) {
     throw new Error("HARLY_URL must be a public origin without credentials or query parameters.");
   }
-  if (process.env.NODE_ENV === "production" && url.protocol !== "https:") {
+  if (process.env.NODE_ENV === "production" && url.protocol !== "https:" && !isLocalPreview) {
     throw new Error("HARLY_URL must use HTTPS in production.");
   }
 

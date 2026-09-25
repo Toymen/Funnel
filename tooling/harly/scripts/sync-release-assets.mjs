@@ -101,7 +101,7 @@ const outputs = new Map([
 let stale = false;
 for (const [file, expected] of outputs) {
   const actual = await readFile(file, "utf8");
-  if (actual === expected) continue;
+  if (actual.replaceAll("\r\n", "\n") === expected.replaceAll("\r\n", "\n")) continue;
   stale = true;
   if (!check) await writeFile(file, expected);
   else

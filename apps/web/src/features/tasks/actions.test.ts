@@ -72,7 +72,10 @@ describe("Tasks actions , RBAC (F2-04 / readiness)", () => {
 
   it.each([
     ["createTask", () => createTask({ title: "T", ownerId: "u2" })],
-    ["updateTask", () => updateTask({ taskId: "x", title: "T2" })],
+    [
+      "updateTask",
+      () => updateTask({ taskId: "11111111-1111-4111-8111-111111111111", title: "T2" }),
+    ],
     ["deleteTask", () => deleteTask("x")],
   ])("%s requires tasks:write", async (_name, run) => {
     await run();

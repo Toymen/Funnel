@@ -301,8 +301,8 @@ function usage() {
   );
 }
 
-function unwrapPrompt<T>(value: T | symbol): T {
-  if (!p.isCancel(value)) return value;
+function unwrapPrompt<T>(value: T): Exclude<T, symbol> {
+  if (typeof value !== "symbol") return value as Exclude<T, symbol>;
   p.cancel("Installation cancelled.");
   throw new CliError("Operation cancelled.", 2, "CANCELLED");
 }

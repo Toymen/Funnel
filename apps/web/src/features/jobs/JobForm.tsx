@@ -1,5 +1,7 @@
 "use client";
 
+import { useRouter } from "next/navigation";
+
 import {
   useCallback,
   useEffect,
@@ -190,6 +192,7 @@ export function JobForm({
   previewWorkspace,
   previewConfig,
 }: JobFormProps) {
+  const router = useRouter();
   const formRef = useRef<HTMLFormElement>(null);
   const scrollRef = useRef<HTMLDivElement>(null);
   const applicationConfig = normalizeJobApplicationConfig(
@@ -318,7 +321,7 @@ export function JobForm({
 
   async function handleExit() {
     if (!(await confirmDiscard())) return;
-    window.location.href = "/dashboard/jobs";
+    router.push("/dashboard/jobs");
   }
 
   function jumpToSection(key: SectionKey) {

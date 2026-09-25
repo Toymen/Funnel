@@ -111,12 +111,7 @@ export function RoadProgress({
   // Der LKW „fährt“, solange die angezeigte Station noch nicht erreicht ist.
   const [settledStep, setSettledStep] = useState(step);
   const moving = !reduce && settledStep !== step;
-  const ratio = total <= 1 ? 1 : Math.min(step / (total - 1), 1);
-
-  useEffect(() => {
-    const id = window.setTimeout(() => setSettledStep(step), 650);
-    return () => window.clearTimeout(id);
-  }, [step]);
+  const ratio = total <= 1 ? 1 : Math.max(0, Math.min(step / (total - 1), 1));
 
   return (
     <div
@@ -148,20 +143,17 @@ export function RoadProgress({
         );
       })}
       <motion.div
-        className="absolute bottom-2 w-20"
+        className="absolute bottom-2 w-[calc(100%-5rem)]"
         style={rtl ? { right: 0 } : { left: 0 }}
         initial={false}
-        animate={
-          rtl
-            ? { right: `calc(${ratio * 100}% - ${ratio * 80}px)` }
-            : { left: `calc(${ratio * 100}% - ${ratio * 80}px)` }
-        }
+        animate={{ x: `${(rtl ? -1 : 1) * ratio * 100}%` }}
         transition={reduce ? { duration: 0 } : { type: "spring", stiffness: 90, damping: 16 }}
+        onAnimationComplete={() => setSettledStep(step)}
       >
         <motion.div
           animate={moving ? { y: [0, -1.5, 0, -1, 0] } : { y: 0 }}
           transition={{ duration: 0.6 }}
-          className={rtl ? "-scale-x-100" : undefined}
+          className={rtl ? "ml-auto w-20 -scale-x-100" : "w-20"}
         >
           <TruckSvg moving={moving} className="w-20" />
           {moving ? <Puffs /> : null}

@@ -30,8 +30,7 @@ export type QuickApplyErrorKey =
   | "errorUpload";
 
 export type QuickApplyResult =
-  | { ok: true; applicationId: string; uploadToken: string }
-  | { ok: false; error: QuickApplyErrorKey };
+  { ok: true; applicationId: string; uploadToken: string } | { ok: false; error: QuickApplyErrorKey };
 
 const MAX_FILE_SIZE = 10 * 1024 * 1024;
 const UPLOAD_WINDOW_MS = 60 * 60 * 1000;

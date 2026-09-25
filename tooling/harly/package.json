@@ -47,12 +47,12 @@
     "pack:check": "pnpm build && npm pack --dry-run"
   },
   "devDependencies": {
-    "@types/node": "^20",
-    "esbuild": "^0.27.7",
-    "typescript": "^6.0.3"
+    "@types/node": "24.13.5",
+    "esbuild": "0.28.2",
+    "typescript": "6.0.3"
   },
   "dependencies": {
-    "@clack/prompts": "^1.7.0",
-    "picocolors": "^1.1.1"
+    "@clack/prompts": "1.8.1",
+    "picocolors": "1.1.1"
   }
 }

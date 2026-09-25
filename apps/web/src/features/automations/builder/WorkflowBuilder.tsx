@@ -1,5 +1,7 @@
 "use client";
 
+import { useRouter } from "next/navigation";
+
 import { useCallback, useEffect, useMemo, useState, useTransition } from "react";
 import Link from "next/link";
 import type { Route } from "next";
@@ -85,6 +87,7 @@ export function WorkflowBuilder({
   builderData: { members: { id: string; name: string }[]; stageNames: string[]; candidates: { id: string; name: string; email: string }[] };
   isNew: boolean;
 }) {
+  const router = useRouter();
   const [draft, setDraft] = useState<WorkflowDraft>(() =>
     initial
       ? toDraft(initial)
@@ -131,7 +134,7 @@ export function WorkflowBuilder({
 
   async function handleExit() {
     if (!(await confirmDiscard())) return;
-    window.location.href = "/dashboard/automations";
+    router.push("/dashboard/automations");
   }
 
   function handleSave() {

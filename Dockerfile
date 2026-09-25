@@ -1,7 +1,7 @@
 # syntax=docker/dockerfile:1.7
-FROM node:22-bookworm-slim AS build
+FROM node:24.21.0-bookworm-slim AS build
 WORKDIR /src
-RUN corepack enable
+RUN npm install --global pnpm@12.4.2
 COPY package.json pnpm-lock.yaml pnpm-workspace.yaml turbo.json ./
 COPY apps/docs/package.json apps/docs/package.json
 COPY apps/marketing/package.json apps/marketing/package.json
@@ -15,7 +15,8 @@ COPY packages/storage/package.json packages/storage/package.json
 COPY packages/ui/package.json packages/ui/package.json
 COPY packages/validators/package.json packages/validators/package.json
 COPY tooling/harly/package.json tooling/harly/package.json
-RUN pnpm install --frozen-lockfile
+RUN --mount=type=cache,id=funnel-pnpm,target=/pnpm/store \
+    pnpm install --frozen-lockfile --store-dir /pnpm/store
 COPY . .
 ENV NEXT_TELEMETRY_DISABLED=1 \
     NODE_OPTIONS=--max-old-space-size=4096 \
@@ -30,9 +31,10 @@ ENV NEXT_TELEMETRY_DISABLED=1 \
     HARLY_INITIAL_ADMIN_EMAIL=owner@example.com
 RUN --mount=type=cache,id=harly-next-cache,target=/src/apps/web/.next/cache \
     pnpm --filter @harly/cli build && pnpm --filter web build
-RUN pnpm exec esbuild tooling/runtime/src/entrypoint.ts --bundle --platform=node --format=esm --target=node22 --outfile=/tmp/harly-runtime.mjs
+RUN pnpm exec esbuild tooling/runtime/src/entrypoint.ts --bundle --platform=node --format=esm --target=node24 --outfile=/tmp/harly-runtime.mjs
+RUN pnpm exec esbuild packages/db/scripts/seed-bier-schneider.ts --bundle --platform=node --format=cjs --target=node24 --outfile=/tmp/seed-bier-schneider.cjs
 
-FROM node:22-bookworm-slim AS runtime
+FROM node:24.21.0-bookworm-slim AS runtime
 ENV NODE_ENV=production \
     NEXT_TELEMETRY_DISABLED=1 \
     PORT=3000 \
@@ -49,6 +51,7 @@ COPY --from=build --chown=node:node /src/apps/web/.next/static/ /app/apps/web/.n
 COPY --from=build --chown=node:node /src/apps/web/public/ /app/apps/web/public/
 COPY --from=build --chown=node:node /src/packages/db/migrations/ /app/migrations/
 COPY --from=build --chown=node:node /tmp/harly-runtime.mjs /app/runtime.mjs
+COPY --from=build --chown=node:node /tmp/seed-bier-schneider.cjs /app/seed-bier-schneider.cjs
 RUN mkdir -p /data/uploads /app/apps/web/.next/cache \
     && chown -R node:node /data /app/apps/web/.next/cache
 USER node

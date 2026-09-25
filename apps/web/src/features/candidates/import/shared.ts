@@ -65,5 +65,5 @@ export function retryAfterMs(response: Response): number | null {
  * source while the structure and the cap value stay in lockstep.
  */
 export function capExceededMessage(term: "candidates" | "opportunities" = "candidates"): string {
-  return `This import exceeds ${IMPORT_MAX_CANDIDATES.toLocaleString()} ${term}. Contact support to run a staged migration.`;
+  return `This import exceeds ${IMPORT_MAX_CANDIDATES.toLocaleString("en-US")} ${term}. Contact support to run a staged migration.`;
 }

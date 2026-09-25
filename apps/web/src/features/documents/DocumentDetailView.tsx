@@ -996,7 +996,7 @@ export function DocumentDetailView({
                   document.mimeType !== "application/pdf"
                 }
                 onClick={() =>
-                  window.location.assign(
+                  router.push(
                     `/dashboard/documents/${document.id}/sign`,
                   )
                 }
