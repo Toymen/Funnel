@@ -70,7 +70,7 @@ export const EndstufeAbbrechen: Story = {
   name: "Endstufe braucht Bestätigung",
   play: async ({ canvasElement, args }) => {
     const canvas = within(canvasElement);
-    const confirm = window.confirm;
+    const confirm = window.confirm.bind(window);
     window.confirm = () => false;
     try {
       await userEvent.selectOptions(

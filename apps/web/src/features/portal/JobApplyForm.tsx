@@ -1,5 +1,7 @@
 "use client";
 
+import { useRouter } from "next/navigation";
+
 import { useState, useTransition, useRef } from "react";
 import { toast } from "@/lib/notification-island/toast";
 
@@ -24,6 +26,7 @@ export function JobApplyForm({
   jobId: string;
   questions: Question[];
 }) {
+  const router = useRouter();
   const [isPending, start] = useTransition();
   const [answers, setAnswers] = useState<Record<string, string>>({});
   const [resumeFile, setResumeFile] = useState<File | null>(null);
@@ -129,7 +132,7 @@ export function JobApplyForm({
         return;
       }
       toast.success("Application submitted!");
-      window.location.href = `/portal/applications/${result.applicationId}`;
+      router.push(`/portal/applications/${result.applicationId}`);
     });
   }
 
