@@ -104,12 +104,12 @@ export function BulkEmailDrawer({
                   Start from a template
                 </p>
                 {selectedTemplateId ? (
-                  <span className="text-xs text-muted-foreground">Loaded into this email</span>
+                  <span className="text-xs text-muted-foreground">In diese E-Mail übernommen</span>
                 ) : null}
               </div>
               <Select value={selectedTemplateId || undefined} onValueChange={applyTemplate}>
                 <SelectTrigger className="w-full">
-                  <SelectValue placeholder="Choose a template (optional)" />
+                  <SelectValue placeholder="Vorlage auswählen (optional)" />
                 </SelectTrigger>
                 <SelectContent>
                   {templates.map((template) => (

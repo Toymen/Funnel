@@ -57,17 +57,17 @@ const APPLICATION_SOURCE_META: Record<
   string,
   { label: string; icon: typeof Briefcase }
 > = {
-  public_form: { label: "Job board", icon: Briefcase },
-  csv_import: { label: "CSV import", icon: FileSpreadsheet },
-  referral: { label: "Referral", icon: Users },
+  public_form: { label: "Stellenbörse", icon: Briefcase },
+  csv_import: { label: "CSV-Import", icon: FileSpreadsheet },
+  referral: { label: "Empfehlung", icon: Users },
   linkedin: { label: "LinkedIn", icon: Briefcase },
-  career_page: { label: "Career page", icon: Globe },
-  agency: { label: "Agency", icon: Building },
-  direct_apply: { label: "Direct apply", icon: MousePointerClick },
-  internal: { label: "Internal", icon: UserPlus },
-  email: { label: "Email", icon: Mail },
-  event: { label: "Event", icon: Megaphone },
-  manual: { label: "Manual", icon: Upload },
+  career_page: { label: "Karriereseite", icon: Globe },
+  agency: { label: "Agentur", icon: Building },
+  direct_apply: { label: "Direktbewerbung", icon: MousePointerClick },
+  internal: { label: "Intern", icon: UserPlus },
+  email: { label: "E-Mail", icon: Mail },
+  event: { label: "Veranstaltung", icon: Megaphone },
+  manual: { label: "Manuell", icon: Upload },
 };
 
 function SectionLabel({
@@ -321,7 +321,7 @@ export function CandidateDetailsPanel({
         <div className="divide-y divide-border/70 border-t bg-card">
           <Section>
             <div className="flex flex-wrap items-baseline justify-between gap-2">
-              <SectionLabel>Resume</SectionLabel>
+              <SectionLabel>Lebenslauf</SectionLabel>
               <p className="text-xs text-muted-foreground">
                 {files.length} {files.length === 1 ? "file" : "files"}
               </p>
@@ -336,14 +336,14 @@ export function CandidateDetailsPanel({
           </Section>
 
           <Section hidden={!profileSummary}>
-            <SectionLabel>Profile summary</SectionLabel>
+            <SectionLabel>Profilzusammenfassung</SectionLabel>
             <p className="mt-3 max-w-4xl text-sm leading-6 text-foreground/85">
               {profileSummary}
             </p>
           </Section>
 
           <Section hidden={!summary || !resumeSummary || summary === resumeSummary}>
-            <SectionLabel>Resume summary</SectionLabel>
+            <SectionLabel>Zusammenfassung des Lebenslaufs</SectionLabel>
             <p className="mt-3 max-w-4xl text-sm leading-6 text-foreground/85">
               {resumeSummary}
             </p>
@@ -362,7 +362,7 @@ export function CandidateDetailsPanel({
             hidden={education.length === 0 && !educationFallback && experienceYears === null}
           >
             <div className="flex flex-wrap items-baseline justify-between gap-2">
-              <SectionLabel>Education</SectionLabel>
+              <SectionLabel>Ausbildung</SectionLabel>
               <ExperienceHeadline years={experienceYears} />
             </div>
             <div className="mt-4">
@@ -371,17 +371,17 @@ export function CandidateDetailsPanel({
           </Section>
 
           <Section hidden={skills.length === 0}>
-            <SectionLabel>Skills</SectionLabel>
+            <SectionLabel>Kenntnisse</SectionLabel>
             <div className="mt-4">
               <SkillsList skills={skills} />
             </div>
           </Section>
 
           <Section hidden={!hasContactDetails}>
-            <SectionLabel>Contact details</SectionLabel>
+            <SectionLabel>Kontaktdaten</SectionLabel>
             <dl className="mt-4 grid gap-x-6 gap-y-4 sm:grid-cols-[11rem_minmax(0,1fr)]">
               <DetailRow
-                label="Email"
+                label="E-Mail"
                 value={
                   <a
                     href={`mailto:${email}`}
@@ -394,7 +394,7 @@ export function CandidateDetailsPanel({
               />
               {phone ? (
                 <DetailRow
-                  label="Phone"
+                  label="Telefon"
                   value={
                     <a
                       href={`tel:${phone}`}
@@ -408,7 +408,7 @@ export function CandidateDetailsPanel({
               ) : null}
               {address ? (
                 <DetailRow
-                  label="Address"
+                  label="Adresse"
                   value={
                     <a
                       href={`https://maps.google.com/?q=${encodeURIComponent(address)}`}
@@ -456,7 +456,7 @@ export function CandidateDetailsPanel({
               ) : null}
               {websiteUrl ? (
                 <DetailRow
-                  label="Website"
+                  label="Webseite"
                   value={
                     <a
                       href={websiteUrl}

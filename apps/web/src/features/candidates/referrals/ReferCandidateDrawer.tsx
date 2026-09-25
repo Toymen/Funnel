@@ -98,7 +98,7 @@ export function ReferCandidateDrawer({
     >
       <div className="space-y-4">
         <div className="space-y-1.5">
-          <Label htmlFor="refer-candidate-referrer">Referred by</Label>
+          <Label htmlFor="refer-candidate-referrer">Empfohlen von</Label>
           <Select
             value={referredById}
             onValueChange={setReferredById}
@@ -121,13 +121,13 @@ export function ReferCandidateDrawer({
           </Select>
         </div>
         <div className="space-y-1.5">
-          <Label htmlFor="refer-candidate-job">Job (optional)</Label>
+          <Label htmlFor="refer-candidate-job">Stelle (optional)</Label>
           <Select value={jobId} onValueChange={setJobId}>
             <SelectTrigger id="refer-candidate-job" className="w-full">
               <SelectValue />
             </SelectTrigger>
             <SelectContent>
-              <SelectItem value={NO_JOB}>No specific job</SelectItem>
+              <SelectItem value={NO_JOB}>Keine bestimmte Stelle</SelectItem>
               {jobs.map((job) => (
                 <SelectItem key={job.id} value={job.id}>
                   {job.title}
@@ -137,13 +137,13 @@ export function ReferCandidateDrawer({
           </Select>
         </div>
         <div className="space-y-1.5">
-          <Label htmlFor="refer-candidate-note">Note (optional)</Label>
+          <Label htmlFor="refer-candidate-note">Notiz (optional)</Label>
           <Textarea
             id="refer-candidate-note"
             rows={3}
             value={note}
             onChange={(event) => setNote(event.target.value)}
-            placeholder="Why are they a good fit?"
+            placeholder="Warum passt diese Person gut?"
           />
         </div>
         {canAttributeToOthers ? (

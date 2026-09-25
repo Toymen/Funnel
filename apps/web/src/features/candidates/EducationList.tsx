@@ -54,7 +54,7 @@ export function EducationList({
             </div>
             <div>
               <p className="font-medium">
-                {[item.degree, item.field].filter(Boolean).join(" · ") || "Education"}
+                {[item.degree, item.field].filter(Boolean).join(" · ") || "Ausbildung"}
               </p>
               <p className="mt-0.5 text-sm text-muted-foreground">{item.school}</p>
               {isStructuredEntry(item) && item.description ? (

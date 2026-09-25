@@ -30,17 +30,17 @@ import {
 } from "@/features/interviews/shared";
 
 const TYPES = [
-  { key: "screening", label: "Screening" },
-  { key: "technical", label: "Technical" },
-  { key: "culture_fit", label: "Culture fit" },
-  { key: "onsite", label: "Onsite" },
-  { key: "final", label: "Final round" },
+  { key: "screening", label: "Vorauswahl" },
+  { key: "technical", label: "Fachgespräch" },
+  { key: "culture_fit", label: "Teamgespräch" },
+  { key: "onsite", label: "Vor Ort" },
+  { key: "final", label: "Abschlussrunde" },
 ] as const;
 
 const MODES = [
   { key: "video", label: "Video", icon: () => <span className="inline-block size-4 rounded bg-current/20" /> },
-  { key: "phone", label: "Phone", icon: () => <span className="inline-block size-4 rounded bg-current/20" /> },
-  { key: "onsite", label: "Onsite", icon: () => <span className="inline-block size-4 rounded bg-current/20" /> },
+  { key: "phone", label: "Telefon", icon: () => <span className="inline-block size-4 rounded bg-current/20" /> },
+  { key: "onsite", label: "Vor Ort", icon: () => <span className="inline-block size-4 rounded bg-current/20" /> },
 ] as const;
 
 type TypeKey = (typeof TYPES)[number]["key"];
@@ -78,7 +78,7 @@ export function EditInterviewDialog({
   const [availabilityWarning, setAvailabilityWarning] = useState<string | null>(null);
   const [checkingAvailability, setCheckingAvailability] = useState(false);
 
-  const locationLabel = mode === "onsite" ? "Address" : "Meeting link";
+  const locationLabel = mode === "onsite" ? "Adresse" : "Meeting link";
 
   async function checkTimeAvailability(
     newDate: string,
@@ -159,14 +159,14 @@ export function EditInterviewDialog({
       <DialogTrigger asChild>{trigger}</DialogTrigger>
       <DialogContent className="sm:max-w-2xl">
         <DialogHeader>
-          <DialogTitle>Edit interview</DialogTitle>
+          <DialogTitle>Gespräch bearbeiten</DialogTitle>
           <DialogDescription>
             Update details, change the interviewer, or reschedule.
           </DialogDescription>
         </DialogHeader>
 
         <div className="space-y-5">
-          <Field label="Title (optional)" htmlFor="edit-title">
+          <Field label="Titel (optional)" htmlFor="edit-title">
             <Input
               id="edit-title"
               value={title}
@@ -178,7 +178,7 @@ export function EditInterviewDialog({
           <div className="grid grid-cols-1 gap-5 sm:grid-cols-2">
             {/* Left column */}
             <div className="space-y-5">
-              <Field label="Type">
+              <Field label="Art">
                 <div className="grid grid-cols-3 gap-2">
                   {TYPES.map((t) => (
                     <SegButton
@@ -192,7 +192,7 @@ export function EditInterviewDialog({
                 </div>
               </Field>
 
-              <Field label="Mode">
+              <Field label="Format">
                 <div className="grid grid-cols-3 gap-2">
                   {MODES.map((m) => (
                     <SegButton
@@ -207,7 +207,7 @@ export function EditInterviewDialog({
               </Field>
 
               <div className="grid grid-cols-2 gap-3">
-                <Field label="Date" htmlFor="edit-date">
+                <Field label="Datum" htmlFor="edit-date">
                   <Input
                     id="edit-date"
                     type="date"
@@ -218,7 +218,7 @@ export function EditInterviewDialog({
                     }}
                   />
                 </Field>
-                <Field label="Time" htmlFor="edit-time">
+                <Field label="Uhrzeit" htmlFor="edit-time">
                   <Input
                     id="edit-time"
                     type="time"
@@ -267,12 +267,12 @@ export function EditInterviewDialog({
                 />
               </Field>
 
-              <Field label="Notes" htmlFor="edit-notes">
+              <Field label="Notizen" htmlFor="edit-notes">
                 <Textarea
                   id="edit-notes"
                   value={notes}
                   onChange={(e) => setNotes(e.target.value)}
-                  placeholder="Focus areas, panel, prep…"
+                  placeholder="Schwerpunkte, Teilnehmende, Vorbereitung …"
                   className="min-h-20"
                 />
               </Field>
@@ -286,7 +286,7 @@ export function EditInterviewDialog({
             </div>
           ) : null}
           {checkingAvailability ? (
-            <p className="text-xs text-muted-foreground">Checking availability…</p>
+            <p className="text-xs text-muted-foreground">Verfügbarkeit wird geprüft …</p>
           ) : null}
         </div>
 

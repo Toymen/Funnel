@@ -13,7 +13,7 @@ export function PipelineViewToggle({
   view: "board" | "list";
 }) {
   const items = [
-    { key: "list" as const, label: "List", icon: List },
+    { key: "list" as const, label: "Liste", icon: List },
     { key: "board" as const, label: "Board", icon: LayoutGrid },
   ];
   return (

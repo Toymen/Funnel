@@ -98,14 +98,14 @@ function uniqueSorted(values: (string | null)[]) {
 
 const CSV_HEADERS = [
   "Full name",
-  "Email",
-  "Phone",
+  "E-Mail",
+  "Telefon",
   "Location",
-  "Role",
-  "Department",
-  "Stage",
+  "Rolle",
+  "Abteilung",
+  "Phase",
   "Status",
-  "Source",
+  "Quelle",
   "Tags",
   "Applied at",
 ];
@@ -476,7 +476,7 @@ export function CandidatesTable({
             onKeyDown={(e) => {
               if (e.key === "Enter") navigateWithFilter("q", query.trim());
             }}
-            placeholder="Search candidates by name, email, role or location…"
+            placeholder="Bewerbende nach Name, E-Mail, Rolle oder Ort suchen …"
             className="h-11 rounded-full pl-11"
           />
         </div>
@@ -512,19 +512,19 @@ export function CandidatesTable({
       {/* Filter pills */}
       <div className="flex flex-wrap items-center gap-2">
         <FilterPill
-          label="Department"
+          label="Abteilung"
           value={dept}
           onChange={(value) => { setDept(value); navigateWithFilter("dept", value); }}
           options={departments}
         />
         <FilterPill
-          label="Job"
+          label="Stelle"
           value={role}
           onChange={(value) => { setRole(value); navigateWithFilter("role", value); }}
           options={roles}
         />
         <FilterPill
-          label="Stage"
+          label="Phase"
           value={stage}
           onChange={(value) => { setStage(value); navigateWithFilter("stage", value); }}
           options={stages}
@@ -535,15 +535,15 @@ export function CandidatesTable({
           onChange={(value) => { setStatus(value); navigateWithFilter("status", value); }}
           options={["active", "hired", "rejected", "withdrawn"]}
           labelMap={{
-            active: "Active",
-            hired: "Hired",
-            rejected: "Rejected",
-            withdrawn: "Withdrawn",
+            active: "Aktiv",
+            hired: "Eingestellt",
+            rejected: "Abgelehnt",
+            withdrawn: "Zurückgezogen",
           }}
         />
         {sources.length > 0 ? (
           <FilterPill
-            label="Source"
+            label="Quelle"
             value={source}
             onChange={(value) => { setSource(value); navigateWithFilter("source", value); }}
             options={sources}
@@ -551,14 +551,14 @@ export function CandidatesTable({
         ) : null}
         {tagOptions.length > 0 ? (
           <FilterPill
-            label="Tag"
+            label="Schlagwort"
             value={tag}
             onChange={(value) => { setTag(value); navigateWithFilter("tag", value); }}
             options={tagOptions}
           />
         ) : null}
         <FilterPill
-          label="Sort"
+          label="Sortierung"
           value={sortKey}
           onChange={(v) => { setSortKey(v as SortKey); navigateWithFilter("sort", v); }}
           options={["recent", "oldest", "modified", "name"]}
@@ -597,13 +597,13 @@ export function CandidatesTable({
               size="sm"
               disabled={pageInfo.page <= 1 || isPending}
               onClick={() => navigateWithFilter("page", String(pageInfo.page - 1))}
-            >Previous</Button>
+            >Zurück</Button>
             <Button
               variant="outline"
               size="sm"
               disabled={!pageInfo.hasNextPage || isPending}
               onClick={() => navigateWithFilter("page", String(pageInfo.page + 1))}
-            >Next</Button>
+            >Weiter</Button>
           </div>
         </div>
       ) : null}
@@ -678,7 +678,7 @@ export function CandidatesTable({
             <Checkbox
               checked={allVisibleSelected}
               onCheckedChange={toggleAll}
-              aria-label="Select all"
+              aria-label="Alle auswählen"
             />
             <span className="text-[11px] font-semibold uppercase tracking-[0.12em] text-muted-foreground">
               Candidate
@@ -759,7 +759,7 @@ export function CandidatesTable({
                         ) : null}
                         {row.hasOpenPrivacyRequest ? (
                           <span
-                            title="Has a pending privacy request awaiting review"
+                            title="Offene Datenschutzanfrage wartet auf Prüfung"
                             className="inline-flex items-center gap-1 rounded-full bg-clay/10 px-1.5 py-0.5 text-[11px] font-semibold text-clay"
                           >
                             <ShieldAlert className="size-3" />
@@ -853,7 +853,7 @@ export function CandidatesTable({
                 <EmptyState
                   variant="filtered"
                   icon={Search}
-                  title="Nobody matches these filters"
+                  title="Niemand entspricht diesen Filtern"
                   hint="Widen the search, or clear the filters to see everyone again."
                   action={
                     <Button variant="outline" size="sm" onClick={clearFilters}>
@@ -864,7 +864,7 @@ export function CandidatesTable({
               ) : (
                 <EmptyState
                   icon={Users}
-                  title="No candidates yet"
+                  title="Noch keine Bewerbenden"
                   hint="They arrive when someone applies through your career page, or you add one by hand."
                 />
               )

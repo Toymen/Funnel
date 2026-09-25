@@ -60,17 +60,17 @@ import { isPlaceholderEmail } from "@/features/quick-apply/schema";
 export const dynamic = "force-dynamic";
 
 const SOURCE_LABEL: Record<string, string> = {
-  public_form: "Job board",
-  csv_import: "CSV import",
-  referral: "Referral",
+  public_form: "Stellenbörse",
+  csv_import: "CSV-Import",
+  referral: "Empfehlung",
   linkedin: "LinkedIn",
-  career_page: "Career page",
-  agency: "Agency",
-  direct_apply: "Direct apply",
-  internal: "Internal",
-  email: "Email",
-  event: "Event",
-  manual: "Manual",
+  career_page: "Karriereseite",
+  agency: "Agentur",
+  direct_apply: "Direktbewerbung",
+  internal: "Intern",
+  email: "E-Mail",
+  event: "Veranstaltung",
+  manual: "Manuell",
 };
 
 const SOURCE_ICON: Record<string, ReactNode> = {

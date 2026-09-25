@@ -151,7 +151,7 @@ export function CandidateAvatarEdit({
           type="button"
           onClick={(e) => { e.stopPropagation(); inputRef.current?.click(); }}
           disabled={saving}
-          aria-label="Change avatar"
+          aria-label="Profilbild ändern"
           className="absolute bottom-0 right-0 flex size-7 items-center justify-center rounded-full border bg-card text-muted-foreground shadow-sm opacity-0 transition-all duration-150 ease-out group-hover:opacity-100 hover:bg-accent hover:text-foreground focus-visible:opacity-100 focus-visible:outline-none active:scale-[0.97]"
         >
           <Pencil className="size-3.5" strokeWidth={1.8} />
@@ -161,7 +161,7 @@ export function CandidateAvatarEdit({
             type="button"
             onClick={removeAvatar}
             disabled={saving}
-            aria-label="Remove avatar"
+            aria-label="Profilbild entfernen"
             className="absolute -right-1 -top-1 flex size-5 items-center justify-center rounded-full border bg-card text-muted-foreground shadow-sm opacity-0 transition-all duration-150 group-hover:opacity-100 hover:bg-destructive/10 hover:text-destructive"
           >
             <X className="size-3" />

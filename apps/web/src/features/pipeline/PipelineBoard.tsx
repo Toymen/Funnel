@@ -244,7 +244,7 @@ export function PipelineBoard({
     const found = findApplicationStage(columns, applicationId);
     return found
       ? `${found.application.candidateFirstName} ${found.application.candidateLastName}`
-      : "Candidate";
+      : "Bewerber";
   }
 
   function stageLabel(stageId: string) {
@@ -534,7 +534,7 @@ export function PipelineBoard({
             setSearchQuery(event.target.value);
             setSelectedIds(new Set());
           }}
-          placeholder="Search candidates…"
+          placeholder="Bewerbende suchen …"
           className="w-full pl-9 sm:w-48"
         />
       </div>
@@ -549,11 +549,11 @@ export function PipelineBoard({
           <SelectValue />
         </SelectTrigger>
         <SelectContent>
-          <SelectItem value="all">All statuses</SelectItem>
-          <SelectItem value="active">Active</SelectItem>
-          <SelectItem value="hired">Hired</SelectItem>
-          <SelectItem value="rejected">Rejected</SelectItem>
-          <SelectItem value="withdrawn">Withdrawn</SelectItem>
+          <SelectItem value="all">Alle Status</SelectItem>
+          <SelectItem value="active">Aktiv</SelectItem>
+          <SelectItem value="hired">Eingestellt</SelectItem>
+          <SelectItem value="rejected">Abgelehnt</SelectItem>
+          <SelectItem value="withdrawn">Zurückgezogen</SelectItem>
         </SelectContent>
       </Select>
       <label className="hidden items-center gap-2 rounded-md border bg-muted/40 px-3 py-1.5 text-sm font-medium text-muted-foreground sm:flex">

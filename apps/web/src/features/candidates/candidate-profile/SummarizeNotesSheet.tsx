@@ -23,10 +23,10 @@ const DECISION_META: Record<
   "strong_yes" | "yes" | "maybe" | "no",
   { label: string; className: string }
 > = {
-  strong_yes: { label: "Strong yes", className: "bg-primary/10 text-primary" },
-  yes: { label: "Yes", className: "bg-primary/10 text-primary" },
-  maybe: { label: "Maybe", className: "bg-clay/15 text-clay" },
-  no: { label: "No", className: "bg-destructive/10 text-destructive" },
+  strong_yes: { label: "Klare Empfehlung", className: "bg-primary/10 text-primary" },
+  yes: { label: "Ja", className: "bg-primary/10 text-primary" },
+  maybe: { label: "Vielleicht", className: "bg-clay/15 text-clay" },
+  no: { label: "Nein", className: "bg-destructive/10 text-destructive" },
 };
 
 export function SummarizeNotesSheet({

@@ -49,17 +49,17 @@ export type ScheduleMemberOption = {
 };
 
 const TYPES = [
-  { key: "screening", label: "Screening" },
-  { key: "technical", label: "Technical" },
-  { key: "culture_fit", label: "Culture fit" },
-  { key: "onsite", label: "Onsite" },
-  { key: "final", label: "Final round" },
+  { key: "screening", label: "Vorauswahl" },
+  { key: "technical", label: "Fachgespräch" },
+  { key: "culture_fit", label: "Teamgespräch" },
+  { key: "onsite", label: "Vor Ort" },
+  { key: "final", label: "Abschlussrunde" },
 ] as const;
 
 const MODES = [
   { key: "video", label: "Video", icon: Video },
-  { key: "phone", label: "Phone", icon: Phone },
-  { key: "onsite", label: "Onsite", icon: MapPin },
+  { key: "phone", label: "Telefon", icon: Phone },
+  { key: "onsite", label: "Vor Ort", icon: MapPin },
 ] as const;
 
 type TypeKey = (typeof TYPES)[number]["key"];
@@ -111,7 +111,7 @@ export function ScheduleDialog({
 
   const hasApplication = applications.length > 0;
   const hasCandidateEmail = candidateEmail.trim().length > 0;
-  const locationLabel = mode === "onsite" ? "Address" : "Meeting link";
+  const locationLabel = mode === "onsite" ? "Adresse" : "Meeting link";
 
   const calLinkAvailable = cal.enabled && Boolean(cal.bookingUrl);
 
@@ -291,7 +291,7 @@ export function ScheduleDialog({
               {/* Left column */}
               <div className="space-y-5">
                 {applications.length > 1 ? (
-                  <Field label="Role">
+                  <Field label="Rolle">
                     <Select value={applicationId} onValueChange={setApplicationId}>
                       <SelectTrigger className="w-full">
                         <SelectValue />
@@ -320,7 +320,7 @@ export function ScheduleDialog({
                   </p>
                 )}
 
-                <Field label="Type">
+                <Field label="Art">
                   <div className="grid grid-cols-3 gap-2">
                     {TYPES.map((t) => (
                       <SegButton
@@ -334,7 +334,7 @@ export function ScheduleDialog({
                   </div>
                 </Field>
 
-                <Field label="Mode">
+                <Field label="Format">
                   <div className="grid grid-cols-3 gap-2">
                     {MODES.map((m) => (
                       <SegButton
@@ -350,7 +350,7 @@ export function ScheduleDialog({
                 </Field>
 
                 <div className="grid grid-cols-2 gap-3">
-                  <Field label="Date" htmlFor="schedule-date">
+                  <Field label="Datum" htmlFor="schedule-date">
                     <Input
                       id="schedule-date"
                       type="date"
@@ -361,7 +361,7 @@ export function ScheduleDialog({
                       }}
                     />
                   </Field>
-                  <Field label="Time" htmlFor="schedule-time">
+                  <Field label="Uhrzeit" htmlFor="schedule-time">
                     <Input
                       id="schedule-time"
                       type="time"
@@ -410,12 +410,12 @@ export function ScheduleDialog({
                   />
                 </Field>
 
-                <Field label="Notes" htmlFor="schedule-notes">
+                <Field label="Notizen" htmlFor="schedule-notes">
                   <Textarea
                     id="schedule-notes"
                     value={notes}
                     onChange={(e) => setNotes(e.target.value)}
-                    placeholder="Focus areas, panel, prep…"
+                    placeholder="Schwerpunkte, Teilnehmende, Vorbereitung …"
                     className="min-h-20"
                   />
                 </Field>
@@ -429,7 +429,7 @@ export function ScheduleDialog({
               </div>
             ) : null}
             {checkingAvailability ? (
-              <p className="text-xs text-muted-foreground">Checking availability…</p>
+              <p className="text-xs text-muted-foreground">Verfügbarkeit wird geprüft …</p>
             ) : null}
 
             <label className="flex items-start gap-3 rounded-lg border bg-muted/20 px-3.5 py-3">

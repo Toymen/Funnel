@@ -79,7 +79,7 @@ export function ConversationThread({
                   )}
                 >
                   <span className="font-medium text-foreground/80">
-                    {inbound ? message.fromEmail ?? "Candidate" : "You"}
+                    {inbound ? message.fromEmail ?? "Bewerber" : "You"}
                   </span>
                   <RelativeTime value={message.createdAt} />
                 </div>

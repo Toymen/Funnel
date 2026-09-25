@@ -214,13 +214,13 @@ export function CandidateCard({
                 <Tooltip>
                   <TooltipTrigger asChild>
                     <span
-                      aria-label="Featured referral"
+                      aria-label="Hervorgehobene Empfehlung"
                       className="inline-flex shrink-0 items-center text-amber-600"
                     >
                       <Star className="size-3 fill-current" />
                     </span>
                   </TooltipTrigger>
-                  <TooltipContent>Featured referral</TooltipContent>
+                  <TooltipContent>Hervorgehobene Empfehlung</TooltipContent>
                 </Tooltip>
               ) : null}
               {application.status !== "active" ? (

@@ -58,7 +58,7 @@ export function DocumentsSection({
             <NotebookTabs className="size-4" />
           </span>
           <div>
-            <p className="text-sm font-medium">Documents</p>
+            <p className="text-sm font-medium">Dokumente</p>
             <p className="mt-1 text-xs leading-5 text-muted-foreground">
               Files on file, and anything still awaiting upload from the
               candidate. The Documents hub remains the source of truth.

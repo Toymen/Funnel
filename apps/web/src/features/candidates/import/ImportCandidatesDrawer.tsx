@@ -416,7 +416,7 @@ export function ImportCandidatesDrawer({
         ) : (
           <div className="space-y-5">
             <div className="space-y-2">
-              <Label htmlFor="import-job">Job</Label>
+              <Label htmlFor="import-job">Stelle</Label>
               <Select value={jobId} onValueChange={setJobId}>
                 <SelectTrigger id="import-job" className="w-full">
                   <SelectValue placeholder="Select a job" />
@@ -432,7 +432,7 @@ export function ImportCandidatesDrawer({
             </div>
 
             <div className="space-y-2">
-              <Label>Source</Label>
+              <Label>Quelle</Label>
               <div
                 role="radiogroup"
                 aria-label="Import source"

@@ -166,7 +166,7 @@ export function RescheduleDrawer({
             </div>
           ) : null}
           {checkingAvailability ? (
-            <p className="text-xs text-muted-foreground">Checking availability…</p>
+            <p className="text-xs text-muted-foreground">Verfügbarkeit wird geprüft …</p>
           ) : null}
 
           <div className="space-y-2">

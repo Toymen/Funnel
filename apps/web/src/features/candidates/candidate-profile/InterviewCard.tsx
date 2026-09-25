@@ -177,7 +177,7 @@ export function InterviewCard({
                   <Button
                     size="sm"
                     variant="ghost"
-                    aria-label="Edit interview"
+                    aria-label="Gespräch bearbeiten"
                     className="size-8 p-0 text-muted-foreground hover:text-foreground"
                   >
                     <Pencil className="size-4" />
