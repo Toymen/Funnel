@@ -28,6 +28,7 @@ import {
   getBrowserTimeZone,
   parseScheduledAt,
 } from "@/features/interviews/shared";
+import { useAdminI18n } from "@/features/i18n/admin-i18n";
 
 const TYPES = [
   { key: "screening", label: "Screening" },
@@ -58,6 +59,7 @@ export function EditInterviewDialog({
   currentUserId?: string;
   trigger: ReactNode;
 }) {
+  const { t } = useAdminI18n();
   const router = useRouter();
   const [open, setOpen] = useState(false);
 
@@ -78,7 +80,7 @@ export function EditInterviewDialog({
   const [availabilityWarning, setAvailabilityWarning] = useState<string | null>(null);
   const [checkingAvailability, setCheckingAvailability] = useState(false);
 
-  const locationLabel = mode === "onsite" ? "Address" : "Meeting link";
+  const locationLabel = mode === "onsite" ? t("Address") : t("Meeting link");
 
   async function checkTimeAvailability(
     newDate: string,
@@ -159,14 +161,14 @@ export function EditInterviewDialog({
       <DialogTrigger asChild>{trigger}</DialogTrigger>
       <DialogContent className="sm:max-w-2xl">
         <DialogHeader>
-          <DialogTitle>Edit interview</DialogTitle>
+          <DialogTitle>{t("Edit interview")}</DialogTitle>
           <DialogDescription>
             Update details, change the interviewer, or reschedule.
           </DialogDescription>
         </DialogHeader>
 
         <div className="space-y-5">
-          <Field label="Title (optional)" htmlFor="edit-title">
+          <Field label={t("Title (optional)")} htmlFor="edit-title">
             <Input
               id="edit-title"
               value={title}
@@ -178,21 +180,21 @@ export function EditInterviewDialog({
           <div className="grid grid-cols-1 gap-5 sm:grid-cols-2">
             {/* Left column */}
             <div className="space-y-5">
-              <Field label="Type">
+              <Field label={t("Type")}>
                 <div className="grid grid-cols-3 gap-2">
-                  {TYPES.map((t) => (
+                  {TYPES.map((option) => (
                     <SegButton
-                      key={t.key}
-                      active={type === t.key}
-                      onClick={() => setType(t.key)}
+                      key={option.key}
+                      active={type === option.key}
+                      onClick={() => setType(option.key)}
                     >
-                      {t.label}
+                      {t(option.label)}
                     </SegButton>
                   ))}
                 </div>
               </Field>
 
-              <Field label="Mode">
+              <Field label={t("Mode")}>
                 <div className="grid grid-cols-3 gap-2">
                   {MODES.map((m) => (
                     <SegButton
@@ -200,14 +202,14 @@ export function EditInterviewDialog({
                       active={mode === m.key}
                       onClick={() => setMode(m.key)}
                     >
-                      {m.label}
+                      {t(m.label)}
                     </SegButton>
                   ))}
                 </div>
               </Field>
 
               <div className="grid grid-cols-2 gap-3">
-                <Field label="Date" htmlFor="edit-date">
+                <Field label={t("Date")} htmlFor="edit-date">
                   <Input
                     id="edit-date"
                     type="date"
@@ -218,7 +220,7 @@ export function EditInterviewDialog({
                     }}
                   />
                 </Field>
-                <Field label="Time" htmlFor="edit-time">
+                <Field label={t("Time")} htmlFor="edit-time">
                   <Input
                     id="edit-time"
                     type="time"
@@ -267,12 +269,12 @@ export function EditInterviewDialog({
                 />
               </Field>
 
-              <Field label="Notes" htmlFor="edit-notes">
+              <Field label={t("Notes")} htmlFor="edit-notes">
                 <Textarea
                   id="edit-notes"
                   value={notes}
                   onChange={(e) => setNotes(e.target.value)}
-                  placeholder="Focus areas, panel, prep…"
+                  placeholder={t("Focus areas, panel, prep…")}
                   className="min-h-20"
                 />
               </Field>
@@ -286,7 +288,7 @@ export function EditInterviewDialog({
             </div>
           ) : null}
           {checkingAvailability ? (
-            <p className="text-xs text-muted-foreground">Checking availability…</p>
+            <p className="text-xs text-muted-foreground">{t("Checking availability…")}</p>
           ) : null}
         </div>
 

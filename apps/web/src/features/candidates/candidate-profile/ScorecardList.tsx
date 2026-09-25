@@ -5,6 +5,7 @@ import { RelativeTime } from "@/lib/date-hydration";
 import { cn } from "@/lib/utils";
 
 import type { Scorecard } from "./types";
+import { useAdminI18n } from "@/features/i18n/admin-i18n";
 
 const RATING_META = {
   strong: {
@@ -28,6 +29,7 @@ const RATING_META = {
 } as const;
 
 export function ScorecardList({ scorecards }: { scorecards: Scorecard[] }) {
+  const { t } = useAdminI18n();
   return (
     <div className="space-y-3 duration-300 animate-in fade-in slide-in-from-bottom-1">
       {scorecards.map((scorecard) => {
@@ -50,7 +52,7 @@ export function ScorecardList({ scorecards }: { scorecards: Scorecard[] }) {
                   )}
                 >
                   <meta.icon className="size-4" strokeWidth={2} />
-                  {meta.label}
+                  {t(meta.label)}
                 </span>
                 {scorecard.stageName ? (
                   <Badge variant="neutral">{scorecard.stageName}</Badge>

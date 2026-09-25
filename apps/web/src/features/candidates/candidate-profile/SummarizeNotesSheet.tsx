@@ -17,6 +17,7 @@ import {
 } from "@/features/interviews/shared";
 import type { InterviewNotesSummary } from "@/lib/ai/schemas";
 import { cn } from "@/lib/utils";
+import { useAdminI18n } from "@/features/i18n/admin-i18n";
 
 /** Mirrors AiScoreCard so a suggested decision reads the same everywhere. */
 const DECISION_META: Record<
@@ -40,6 +41,7 @@ export function SummarizeNotesSheet({
   workspaceId: string;
   trigger: React.ReactNode;
 }) {
+  const { t } = useAdminI18n();
   const router = useRouter();
   const [open, setOpen] = useState(false);
   const [isPending, startTransition] = useTransition();
@@ -184,8 +186,10 @@ export function SummarizeNotesSheet({
                     DECISION_META[summary.suggestedDecision]?.className,
                   )}
                 >
-                  {DECISION_META[summary.suggestedDecision]?.label ??
-                    summary.suggestedDecision}
+                  {t(
+                    DECISION_META[summary.suggestedDecision]?.label ??
+                      summary.suggestedDecision,
+                  )}
                 </span>
               </div>
 

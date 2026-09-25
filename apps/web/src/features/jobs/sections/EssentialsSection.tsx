@@ -10,6 +10,7 @@ import {
   SelectTrigger,
   SelectValue,
 } from "@/components/ui/select";
+import { useAdminI18n } from "@/features/i18n/admin-i18n";
 
 const employmentTypes = [
   { value: "full_time", label: "Full-time" },
@@ -43,12 +44,13 @@ export function EssentialsSection({
   workplace: string;
   setWorkplace: (value: string) => void;
 }) {
+  const { t } = useAdminI18n();
   return (
     <section data-section="essentials" className="space-y-4">
       <div className="grid gap-4 sm:grid-cols-2">
         <FieldBox
           className="sm:col-span-2"
-          label="Job name"
+          label={t("Job name")}
           htmlFor="title"
           required
           error={titleError ? "Add a job title (at least 3 characters) to continue." : undefined}
@@ -67,7 +69,7 @@ export function EssentialsSection({
           />
         </FieldBox>
 
-        <FieldBox label="Department">
+        <FieldBox label={t("Department")}>
           <DepartmentCombobox
             name="department"
             departments={departments}
@@ -76,7 +78,7 @@ export function EssentialsSection({
           />
         </FieldBox>
 
-        <FieldBox label="Country code for search" htmlFor="jobLocationCountry">
+        <FieldBox label={t("Country code for search")} htmlFor="jobLocationCountry">
           <Input
             id="jobLocationCountry"
             name="jobLocationCountry"
@@ -87,7 +89,7 @@ export function EssentialsSection({
           />
         </FieldBox>
 
-        <FieldBox label="State or region" htmlFor="jobLocationRegion">
+        <FieldBox label={t("State or region")} htmlFor="jobLocationRegion">
           <Input
             id="jobLocationRegion"
             name="jobLocationRegion"
@@ -97,7 +99,7 @@ export function EssentialsSection({
           />
         </FieldBox>
 
-        <FieldBox label="Location" htmlFor="location" hint="Shown on your public posting.">
+        <FieldBox label={t("Location")} htmlFor="location" hint={t("Shown on your public posting.")}>
           <Input
             id="location"
             name="location"
@@ -107,7 +109,7 @@ export function EssentialsSection({
           />
         </FieldBox>
 
-        <FieldBox label="Employment type" htmlFor="employmentType">
+        <FieldBox label={t("Employment type")} htmlFor="employmentType">
           <Select name="employmentType" defaultValue={job?.employmentType ?? "full_time"}>
             <SelectTrigger id="employmentType" className={fieldBoxSelectTriggerClassName}>
               <SelectValue />
@@ -115,14 +117,14 @@ export function EssentialsSection({
             <SelectContent>
               {employmentTypes.map((o) => (
                 <SelectItem key={o.value} value={o.value}>
-                  {o.label}
+                  {t(o.label)}
                 </SelectItem>
               ))}
             </SelectContent>
           </Select>
         </FieldBox>
 
-        <FieldBox label="Workplace type" htmlFor="workplaceType">
+        <FieldBox label={t("Workplace type")} htmlFor="workplaceType">
           <Select name="workplaceType" value={workplace} onValueChange={setWorkplace}>
             <SelectTrigger id="workplaceType" className={fieldBoxSelectTriggerClassName}>
               <SelectValue />
@@ -130,7 +132,7 @@ export function EssentialsSection({
             <SelectContent>
               {workplaceTypes.map((o) => (
                 <SelectItem key={o.value} value={o.value}>
-                  {o.label}
+                  {t(o.label)}
                 </SelectItem>
               ))}
             </SelectContent>
@@ -140,7 +142,7 @@ export function EssentialsSection({
 
       {workplace === "remote" ? (
         <FieldBox
-          label="Eligible remote countries"
+          label={t("Eligible remote countries")}
           htmlFor="remoteEligibleCountries"
           hint="Leave empty for worldwide."
         >
@@ -154,7 +156,7 @@ export function EssentialsSection({
         </FieldBox>
       ) : null}
 
-      <FieldBox label="Posting expires" htmlFor="validThrough">
+      <FieldBox label={t("Posting expires")} htmlFor="validThrough">
         <Input
           id="validThrough"
           name="validThrough"

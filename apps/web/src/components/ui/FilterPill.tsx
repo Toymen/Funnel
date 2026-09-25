@@ -1,3 +1,4 @@
+import { useAdminI18n } from "@/features/i18n/admin-i18n";
 import { cn } from "@/lib/utils";
 import {
   Select,
@@ -29,9 +30,11 @@ export function FilterPill({
   labelMap?: Record<string, string>;
   allValue?: string;
 }) {
+  const { t } = useAdminI18n();
   const neutral = allValue ?? FILTER_ALL;
   const active = value !== neutral;
-  const display = value === FILTER_ALL ? "All" : (labelMap?.[value] ?? value);
+  const display =
+    value === FILTER_ALL ? t("All") : t(labelMap?.[value] ?? value);
 
   return (
     <Select value={value} onValueChange={onChange}>
@@ -51,10 +54,10 @@ export function FilterPill({
         </span>
       </SelectTrigger>
       <SelectContent position="popper" align="start" className="max-h-60">
-        {allValue === undefined ? <SelectItem value={FILTER_ALL}>All</SelectItem> : null}
+        {allValue === undefined ? <SelectItem value={FILTER_ALL}>{t("All")}</SelectItem> : null}
         {options.map((opt) => (
           <SelectItem key={opt} value={opt}>
-            {labelMap?.[opt] ?? opt}
+            {t(labelMap?.[opt] ?? opt)}
           </SelectItem>
         ))}
       </SelectContent>

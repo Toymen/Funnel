@@ -22,6 +22,7 @@ import {
 } from "@/components/ui/select";
 import { Sheet, SheetClose, SheetTrigger } from "@/components/ui/sheet";
 import { Textarea } from "@/components/ui/textarea";
+import { useAdminI18n } from "@/features/i18n/admin-i18n";
 
 const NO_JOB = "__none__";
 
@@ -36,6 +37,7 @@ export function AddCandidateDrawer({
   members: WorkspaceMemberOption[];
   currentUserId: string;
 }) {
+  const { t } = useAdminI18n();
   const router = useRouter();
   const [open, setOpen] = useState(false);
   const [isPending, startTransition] = useTransition();
@@ -96,12 +98,12 @@ export function AddCandidateDrawer({
       <SheetTrigger asChild>
         <Button variant="outline" size="sm" className="h-11 rounded-lg">
           <UserPlus className="size-4" />
-          Add candidate
+          {t("Add candidate")}
         </Button>
       </SheetTrigger>
       <DrawerLayout
-        title="Add candidate"
-        description="Create a candidate manually, and optionally credit whoever recommended them."
+        title={t("Add candidate")}
+        description={t("Create a candidate manually, and optionally credit whoever recommended them.")}
         footer={
           <>
             <SheetClose asChild>
@@ -117,18 +119,18 @@ export function AddCandidateDrawer({
       >
         <form id="add-candidate-form" className="space-y-4" action={submit}>
           <div className="grid grid-cols-2 gap-3">
-            <Field name="firstName" label="First name" required />
-            <Field name="lastName" label="Last name" required />
+            <Field name="firstName" label={t("First name")} required />
+            <Field name="lastName" label={t("Last name")} required />
           </div>
-          <Field name="email" label="Email" type="email" required />
-          <Field name="headline" label="Headline" />
+          <Field name="email" label={t("Email")} type="email" required />
+          <Field name="headline" label={t("Headline")} />
           <div className="grid grid-cols-2 gap-3">
-            <Field name="phone" label="Phone" />
-            <Field name="address" label="Address" />
+            <Field name="phone" label={t("Phone")} />
+            <Field name="address" label={t("Address")} />
           </div>
           <Field name="linkedinUrl" label="LinkedIn" type="url" placeholder="https://linkedin.com/in/…" />
           <Field name="githubUrl" label="GitHub" type="url" placeholder="https://github.com/…" />
-          <Field name="websiteUrl" label="Website" type="url" placeholder="https://yoursite.com" />
+          <Field name="websiteUrl" label={t("Website")} type="url" placeholder="https://yoursite.com" />
 
           <div className="rounded-lg border bg-muted/20 p-4">
             <label className="flex items-center gap-2 text-sm font-medium">
@@ -141,7 +143,7 @@ export function AddCandidateDrawer({
             {referring ? (
               <div className="mt-3 space-y-3">
                 <div className="space-y-1.5">
-                  <Label htmlFor="add-candidate-referrer">Referred by</Label>
+                  <Label htmlFor="add-candidate-referrer">{t("Referred by")}</Label>
                   <Select value={referredById} onValueChange={setReferredById}>
                     <SelectTrigger id="add-candidate-referrer" className="w-full">
                       <SelectValue />
@@ -156,13 +158,13 @@ export function AddCandidateDrawer({
                   </Select>
                 </div>
                 <div className="space-y-1.5">
-                  <Label htmlFor="add-candidate-job">Job (optional)</Label>
+                  <Label htmlFor="add-candidate-job">{t("Job (optional)")}</Label>
                   <Select value={jobId} onValueChange={setJobId}>
                     <SelectTrigger id="add-candidate-job" className="w-full">
                       <SelectValue />
                     </SelectTrigger>
                     <SelectContent>
-                      <SelectItem value={NO_JOB}>No specific job</SelectItem>
+                      <SelectItem value={NO_JOB}>{t("No specific job")}</SelectItem>
                       {jobs.map((job) => (
                         <SelectItem key={job.id} value={job.id}>
                           {job.title}
@@ -172,12 +174,12 @@ export function AddCandidateDrawer({
                   </Select>
                 </div>
                 <div className="space-y-1.5">
-                  <Label htmlFor="add-candidate-referral-note">Note (optional)</Label>
+                  <Label htmlFor="add-candidate-referral-note">{t("Note (optional)")}</Label>
                   <Textarea
                     id="add-candidate-referral-note"
                     name="referralNote"
                     rows={3}
-                    placeholder="Why are they a good fit?"
+                    placeholder={t("Why are they a good fit?")}
                   />
                 </div>
                 <label className="flex items-center gap-2 text-sm">

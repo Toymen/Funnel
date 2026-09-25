@@ -21,6 +21,7 @@ import {
   getBrowserTimeZone,
   parseScheduledAt,
 } from "@/features/interviews/shared";
+import { useAdminI18n } from "@/features/i18n/admin-i18n";
 
 const DURATIONS = [30, 45, 60, 90] as const;
 
@@ -38,6 +39,7 @@ export function RescheduleDrawer({
   currentLocation: string | null;
   trigger: ReactNode;
 }) {
+  const { t } = useAdminI18n();
   const router = useRouter();
   const [open, setOpen] = useState(false);
 
@@ -166,7 +168,7 @@ export function RescheduleDrawer({
             </div>
           ) : null}
           {checkingAvailability ? (
-            <p className="text-xs text-muted-foreground">Checking availability…</p>
+            <p className="text-xs text-muted-foreground">{t("Checking availability…")}</p>
           ) : null}
 
           <div className="space-y-2">

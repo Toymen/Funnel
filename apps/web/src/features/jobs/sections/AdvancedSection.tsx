@@ -18,6 +18,7 @@ import {
   SelectTrigger,
   SelectValue,
 } from "@/components/ui/select";
+import { useAdminI18n } from "@/features/i18n/admin-i18n";
 
 export function AdvancedSection({
   job,
@@ -34,6 +35,7 @@ export function AdvancedSection({
   photos: string[];
   setPhotos: React.Dispatch<React.SetStateAction<string[]>>;
 }) {
+  const { t } = useAdminI18n();
   const [keywordDraft, setKeywordDraft] = useState("");
   const [photoDraft, setPhotoDraft] = useState("");
   const [office, setOffice] = useState(job?.officeAddress ?? "");
@@ -64,7 +66,7 @@ export function AdvancedSection({
       <div className="grid gap-5 sm:grid-cols-2">
         <FieldBox
           className="sm:col-span-2"
-          label="Public slug"
+          label={t("Public slug")}
           htmlFor="slug"
           hint="Leave blank to generate from the title."
         >
@@ -77,7 +79,7 @@ export function AdvancedSection({
           />
         </FieldBox>
 
-        <FieldBox label="Experience" htmlFor="experienceLevel">
+        <FieldBox label={t("Experience")} htmlFor="experienceLevel">
           <Input
             id="experienceLevel"
             name="experienceLevel"
@@ -87,7 +89,7 @@ export function AdvancedSection({
           />
         </FieldBox>
 
-        <FieldBox label="Education" htmlFor="education">
+        <FieldBox label={t("Education")} htmlFor="education">
           <Input
             id="education"
             name="education"
@@ -99,7 +101,7 @@ export function AdvancedSection({
 
         <FieldBox
           className="sm:col-span-2"
-          label="AI evaluation style"
+          label={t("AI evaluation style")}
           htmlFor="evaluationMode"
           hint="Controls how strictly missing or teachable requirements affect recommendations."
         >
@@ -111,9 +113,9 @@ export function AdvancedSection({
               <SelectValue />
             </SelectTrigger>
             <SelectContent>
-              <SelectItem value="relaxed">Relaxed · transferable skills</SelectItem>
-              <SelectItem value="balanced">Balanced · recommended</SelectItem>
-              <SelectItem value="strict">Strict · hard requirements</SelectItem>
+              <SelectItem value="relaxed">{t("Relaxed · transferable skills")}</SelectItem>
+              <SelectItem value="balanced">{t("Balanced · recommended")}</SelectItem>
+              <SelectItem value="strict">{t("Strict · hard requirements")}</SelectItem>
             </SelectContent>
           </Select>
         </FieldBox>
@@ -121,12 +123,12 @@ export function AdvancedSection({
 
       {/* Keywords */}
       <div className="space-y-3">
-        <Label>Keywords</Label>
+        <Label>{t("Keywords")}</Label>
         <p className="text-xs text-muted-foreground">
           Tags that help candidates and search find this role.
         </p>
         <div className="flex gap-2">
-          <FieldBox className="flex-1" label="Add a keyword">
+          <FieldBox className="flex-1" label={t("Add a keyword")}>
             <Input
               value={keywordDraft}
               onChange={(e) => setKeywordDraft(e.target.value)}
@@ -170,7 +172,7 @@ export function AdvancedSection({
       {showOffice ? (
         <div className="space-y-4 rounded-xl border bg-muted/20 p-4">
           <FieldBox
-            label="Office address"
+            label={t("Office address")}
             htmlFor="officeAddress"
             hint={
               <>
@@ -192,16 +194,16 @@ export function AdvancedSection({
             <iframe
               key={mapSrc}
               src={mapSrc}
-              title="Office location"
+              title={t("Office location")}
               className="h-48 w-full rounded-lg border"
               loading="lazy"
             />
           ) : null}
 
           <div className="space-y-2">
-            <Label>Office photos</Label>
+            <Label>{t("Office photos")}</Label>
             <div className="flex gap-2">
-              <FieldBox className="flex-1" label="Add a photo URL">
+              <FieldBox className="flex-1" label={t("Add a photo URL")}>
                 <Input
                   value={photoDraft}
                   onChange={(e) => setPhotoDraft(e.target.value)}
@@ -236,7 +238,7 @@ export function AdvancedSection({
                       type="button"
                       onClick={() => setPhotos((prev) => prev.filter((p) => p !== url))}
                       className="absolute right-1.5 top-1.5 rounded-md bg-black/60 p-1 text-white opacity-0 transition group-hover:opacity-100"
-                      aria-label="Remove photo"
+                      aria-label={t("Remove photo")}
                     >
                       <X className="size-3.5" />
                     </button>

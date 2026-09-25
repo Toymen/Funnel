@@ -54,6 +54,7 @@ import {
   SelectTrigger,
   SelectValue,
 } from "@/components/ui/select";
+import { useAdminI18n } from "@/features/i18n/admin-i18n";
 
 type PipelineBoardProps = {
   jobs: PipelineJobOption[];
@@ -182,6 +183,7 @@ export function PipelineBoard({
   stages: initialStages,
   applications,
 }: PipelineBoardProps) {
+  const { t } = useAdminI18n();
   const router = useRouter();
   const [stages, setStages] = useState(initialStages);
   const [columns, setColumns] = useState<Map<string, PipelineApplication[]>>(
@@ -244,7 +246,7 @@ export function PipelineBoard({
     const found = findApplicationStage(columns, applicationId);
     return found
       ? `${found.application.candidateFirstName} ${found.application.candidateLastName}`
-      : "Candidate";
+      : t("Candidate");
   }
 
   function stageLabel(stageId: string) {
@@ -534,7 +536,7 @@ export function PipelineBoard({
             setSearchQuery(event.target.value);
             setSelectedIds(new Set());
           }}
-          placeholder="Search candidates…"
+          placeholder={t("Search candidates…")}
           className="w-full pl-9 sm:w-48"
         />
       </div>
@@ -549,11 +551,11 @@ export function PipelineBoard({
           <SelectValue />
         </SelectTrigger>
         <SelectContent>
-          <SelectItem value="all">All statuses</SelectItem>
-          <SelectItem value="active">Active</SelectItem>
-          <SelectItem value="hired">Hired</SelectItem>
-          <SelectItem value="rejected">Rejected</SelectItem>
-          <SelectItem value="withdrawn">Withdrawn</SelectItem>
+          <SelectItem value="all">{t("All statuses")}</SelectItem>
+          <SelectItem value="active">{t("Active")}</SelectItem>
+          <SelectItem value="hired">{t("Hired")}</SelectItem>
+          <SelectItem value="rejected">{t("Rejected")}</SelectItem>
+          <SelectItem value="withdrawn">{t("Withdrawn")}</SelectItem>
         </SelectContent>
       </Select>
       <label className="hidden items-center gap-2 rounded-md border bg-muted/40 px-3 py-1.5 text-sm font-medium text-muted-foreground sm:flex">

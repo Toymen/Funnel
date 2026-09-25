@@ -32,6 +32,7 @@ import {
   SelectTrigger,
   SelectValue,
 } from "@/components/ui/select";
+import { useAdminI18n } from "@/features/i18n/admin-i18n";
 
 const ROLES: { value: HiringTeamRole; label: string }[] = [
   { value: "recruiter", label: "Recruiter" },
@@ -48,6 +49,7 @@ export function JobHiringTeam({
   team: HiringTeamMember[];
   members: WorkspaceMemberOption[];
 }) {
+  const { t } = useAdminI18n();
   const router = useRouter();
   const [isPending, startTransition] = useTransition();
 
@@ -64,8 +66,8 @@ export function JobHiringTeam({
 
   return (
     <FormSection
-      title="Hiring team"
-      description="Assigned teammates receive candidate updates for this role. Roles clarify who owns recruiting, the decision, and interviews."
+      title={t("Hiring team")}
+      description={t("Assigned teammates receive candidate updates for this role. Roles clarify who owns recruiting, the decision, and interviews.")}
       contentClassName="divide-y divide-border/60"
       action={
         available.length > 0 ? (
@@ -128,7 +130,7 @@ export function JobHiringTeam({
               <SelectContent>
                 {ROLES.map((r) => (
                   <SelectItem key={r.value} value={r.value}>
-                    {r.label}
+                    {t(r.label)}
                   </SelectItem>
                 ))}
               </SelectContent>

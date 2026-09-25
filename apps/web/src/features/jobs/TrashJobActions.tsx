@@ -15,6 +15,7 @@ import {
   DialogHeader,
   DialogTitle,
 } from "@/components/ui/dialog";
+import { useAdminI18n } from "@/features/i18n/admin-i18n";
 
 export function TrashJobActions({
   jobId,
@@ -23,6 +24,7 @@ export function TrashJobActions({
   jobId: string;
   jobTitle: string;
 }) {
+  const { t } = useAdminI18n();
   const router = useRouter();
   const [isPending, startTransition] = useTransition();
   const [confirmOpen, setConfirmOpen] = useState(false);
@@ -69,7 +71,7 @@ export function TrashJobActions({
         className="size-8 text-muted-foreground hover:text-destructive"
         onClick={() => setConfirmOpen(true)}
         disabled={isPending}
-        aria-label="Delete permanently"
+        aria-label={t("Delete permanently")}
       >
         <Trash2 className="size-4" />
       </Button>
@@ -77,7 +79,7 @@ export function TrashJobActions({
       <Dialog open={confirmOpen} onOpenChange={setConfirmOpen}>
         <DialogContent>
           <DialogHeader>
-            <DialogTitle>Delete permanently?</DialogTitle>
+            <DialogTitle>{t("Delete permanently?")}</DialogTitle>
             <DialogDescription>
               “{jobTitle}” will be removed for good. This can&apos;t be undone.
               Jobs with applications can&apos;t be deleted. Close them instead.

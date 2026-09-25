@@ -3,6 +3,7 @@
 import { useEffect, useState, useCallback } from "react";
 import { Loader2 } from "lucide-react";
 import DOMPurify from "dompurify";
+import { useAdminI18n } from "@/features/i18n/admin-i18n";
 
 type DocxViewerProps = {
   fileUrl: string;
@@ -21,6 +22,7 @@ type DocxState =
  * No server round-trip for the conversion , the DOCX never leaves the browser.
  */
 export function DocxViewer({ fileUrl, className }: DocxViewerProps) {
+  const { t } = useAdminI18n();
   const [state, setState] = useState<DocxState>({ status: "idle" });
 
   const convert = useCallback(async () => {
@@ -48,7 +50,7 @@ export function DocxViewer({ fileUrl, className }: DocxViewerProps) {
     return (
       <div className={`flex items-center justify-center gap-2 rounded-lg border bg-muted/30 p-8 ${className ?? ""}`}>
         <Loader2 className="size-4 animate-spin text-muted-foreground" />
-        <span className="text-sm text-muted-foreground">Loading document…</span>
+        <span className="text-sm text-muted-foreground">{t("Loading document…")}</span>
       </div>
     );
   }
@@ -57,7 +59,7 @@ export function DocxViewer({ fileUrl, className }: DocxViewerProps) {
     return (
       <div className={`flex flex-col items-center justify-center gap-2 rounded-lg border border-dashed bg-muted/30 p-8 ${className ?? ""}`}>
         <p className="text-sm text-muted-foreground">{state.message}</p>
-        <p className="text-xs text-muted-foreground">Try downloading the file instead.</p>
+        <p className="text-xs text-muted-foreground">{t("Try downloading the file instead.")}</p>
       </div>
     );
   }

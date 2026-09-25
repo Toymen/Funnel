@@ -31,6 +31,7 @@ import { candidateAvatarFallbackSrcs } from "@/lib/candidate-avatar";
 import { getQuickApplyByApplicationIds } from "@/features/mobile-admin/data";
 import { formatRelative, formatShort } from "@/lib/date";
 import { cn } from "@/lib/utils";
+import { getAdminT } from "@/features/i18n/admin-i18n-server";
 
 export const dynamic = "force-dynamic";
 
@@ -56,6 +57,7 @@ type CandidatesPageProps = {
 };
 
 export default async function CandidatesPage({ searchParams }: CandidatesPageProps) {
+  const t = await getAdminT();
   const { view, import: importSource, q, dept, role, stage, status, source, tag, sort, page: pageRaw } = await searchParams;
   const isTrash = view === "trash";
 const initialImportSource: ImportSource | undefined =
@@ -197,16 +199,16 @@ const initialImportSource: ImportSource | undefined =
         ) : (
           <EmptyState
             icon={Trash2}
-            title="Trash is empty"
-            description="Candidates you delete show up here and can be restored."
+            title={t("Trash is empty")}
+            description={t("Candidates you delete show up here and can be restored.")}
           />
         )
       ) : rows.length === 0 ? (
         <div className="space-y-4">
           <EmptyState
             icon={Users}
-            title="No candidates yet"
-            description="Share your public job board or import candidates from another ATS."
+            title={t("No candidates yet")}
+            description={t("Share your public job board or import candidates from another ATS.")}
           />
           <div className="flex justify-center gap-2">
             {canCreateCandidates ? (

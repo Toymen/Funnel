@@ -5,6 +5,7 @@ import { Monitor, RefreshCw, Smartphone } from "lucide-react";
 
 import { Button } from "@/components/ui/button";
 import { cn } from "@/lib/utils";
+import { useAdminI18n } from "@/features/i18n/admin-i18n";
 
 type PublicJobPreviewProps = {
   slug: string;
@@ -12,6 +13,7 @@ type PublicJobPreviewProps = {
 
 /** Live preview of the real public job page (no mockup). */
 export function PublicJobPreview({ slug }: PublicJobPreviewProps) {
+  const { t } = useAdminI18n();
   const [device, setDevice] = useState<"desktop" | "mobile">("desktop");
   const [nonce, setNonce] = useState(0);
   const src = `/jobs/${slug}?preview=1`;
@@ -28,7 +30,7 @@ export function PublicJobPreview({ slug }: PublicJobPreviewProps) {
             variant={device === "desktop" ? "secondary" : "ghost"}
             size="icon"
             className="size-7"
-            aria-label="Desktop preview"
+            aria-label={t("Desktop preview")}
             onClick={() => setDevice("desktop")}
           >
             <Monitor className="size-4" />
@@ -38,7 +40,7 @@ export function PublicJobPreview({ slug }: PublicJobPreviewProps) {
             variant={device === "mobile" ? "secondary" : "ghost"}
             size="icon"
             className="size-7"
-            aria-label="Mobile preview"
+            aria-label={t("Mobile preview")}
             onClick={() => setDevice("mobile")}
           >
             <Smartphone className="size-4" />
@@ -48,7 +50,7 @@ export function PublicJobPreview({ slug }: PublicJobPreviewProps) {
             variant="ghost"
             size="icon"
             className="size-7"
-            aria-label="Refresh preview"
+            aria-label={t("Refresh preview")}
             onClick={() => setNonce((n) => n + 1)}
           >
             <RefreshCw className="size-4" />
@@ -59,7 +61,7 @@ export function PublicJobPreview({ slug }: PublicJobPreviewProps) {
         <iframe
           key={nonce}
           src={src}
-          title="Public job preview"
+          title={t("Public job preview")}
           className={cn(
             "h-[640px] rounded-lg border bg-white shadow-sm transition-all",
             device === "mobile" ? "w-[390px]" : "w-full",

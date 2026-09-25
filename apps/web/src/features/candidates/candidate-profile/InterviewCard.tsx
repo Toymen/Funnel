@@ -45,6 +45,7 @@ import { cn } from "@/lib/utils";
 
 import { InterviewBriefSheet } from "./InterviewBriefSheet";
 import { SummarizeNotesSheet } from "./SummarizeNotesSheet";
+import { useAdminI18n } from "@/features/i18n/admin-i18n";
 
 const INTERVIEW_MODE_ICON = {
   video: Video,
@@ -106,6 +107,7 @@ export function InterviewCard({
   currentUserId?: string;
   aiConfigured: boolean;
 }) {
+  const { t } = useAdminI18n();
   const router = useRouter();
   const [isPending, startTransition] = useTransition();
   const ModeIcon = INTERVIEW_MODE_ICON[interview.mode];
@@ -177,7 +179,7 @@ export function InterviewCard({
                   <Button
                     size="sm"
                     variant="ghost"
-                    aria-label="Edit interview"
+                    aria-label={t("Edit interview")}
                     className="size-8 p-0 text-muted-foreground hover:text-foreground"
                   >
                     <Pencil className="size-4" />

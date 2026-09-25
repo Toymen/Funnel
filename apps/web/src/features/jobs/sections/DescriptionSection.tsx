@@ -16,6 +16,7 @@ import {
   DropdownMenuLabel,
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
+import { useAdminI18n } from "@/features/i18n/admin-i18n";
 
 const SECTION_TEMPLATES: Record<string, { title: string; body: string }[]> = {
   Engineering: [
@@ -82,6 +83,7 @@ export function DescriptionSection({
   aiPending: boolean;
   startAi: React.TransitionStartFunction;
 }) {
+  const { t } = useAdminI18n();
   function updateSection(id: string, patch: Partial<JobContentSection>) {
     setSections((prev) => prev.map((s) => (s.id === id ? { ...s, ...patch } : s)));
   }
@@ -155,7 +157,7 @@ export function DescriptionSection({
     <section data-section="description">
       <div className="rounded-2xl border border-border/70 bg-card">
         <div className="flex items-center justify-between border-b px-5 py-3">
-          <p className="text-sm font-semibold">Description</p>
+          <p className="text-sm font-semibold">{t("Description")}</p>
           <div className="flex items-center gap-2">
             <AiButton
               type="button"
@@ -178,7 +180,7 @@ export function DescriptionSection({
                 </Button>
               </DropdownMenuTrigger>
               <DropdownMenuContent align="end">
-                <DropdownMenuLabel>Replace with template</DropdownMenuLabel>
+                <DropdownMenuLabel>{t("Replace with template")}</DropdownMenuLabel>
                 {Object.keys(SECTION_TEMPLATES).map((name) => (
                   <DropdownMenuItem
                     key={name}
@@ -194,7 +196,7 @@ export function DescriptionSection({
 
         <div className="space-y-5 p-5">
           <div className="space-y-2">
-            <Label>About the role</Label>
+            <Label>{t("About the role")}</Label>
             <input type="hidden" name="description" value={description} />
             <RichTextEditor
               key={`description-${descriptionVersion}`}
@@ -211,7 +213,7 @@ export function DescriptionSection({
                 <Input
                   value={section.title}
                   onChange={(e) => updateSection(section.id, { title: e.target.value })}
-                  placeholder="Section title (e.g. Requirements)"
+                  placeholder={t("Section title (e.g. Requirements)")}
                   className="h-9 bg-card font-medium"
                 />
                 <Button
@@ -220,14 +222,14 @@ export function DescriptionSection({
                   size="icon"
                   className="size-8 shrink-0 text-muted-foreground hover:text-destructive"
                   onClick={() => removeSection(section.id)}
-                  aria-label="Remove section"
+                  aria-label={t("Remove section")}
                 >
                   <Trash2 className="size-4" />
                 </Button>
               </div>
               <RichTextEditor
                 defaultValue={section.body}
-                placeholder="Write this section..."
+                placeholder={t("Write this section...")}
                 minHeight="7rem"
                 onChange={(html) => updateSection(section.id, { body: html })}
               />

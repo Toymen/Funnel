@@ -54,6 +54,7 @@ import {
   TableRow,
 } from "@/components/ui/table";
 import { cn } from "@/lib/utils";
+import { useAdminI18n } from "@/features/i18n/admin-i18n";
 
 export type ImportJobOption = { id: string; title: string };
 export type ImportSource =
@@ -137,6 +138,7 @@ export function ImportCandidatesDrawer({
   jobs: ImportJobOption[];
   initialSource?: ImportSource;
 }) {
+  const { t } = useAdminI18n();
   const router = useRouter();
   const [open, setOpen] = useState(Boolean(initialSource));
   const [jobId, setJobId] = useState<string>(jobs[0]?.id ?? "");
@@ -416,7 +418,7 @@ export function ImportCandidatesDrawer({
         ) : (
           <div className="space-y-5">
             <div className="space-y-2">
-              <Label htmlFor="import-job">Job</Label>
+              <Label htmlFor="import-job">{t("Job")}</Label>
               <Select value={jobId} onValueChange={setJobId}>
                 <SelectTrigger id="import-job" className="w-full">
                   <SelectValue placeholder="Select a job" />
@@ -432,7 +434,7 @@ export function ImportCandidatesDrawer({
             </div>
 
             <div className="space-y-2">
-              <Label>Source</Label>
+              <Label>{t("Source")}</Label>
               <div
                 role="radiogroup"
                 aria-label="Import source"

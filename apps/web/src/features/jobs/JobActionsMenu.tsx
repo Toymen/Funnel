@@ -20,6 +20,7 @@ import {
   DropdownMenuSeparator,
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
+import { useAdminI18n } from "@/features/i18n/admin-i18n";
 
 type JobActionsMenuProps = {
   jobId: string;
@@ -35,6 +36,7 @@ export function JobActionsMenu({
   redirectAfterTrash = false,
   align = "end",
 }: JobActionsMenuProps) {
+  const { t } = useAdminI18n();
   const router = useRouter();
   const [isPending, startTransition] = useTransition();
 
@@ -58,7 +60,7 @@ export function JobActionsMenu({
       }
       toast.success("Job moved to trash.", {
         action: {
-          label: "Undo",
+          label: t("Undo"),
           onClick: () => {
             startTransition(async () => {
               await restoreJobAction(jobId);
@@ -81,7 +83,7 @@ export function JobActionsMenu({
           variant="ghost"
           size="icon"
           className="size-8 text-muted-foreground data-[state=open]:bg-accent"
-          aria-label="Job actions"
+          aria-label={t("Job actions")}
           disabled={isPending}
           onClick={(event) => event.stopPropagation()}
         >

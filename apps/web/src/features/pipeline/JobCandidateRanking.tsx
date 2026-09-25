@@ -13,6 +13,7 @@ import { Button } from "@/components/ui/button";
 import { Card, CardContent } from "@/components/ui/card";
 import { UserAvatar } from "@/components/ui/UserAvatar";
 import { cn } from "@/lib/utils";
+import { useAdminI18n } from "@/features/i18n/admin-i18n";
 
 const RECOMMENDATION_META = {
   strong_yes: { label: "Strong yes", className: "bg-primary/10 text-primary" },
@@ -52,6 +53,7 @@ export function JobCandidateRanking({
   stages,
   aiConfigured,
 }: JobCandidateRankingProps) {
+  const { t } = useAdminI18n();
   const router = useRouter();
   const [ranking, setRanking] = useState(false);
   const [showOrder, setShowOrder] = useState(false);
@@ -234,7 +236,7 @@ export function JobCandidateRanking({
                       <>
                         {meta ? (
                           <Badge className={cn("hidden text-[11px] sm:inline-flex", meta.className)}>
-                            {meta.label}
+                            {t(meta.label)}
                           </Badge>
                         ) : null}
                         <span

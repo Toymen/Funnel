@@ -56,6 +56,7 @@ import { candidateAvatarFallbackSrcs } from "@/lib/candidate-avatar";
 import { getQuickApplyByApplicationIds } from "@/features/mobile-admin/data";
 import { QuickContact, QuickContactBar } from "@/features/mobile-admin/QuickContact";
 import { isPlaceholderEmail } from "@/features/quick-apply/schema";
+import { getAdminT } from "@/features/i18n/admin-i18n-server";
 
 export const dynamic = "force-dynamic";
 
@@ -94,6 +95,7 @@ type CandidateDetailPageProps = {
 export default async function CandidateDetailPage({
   params,
 }: CandidateDetailPageProps) {
+  const t = await getAdminT();
   const { candidateId } = await params;
 
   try {
@@ -375,8 +377,10 @@ export default async function CandidateDetailPage({
                           {SOURCE_ICON[latestApplication.source] ?? (
                             <Briefcase className="size-3.5" />
                           )}
-                          {SOURCE_LABEL[latestApplication.source] ??
-                            latestApplication.source}
+                          {t(
+                            SOURCE_LABEL[latestApplication.source] ??
+                              latestApplication.source,
+                          )}
                         </span>
                       ) : null}
                     </div>

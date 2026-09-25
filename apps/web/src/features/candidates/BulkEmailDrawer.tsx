@@ -19,6 +19,7 @@ import {
 } from "@/components/ui/select";
 import { SidePanel } from "@/components/ui/side-panel";
 import { Textarea } from "@/components/ui/textarea";
+import { useAdminI18n } from "@/features/i18n/admin-i18n";
 
 /**
  * Bulk email to the selected candidates. Variables stay literal here , the
@@ -37,6 +38,7 @@ export function BulkEmailDrawer({
   templates: EmailTemplateOption[];
   onSent: () => void;
 }) {
+  const { t } = useAdminI18n();
   const router = useRouter();
   const [subject, setSubject] = useState("");
   const [body, setBody] = useState("");
@@ -104,12 +106,12 @@ export function BulkEmailDrawer({
                   Start from a template
                 </p>
                 {selectedTemplateId ? (
-                  <span className="text-xs text-muted-foreground">Loaded into this email</span>
+                  <span className="text-xs text-muted-foreground">{t("Loaded into this email")}</span>
                 ) : null}
               </div>
               <Select value={selectedTemplateId || undefined} onValueChange={applyTemplate}>
                 <SelectTrigger className="w-full">
-                  <SelectValue placeholder="Choose a template (optional)" />
+                  <SelectValue placeholder={t("Choose a template (optional)")} />
                 </SelectTrigger>
                 <SelectContent>
                   {templates.map((template) => (

@@ -35,6 +35,7 @@ import {
   getBrowserTimeZone,
   parseScheduledAt,
 } from "@/features/interviews/shared";
+import { useAdminI18n } from "@/features/i18n/admin-i18n";
 
 export type ScheduleApplicationOption = {
   applicationId: string;
@@ -91,6 +92,7 @@ export function ScheduleDialog({
   currentUserId?: string;
   trigger: ReactNode;
 }) {
+  const { t } = useAdminI18n();
   const router = useRouter();
   const [open, setOpen] = useState(false);
   const [applicationId, setApplicationId] = useState(
@@ -111,7 +113,7 @@ export function ScheduleDialog({
 
   const hasApplication = applications.length > 0;
   const hasCandidateEmail = candidateEmail.trim().length > 0;
-  const locationLabel = mode === "onsite" ? "Address" : "Meeting link";
+  const locationLabel = mode === "onsite" ? t("Address") : t("Meeting link");
 
   const calLinkAvailable = cal.enabled && Boolean(cal.bookingUrl);
 
@@ -291,7 +293,7 @@ export function ScheduleDialog({
               {/* Left column */}
               <div className="space-y-5">
                 {applications.length > 1 ? (
-                  <Field label="Role">
+                  <Field label={t("Role")}>
                     <Select value={applicationId} onValueChange={setApplicationId}>
                       <SelectTrigger className="w-full">
                         <SelectValue />
@@ -320,21 +322,21 @@ export function ScheduleDialog({
                   </p>
                 )}
 
-                <Field label="Type">
+                <Field label={t("Type")}>
                   <div className="grid grid-cols-3 gap-2">
-                    {TYPES.map((t) => (
+                    {TYPES.map((option) => (
                       <SegButton
-                        key={t.key}
-                        active={type === t.key}
-                        onClick={() => setType(t.key)}
+                        key={option.key}
+                        active={type === option.key}
+                        onClick={() => setType(option.key)}
                       >
-                        {t.label}
+                        {t(option.label)}
                       </SegButton>
                     ))}
                   </div>
                 </Field>
 
-                <Field label="Mode">
+                <Field label={t("Mode")}>
                   <div className="grid grid-cols-3 gap-2">
                     {MODES.map((m) => (
                       <SegButton
@@ -343,14 +345,14 @@ export function ScheduleDialog({
                         onClick={() => setMode(m.key)}
                       >
                         <m.icon className="size-4" strokeWidth={1.8} />
-                        {m.label}
+                        {t(m.label)}
                       </SegButton>
                     ))}
                   </div>
                 </Field>
 
                 <div className="grid grid-cols-2 gap-3">
-                  <Field label="Date" htmlFor="schedule-date">
+                  <Field label={t("Date")} htmlFor="schedule-date">
                     <Input
                       id="schedule-date"
                       type="date"
@@ -361,7 +363,7 @@ export function ScheduleDialog({
                       }}
                     />
                   </Field>
-                  <Field label="Time" htmlFor="schedule-time">
+                  <Field label={t("Time")} htmlFor="schedule-time">
                     <Input
                       id="schedule-time"
                       type="time"
@@ -410,12 +412,12 @@ export function ScheduleDialog({
                   />
                 </Field>
 
-                <Field label="Notes" htmlFor="schedule-notes">
+                <Field label={t("Notes")} htmlFor="schedule-notes">
                   <Textarea
                     id="schedule-notes"
                     value={notes}
                     onChange={(e) => setNotes(e.target.value)}
-                    placeholder="Focus areas, panel, prep…"
+                    placeholder={t("Focus areas, panel, prep…")}
                     className="min-h-20"
                   />
                 </Field>
@@ -429,7 +431,7 @@ export function ScheduleDialog({
               </div>
             ) : null}
             {checkingAvailability ? (
-              <p className="text-xs text-muted-foreground">Checking availability…</p>
+              <p className="text-xs text-muted-foreground">{t("Checking availability…")}</p>
             ) : null}
 
             <label className="flex items-start gap-3 rounded-lg border bg-muted/20 px-3.5 py-3">

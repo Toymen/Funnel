@@ -13,6 +13,7 @@ import { JobsTable } from "@/features/jobs/JobsTable";
 import { JobIdentity } from "@/features/jobs/JobIdentity";
 import { TrashJobActions } from "@/features/jobs/TrashJobActions";
 import { cn } from "@/lib/utils";
+import { getAdminT } from "@/features/i18n/admin-i18n-server";
 
 export const dynamic = "force-dynamic";
 
@@ -24,6 +25,7 @@ const tileClass =
   "rounded-2xl border border-border/70 bg-card p-4 shadow-[0_1px_2px_rgba(28,27,22,0.04)]";
 
 export default async function DashboardJobsPage({ searchParams }: JobsPageProps) {
+  const t = await getAdminT();
   const { view } = await searchParams;
   const isTrash = view === "trash";
 
@@ -42,16 +44,16 @@ export default async function DashboardJobsPage({ searchParams }: JobsPageProps)
       {!isTrash && jobs.length > 0 ? (
         <section className="grid grid-cols-2 gap-3 lg:grid-cols-4">
           <div className="duration-500 animate-in fade-in slide-in-from-bottom-2">
-            <StatTile label="Open roles" value={openRoles} hint={`${draftRoles} draft`} icon={Briefcase} />
+            <StatTile label={t("Open roles")} value={openRoles} hint={`${draftRoles} draft`} icon={Briefcase} />
           </div>
           <div className="delay-75 duration-500 animate-in fade-in slide-in-from-bottom-2 fill-mode-backwards">
-            <StatTile label="Applicants" value={totalApplicants} hint="across all roles" icon={Users} />
+            <StatTile label={t("Applicants")} value={totalApplicants} hint="across all roles" icon={Users} />
           </div>
           <div className="delay-150 duration-500 animate-in fade-in slide-in-from-bottom-2 fill-mode-backwards">
-            <StatTile label="New this week" value={newApplicants} hint="applied in 7d" icon={TrendingUp} accent />
+            <StatTile label={t("New this week")} value={newApplicants} hint="applied in 7d" icon={TrendingUp} accent />
           </div>
           <div className="delay-200 duration-500 animate-in fade-in slide-in-from-bottom-2 fill-mode-backwards">
-            <StatTile label="Total roles" value={jobs.length} hint={`${draftRoles} not published`} icon={Briefcase} />
+            <StatTile label={t("Total roles")} value={jobs.length} hint={`${draftRoles} not published`} icon={Briefcase} />
           </div>
         </section>
       ) : null}
@@ -89,8 +91,8 @@ export default async function DashboardJobsPage({ searchParams }: JobsPageProps)
         ) : (
           <EmptyState
             icon={Trash2}
-            title="Trash is empty"
-            description="Jobs you move to the trash show up here and can be restored."
+            title={t("Trash is empty")}
+            description={t("Jobs you move to the trash show up here and can be restored.")}
           />
         )
       ) : jobs.length > 0 ? (
@@ -98,8 +100,8 @@ export default async function DashboardJobsPage({ searchParams }: JobsPageProps)
       ) : (
         <EmptyState
           icon={Briefcase}
-          title="No jobs yet"
-          description="Create your first opening. Harly adds the default hiring stages automatically."
+          title={t("No jobs yet")}
+          description={t("Create your first opening. Harly adds the default hiring stages automatically.")}
           action={{ href: "/dashboard/jobs/new", label: "Create job" }}
         />
       )}

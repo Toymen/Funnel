@@ -2,6 +2,7 @@ import Link from "next/link";
 import type { Route } from "next";
 import { LayoutGrid, List } from "lucide-react";
 
+import { useAdminI18n } from "@/features/i18n/admin-i18n";
 import { cn } from "@/lib/utils";
 
 /** Board ↔ List switch , board for small/medium, list for high volume. */
@@ -12,6 +13,7 @@ export function PipelineViewToggle({
   jobId: string;
   view: "board" | "list";
 }) {
+  const { t } = useAdminI18n();
   const items = [
     { key: "list" as const, label: "List", icon: List },
     { key: "board" as const, label: "Board", icon: LayoutGrid },
@@ -31,7 +33,7 @@ export function PipelineViewToggle({
           )}
         >
           <it.icon className="size-4" strokeWidth={1.8} />
-          {it.label}
+          {t(it.label)}
         </Link>
       ))}
     </div>

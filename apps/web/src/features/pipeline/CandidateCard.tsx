@@ -20,6 +20,7 @@ import type { PipelineApplication } from "@/features/pipeline/data";
 import { QuickApplyBadges } from "@/features/mobile-admin/QuickApplyBadges";
 import { useDaysSince } from "@/lib/date-hydration";
 import { cn } from "@/lib/utils";
+import { useAdminI18n } from "@/features/i18n/admin-i18n";
 
 type CandidateCardProps = {
   application: PipelineApplication;
@@ -111,6 +112,7 @@ export function CandidateCard({
   disabled = false,
   onSelect,
 }: CandidateCardProps) {
+  const { t } = useAdminI18n();
   const router = useRouter();
   const pointerStartRef = useRef<{ x: number; y: number } | null>(null);
   const {
@@ -214,13 +216,13 @@ export function CandidateCard({
                 <Tooltip>
                   <TooltipTrigger asChild>
                     <span
-                      aria-label="Featured referral"
+                      aria-label={t("Featured referral")}
                       className="inline-flex shrink-0 items-center text-amber-600"
                     >
                       <Star className="size-3 fill-current" />
                     </span>
                   </TooltipTrigger>
-                  <TooltipContent>Featured referral</TooltipContent>
+                  <TooltipContent>{t("Featured referral")}</TooltipContent>
                 </Tooltip>
               ) : null}
               {application.status !== "active" ? (

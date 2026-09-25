@@ -31,6 +31,7 @@ import type {
   CandidateMessage,
   CandidateProfileTabsProps,
 } from "./candidate-profile/types";
+import { useAdminI18n } from "@/features/i18n/admin-i18n";
 
 /** Groups a flat message list into threads, oldest message first inside each. */
 function groupIntoConversations(messages: CandidateMessage[]) {
@@ -86,6 +87,7 @@ export function CandidateProfileTabs({
   privacyRequests = [],
   canFulfilErasure = false,
 }: CandidateProfileTabsProps) {
+  const { t } = useAdminI18n();
   const [tab, setTab] = useState("profile");
   const [signatureOpen, setSignatureOpen] = useState(false);
   const conversations = groupIntoConversations(messages);
@@ -109,7 +111,7 @@ export function CandidateProfileTabs({
         variant="line"
         className="w-full justify-start gap-5 overflow-x-auto border-b border-hairline text-sm [&>button]:flex-none [&>button]:px-0.5"
       >
-        <TabsTrigger value="profile">Profile</TabsTrigger>
+        <TabsTrigger value="profile">{t("Profile")}</TabsTrigger>
         <TabsTrigger value="interviews">
           Interviews
           <TabCount value={interviews.length} />
@@ -191,7 +193,7 @@ export function CandidateProfileTabs({
         {interviews.length === 0 ? (
           <EmptySection
             icon={CalendarClock}
-            title="No interviews yet"
+            title={t("No interviews yet")}
             hint="Schedule one with the button above. The join link, the interviewer and the notes all stay on the card."
           />
         ) : (
@@ -280,7 +282,7 @@ export function CandidateProfileTabs({
               }
             />
           ) : (
-            <Button size="sm" disabled title="This candidate has no application to score">
+            <Button size="sm" disabled title={t("This candidate has no application to score")}>
               <ClipboardCheck className="size-4" />
               Add evaluation
             </Button>
@@ -326,7 +328,7 @@ export function CandidateProfileTabs({
         {activity.length === 0 && notes.length === 0 ? (
           <EmptySection
             icon={MessageSquare}
-            title="Nothing has happened yet"
+            title={t("Nothing has happened yet")}
             hint="Stage moves, notes, emails and interviews all land here in order, so you can see how this candidate got to where they are."
           />
         ) : null}

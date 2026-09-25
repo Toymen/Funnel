@@ -62,6 +62,7 @@ import {
   DropdownMenuItem,
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
+import { useAdminI18n } from "@/features/i18n/admin-i18n";
 
 function isPdfResume(
   url: string,
@@ -414,6 +415,7 @@ export function CandidateActionBar({
   variant?: "full" | "compact";
   aiConfigured?: boolean;
 }) {
+  const { t } = useAdminI18n();
   const [selectedApplicationId, setSelectedApplicationId] = useState(
     applications[0]?.applicationId ?? null,
   );
@@ -452,15 +454,15 @@ export function CandidateActionBar({
             size="sm"
             variant="ghost"
             className="size-8 p-0 text-muted-foreground hover:text-foreground"
-            title="Email"
+            title={t("Email")}
           >
             <Mail className="size-4" />
-            <span className="sr-only">Email</span>
+            <span className="sr-only">{t("Email")}</span>
           </Button>
         ) : (
           <Button size="sm" variant="outline">
             <Mail className="size-4" />
-            Email
+            {t("Email")}
           </Button>
         )
       }
@@ -599,7 +601,7 @@ export function CandidateActionBar({
               size="sm"
               variant="ghost"
               className="size-8 p-0 text-muted-foreground hover:text-foreground"
-              title="Edit candidate"
+              title={t("Edit candidate")}
             >
               <Pencil className="size-4" />
               <span className="sr-only">Edit</span>
@@ -617,7 +619,7 @@ export function CandidateActionBar({
                   title="View resume"
                 >
                   <FileText className="size-4" />
-                  <span className="sr-only">Resume</span>
+                  <span className="sr-only">{t("Resume")}</span>
                 </Button>
               </DialogTrigger>
               <DialogContent className="sm:max-w-3xl">
@@ -654,7 +656,7 @@ export function CandidateActionBar({
             >
               <a href={resumeUrl} target="_blank" rel="noreferrer">
                 <FileText className="size-4" />
-                <span className="sr-only">Resume</span>
+                <span className="sr-only">{t("Resume")}</span>
               </a>
             </Button>
           )

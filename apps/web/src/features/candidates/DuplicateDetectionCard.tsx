@@ -9,6 +9,7 @@ import { detectCandidateDuplicatesAction, type DuplicateMatch } from "@/features
 import { AiButton } from "@/components/ui/AiButton";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent } from "@/components/ui/card";
+import { useAdminI18n } from "@/features/i18n/admin-i18n";
 
 type SuspectCandidate = {
   candidateId: string;
@@ -25,6 +26,7 @@ export function DuplicateDetectionCard({
   suspects: SuspectCandidate[];
   aiConfigured: boolean;
 }) {
+  const { t } = useAdminI18n();
   const [matches, setMatches] = useState<DuplicateMatch[] | null>(null);
   const [checked, setChecked] = useState(false);
   const [isPending, startTransition] = useTransition();
@@ -55,7 +57,7 @@ export function DuplicateDetectionCard({
         <CardContent className="space-y-3">
           <div className="flex items-center gap-2 text-clay">
             <Users className="size-4 shrink-0" />
-            <p className="text-sm font-medium">Possible duplicate candidates</p>
+            <p className="text-sm font-medium">{t("Possible duplicate candidates")}</p>
           </div>
           <ul className="space-y-2">
             {matches.map((m) => (

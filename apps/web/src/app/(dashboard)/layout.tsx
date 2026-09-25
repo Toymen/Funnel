@@ -1,5 +1,4 @@
 import type { Metadata } from "next";
-import { cookies } from "next/headers";
 
 // Bier-Schneider: Tap-Ziele ≥ 44 px auf dem Handy (PRD §11.1)
 import "@/features/mobile-admin/mobile-admin.css";
@@ -26,7 +25,8 @@ import { getMyTasksDueCount } from "@/features/tasks/data";
 import { getOwnProfileAction } from "@/features/people/actions";
 import { RealtimeProvider } from "@/components/dashboard/RealtimeProvider";
 import { RealtimePageSync } from "@/components/dashboard/RealtimePageSync";
-import { AdminI18nProvider, isAdminLocale } from "@/features/i18n/admin-i18n";
+import { AdminI18nProvider } from "@/features/i18n/admin-i18n";
+import { getAdminLocale } from "@/features/i18n/admin-i18n-server";
 
 export async function generateMetadata(): Promise<Metadata> {
   const { organization } = await getWorkspaceContext();
@@ -42,8 +42,7 @@ export default async function DashboardLayout({
 }: {
   children: React.ReactNode;
 }) {
-  const savedLocale = (await cookies()).get("admin-locale")?.value;
-  const adminLocale = isAdminLocale(savedLocale) ? savedLocale : "de";
+  const adminLocale = await getAdminLocale();
   const { organization, user, role } = await getWorkspaceContext();
   const [
     workspaceOptions,

@@ -32,6 +32,7 @@ import {
 } from "@/features/documents/requests-shared";
 
 import { EmptySection, SectionHeading } from "./candidate-profile/shared";
+import { useAdminI18n } from "@/features/i18n/admin-i18n";
 
 type ApplicationOption = { id: string; jobTitle: string };
 
@@ -43,18 +44,19 @@ export function DocumentRequestsList({
   requests: DocumentRequestItem[];
   canManage: boolean;
 }) {
+  const { t } = useAdminI18n();
   if (requests.length === 0) {
     return (
       <EmptySection
         icon={FileText}
-        title="Nothing requested yet"
+        title={t("Nothing requested yet")}
         hint="Request an ID, signed NDA, or any file — the candidate uploads it from their portal."
       />
     );
   }
   return (
     <div className="space-y-2">
-      <SectionHeading>Requested from candidate</SectionHeading>
+      <SectionHeading>{t("Requested from candidate")}</SectionHeading>
       <div className="divide-y rounded-xl border">
         {requests.map((request) => (
           <RequestRow key={request.id} request={request} canManage={canManage} />
@@ -174,6 +176,7 @@ export function RequestDialog({
   open: boolean;
   onOpenChange: (open: boolean) => void;
 }) {
+  const { t } = useAdminI18n();
   const router = useRouter();
   const [applicationId, setApplicationId] = useState(applications[0]?.id ?? "");
   const [items, setItems] = useState<Array<{ title: string; instructions: string }>>([
@@ -221,14 +224,14 @@ export function RequestDialog({
     <Dialog open={open} onOpenChange={(value) => { if (!value) reset(); onOpenChange(value); }}>
       <DialogContent>
         <DialogHeader>
-          <DialogTitle>Request documents</DialogTitle>
+          <DialogTitle>{t("Request documents")}</DialogTitle>
           <DialogDescription>
             The candidate is notified in their portal and uploads each file there. You review the uploads here.
           </DialogDescription>
         </DialogHeader>
         <div className="space-y-4 py-2">
           <div className="space-y-2">
-            <Label htmlFor="request-application">Application</Label>
+            <Label htmlFor="request-application">{t("Application")}</Label>
             <select
               id="request-application"
               value={applicationId}
@@ -244,7 +247,7 @@ export function RequestDialog({
           </div>
 
           <div className="space-y-3">
-            <Label>Documents</Label>
+            <Label>{t("Documents")}</Label>
             {items.map((item, index) => (
               <div key={index} className="space-y-2 rounded-lg border p-3">
                 <div className="flex items-center gap-2">
@@ -271,7 +274,7 @@ export function RequestDialog({
                   onChange={(event) =>
                     setItems((current) => current.map((it, i) => (i === index ? { ...it, instructions: event.target.value } : it)))
                   }
-                  placeholder="Instructions (optional)"
+                  placeholder={t("Instructions (optional)")}
                   className="text-xs"
                 />
               </div>
@@ -288,7 +291,7 @@ export function RequestDialog({
           </div>
 
           <div className="space-y-2">
-            <Label htmlFor="request-due">Due date (optional)</Label>
+            <Label htmlFor="request-due">{t("Due date (optional)")}</Label>
             <Input id="request-due" type="date" value={dueAt} onChange={(event) => setDueAt(event.target.value)} />
           </div>
         </div>

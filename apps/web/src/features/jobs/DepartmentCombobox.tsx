@@ -18,6 +18,7 @@ import {
   PopoverTrigger,
 } from "@/components/ui/popover";
 import { cn } from "@/lib/utils";
+import { useAdminI18n } from "@/features/i18n/admin-i18n";
 
 type DepartmentComboboxProps = {
   name: string;
@@ -36,6 +37,7 @@ export function DepartmentCombobox({
   defaultValue,
   className,
 }: DepartmentComboboxProps) {
+  const { t } = useAdminI18n();
   const [open, setOpen] = useState(false);
   const [value, setValue] = useState(defaultValue ?? "");
   const [query, setQuery] = useState("");
@@ -75,7 +77,7 @@ export function DepartmentCombobox({
         >
           <Command>
             <CommandInput
-              placeholder="Search or create…"
+              placeholder={t("Search or create…")}
               value={query}
               onValueChange={setQuery}
             />
