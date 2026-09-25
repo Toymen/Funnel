@@ -58,7 +58,7 @@ export function JobActionsMenu({
       }
       toast.success("Job moved to trash.", {
         action: {
-          label: "Rückgängig",
+          label: "Undo",
           onClick: () => {
             startTransition(async () => {
               await restoreJobAction(jobId);
@@ -81,7 +81,7 @@ export function JobActionsMenu({
           variant="ghost"
           size="icon"
           className="size-8 text-muted-foreground data-[state=open]:bg-accent"
-          aria-label="Stellenaktionen"
+          aria-label="Job actions"
           disabled={isPending}
           onClick={(event) => event.stopPropagation()}
         >

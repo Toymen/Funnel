@@ -83,7 +83,7 @@ export function JobShareButton({
       </PopoverTrigger>
       <PopoverContent align="end" className="w-80 p-0">
         <div className="border-b p-3">
-          <p className="text-sm font-medium">Stelle teilen</p>
+          <p className="text-sm font-medium">Share this role</p>
           <p className="mt-0.5 text-xs text-muted-foreground">
             Post it, send it, or embed it on your own site.
           </p>
@@ -140,7 +140,7 @@ export function JobShareButton({
                 <CodeDuotoneIcon className="size-4" />
               </span>
               <span className="min-w-0 flex-1">
-                <span className="block text-sm font-medium">Auf Ihrer Webseite einbetten</span>
+                <span className="block text-sm font-medium">Embed on your site</span>
                 <span className="block text-xs text-muted-foreground">
                   Copy the single-job widget snippet
                 </span>

@@ -38,10 +38,10 @@ type JobQuestionBuilderProps = {
 };
 
 const questionTypes: Array<{ value: JobQuestionType; label: string }> = [
-  { value: "text", label: "Kurzer Text" },
-  { value: "textarea", label: "Langer Text" },
+  { value: "text", label: "Short text" },
+  { value: "textarea", label: "Long text" },
   { value: "url", label: "URL" },
-  { value: "select", label: "Auswahl" },
+  { value: "select", label: "Select" },
 ];
 
 function createQuestion(index: number): JobApplicationQuestion {
@@ -131,7 +131,7 @@ export function JobQuestionBuilder({ initialQuestions, aiContext }: JobQuestionB
       if (!result.ok) {
         if (result.reason === "not_configured") {
           toast.error(result.error, {
-            action: { label: "KI einrichten", onClick: () => router.push("/settings/ai") },
+            action: { label: "Set up AI", onClick: () => router.push("/settings/ai") },
           });
         } else {
           toast.error(result.error);
@@ -202,15 +202,15 @@ export function JobQuestionBuilder({ initialQuestions, aiContext }: JobQuestionB
       {questions.map((question, index) => (
         <div key={`${question.id}-${index}`} className="space-y-3 rounded-lg border bg-muted/30 p-4">
           <div className="grid gap-3 md:grid-cols-[1fr_180px]">
-            <FieldBox label="Fragetext">
+            <FieldBox label="Question label">
               <Input
                 value={question.label}
                 onChange={(event) => updateQuestion(index, { label: event.target.value })}
-                placeholder="Warum passen Sie gut zu dieser Stelle?"
+                placeholder="What makes you a strong fit?"
                 className={fieldBoxControlClassName}
               />
             </FieldBox>
-            <FieldBox label="Art">
+            <FieldBox label="Type">
               <Select
                 value={question.type}
                 onValueChange={(value) =>
@@ -232,15 +232,15 @@ export function JobQuestionBuilder({ initialQuestions, aiContext }: JobQuestionB
           </div>
 
           <div className="grid gap-3 md:grid-cols-2">
-            <FieldBox label="Platzhalter">
+            <FieldBox label="Placeholder">
               <Input
                 value={question.placeholder ?? ""}
                 onChange={(event) => updateQuestion(index, { placeholder: event.target.value })}
-                placeholder="Optionaler Hilfetext"
+                placeholder="Optional helper text"
                 className={fieldBoxControlClassName}
               />
             </FieldBox>
-            <FieldBox label="Mindestanzahl Zeichen">
+            <FieldBox label="Minimum characters">
               <Input
                 value={question.minLength ?? ""}
                 onChange={(event) =>
@@ -256,7 +256,7 @@ export function JobQuestionBuilder({ initialQuestions, aiContext }: JobQuestionB
           </div>
 
           {question.type === "select" ? (
-            <FieldBox label="Optionen">
+            <FieldBox label="Options">
               <Textarea
                 value={optionsToText(question.options)}
                 onChange={(event) =>

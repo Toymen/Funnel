@@ -38,7 +38,7 @@ export function JobEditorTopBar({
           className="group inline-flex items-center gap-2 rounded-full border border-border bg-paper-raised/60 py-1.5 pl-2.5 pr-3.5 text-sm font-medium text-ink-soft shadow-sm transition-all duration-150 hover:border-pine/30 hover:bg-kraft hover:text-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-pine/30 active:scale-[0.97]"
         >
           <ArrowLeft className="size-4 transition-transform duration-150 group-hover:-translate-x-0.5" />
-          <span className="hidden sm:inline">Stellen</span>
+          <span className="hidden sm:inline">Jobs</span>
         </button>
       }
       center={

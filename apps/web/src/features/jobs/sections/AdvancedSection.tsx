@@ -64,7 +64,7 @@ export function AdvancedSection({
       <div className="grid gap-5 sm:grid-cols-2">
         <FieldBox
           className="sm:col-span-2"
-          label="Öffentliche Adresse"
+          label="Public slug"
           htmlFor="slug"
           hint="Leave blank to generate from the title."
         >
@@ -77,7 +77,7 @@ export function AdvancedSection({
           />
         </FieldBox>
 
-        <FieldBox label="Berufserfahrung" htmlFor="experienceLevel">
+        <FieldBox label="Experience" htmlFor="experienceLevel">
           <Input
             id="experienceLevel"
             name="experienceLevel"
@@ -87,7 +87,7 @@ export function AdvancedSection({
           />
         </FieldBox>
 
-        <FieldBox label="Ausbildung" htmlFor="education">
+        <FieldBox label="Education" htmlFor="education">
           <Input
             id="education"
             name="education"
@@ -99,7 +99,7 @@ export function AdvancedSection({
 
         <FieldBox
           className="sm:col-span-2"
-          label="Art der KI-Bewertung"
+          label="AI evaluation style"
           htmlFor="evaluationMode"
           hint="Controls how strictly missing or teachable requirements affect recommendations."
         >
@@ -111,9 +111,9 @@ export function AdvancedSection({
               <SelectValue />
             </SelectTrigger>
             <SelectContent>
-              <SelectItem value="relaxed">Locker · übertragbare Kenntnisse</SelectItem>
-              <SelectItem value="balanced">Ausgewogen · empfohlen</SelectItem>
-              <SelectItem value="strict">Streng · feste Anforderungen</SelectItem>
+              <SelectItem value="relaxed">Relaxed · transferable skills</SelectItem>
+              <SelectItem value="balanced">Balanced · recommended</SelectItem>
+              <SelectItem value="strict">Strict · hard requirements</SelectItem>
             </SelectContent>
           </Select>
         </FieldBox>
@@ -121,12 +121,12 @@ export function AdvancedSection({
 
       {/* Keywords */}
       <div className="space-y-3">
-        <Label>Schlüsselwörter</Label>
+        <Label>Keywords</Label>
         <p className="text-xs text-muted-foreground">
           Tags that help candidates and search find this role.
         </p>
         <div className="flex gap-2">
-          <FieldBox className="flex-1" label="Schlüsselwort hinzufügen">
+          <FieldBox className="flex-1" label="Add a keyword">
             <Input
               value={keywordDraft}
               onChange={(e) => setKeywordDraft(e.target.value)}
@@ -170,7 +170,7 @@ export function AdvancedSection({
       {showOffice ? (
         <div className="space-y-4 rounded-xl border bg-muted/20 p-4">
           <FieldBox
-            label="Büroadresse"
+            label="Office address"
             htmlFor="officeAddress"
             hint={
               <>
@@ -192,16 +192,16 @@ export function AdvancedSection({
             <iframe
               key={mapSrc}
               src={mapSrc}
-              title="Bürostandort"
+              title="Office location"
               className="h-48 w-full rounded-lg border"
               loading="lazy"
             />
           ) : null}
 
           <div className="space-y-2">
-            <Label>Bürofotos</Label>
+            <Label>Office photos</Label>
             <div className="flex gap-2">
-              <FieldBox className="flex-1" label="Foto-URL hinzufügen">
+              <FieldBox className="flex-1" label="Add a photo URL">
                 <Input
                   value={photoDraft}
                   onChange={(e) => setPhotoDraft(e.target.value)}
@@ -236,7 +236,7 @@ export function AdvancedSection({
                       type="button"
                       onClick={() => setPhotos((prev) => prev.filter((p) => p !== url))}
                       className="absolute right-1.5 top-1.5 rounded-md bg-black/60 p-1 text-white opacity-0 transition group-hover:opacity-100"
-                      aria-label="Foto entfernen"
+                      aria-label="Remove photo"
                     >
                       <X className="size-3.5" />
                     </button>

@@ -55,7 +55,7 @@ export function JobLivePreview({
           <span className="size-2.5 rounded-full bg-clay/70" />
           <span className="size-2.5 rounded-full bg-success/70" />
         </div>
-        <p className="text-xs font-medium text-ink-soft">Live-Vorschau</p>
+        <p className="text-xs font-medium text-ink-soft">Live preview</p>
         <div className="flex items-center gap-1 rounded-lg border border-border p-0.5">
           {(["desktop", "mobile"] as const).map((d) => {
             const Icon = d === "desktop" ? Monitor : Smartphone;

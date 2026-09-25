@@ -12,16 +12,16 @@ import {
 } from "@/components/ui/select";
 
 const employmentTypes = [
-  { value: "full_time", label: "Vollzeit" },
-  { value: "part_time", label: "Teilzeit" },
-  { value: "contract", label: "Vertrag" },
-  { value: "internship", label: "Praktikum" },
+  { value: "full_time", label: "Full-time" },
+  { value: "part_time", label: "Part-time" },
+  { value: "contract", label: "Contract" },
+  { value: "internship", label: "Internship" },
 ];
 
 const workplaceTypes = [
   { value: "remote", label: "Remote" },
   { value: "hybrid", label: "Hybrid" },
-  { value: "onsite", label: "Vor Ort" },
+  { value: "onsite", label: "Onsite" },
 ];
 
 export function EssentialsSection({
@@ -48,7 +48,7 @@ export function EssentialsSection({
       <div className="grid gap-4 sm:grid-cols-2">
         <FieldBox
           className="sm:col-span-2"
-          label="Stellentitel"
+          label="Job name"
           htmlFor="title"
           required
           error={titleError ? "Add a job title (at least 3 characters) to continue." : undefined}
@@ -67,7 +67,7 @@ export function EssentialsSection({
           />
         </FieldBox>
 
-        <FieldBox label="Abteilung">
+        <FieldBox label="Department">
           <DepartmentCombobox
             name="department"
             departments={departments}
@@ -76,7 +76,7 @@ export function EssentialsSection({
           />
         </FieldBox>
 
-        <FieldBox label="Ländercode für die Suche" htmlFor="jobLocationCountry">
+        <FieldBox label="Country code for search" htmlFor="jobLocationCountry">
           <Input
             id="jobLocationCountry"
             name="jobLocationCountry"
@@ -87,7 +87,7 @@ export function EssentialsSection({
           />
         </FieldBox>
 
-        <FieldBox label="Bundesland oder Region" htmlFor="jobLocationRegion">
+        <FieldBox label="State or region" htmlFor="jobLocationRegion">
           <Input
             id="jobLocationRegion"
             name="jobLocationRegion"
@@ -97,7 +97,7 @@ export function EssentialsSection({
           />
         </FieldBox>
 
-        <FieldBox label="Ort" htmlFor="location" hint="Wird in der öffentlichen Ausschreibung angezeigt.">
+        <FieldBox label="Location" htmlFor="location" hint="Shown on your public posting.">
           <Input
             id="location"
             name="location"
@@ -107,7 +107,7 @@ export function EssentialsSection({
           />
         </FieldBox>
 
-        <FieldBox label="Beschäftigungsart" htmlFor="employmentType">
+        <FieldBox label="Employment type" htmlFor="employmentType">
           <Select name="employmentType" defaultValue={job?.employmentType ?? "full_time"}>
             <SelectTrigger id="employmentType" className={fieldBoxSelectTriggerClassName}>
               <SelectValue />
@@ -122,7 +122,7 @@ export function EssentialsSection({
           </Select>
         </FieldBox>
 
-        <FieldBox label="Arbeitsmodell" htmlFor="workplaceType">
+        <FieldBox label="Workplace type" htmlFor="workplaceType">
           <Select name="workplaceType" value={workplace} onValueChange={setWorkplace}>
             <SelectTrigger id="workplaceType" className={fieldBoxSelectTriggerClassName}>
               <SelectValue />
@@ -140,7 +140,7 @@ export function EssentialsSection({
 
       {workplace === "remote" ? (
         <FieldBox
-          label="Zulässige Länder für Remote-Arbeit"
+          label="Eligible remote countries"
           htmlFor="remoteEligibleCountries"
           hint="Leave empty for worldwide."
         >
@@ -154,7 +154,7 @@ export function EssentialsSection({
         </FieldBox>
       ) : null}
 
-      <FieldBox label="Ausschreibung endet" htmlFor="validThrough">
+      <FieldBox label="Posting expires" htmlFor="validThrough">
         <Input
           id="validThrough"
           name="validThrough"

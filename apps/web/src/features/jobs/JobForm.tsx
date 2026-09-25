@@ -69,13 +69,13 @@ function initialSectionsFor(job?: Job): JobContentSection[] {
     if (job.requirements)
       migrated.push({
         id: "migrated-req",
-        title: "Anforderungen",
+        title: "Requirements",
         body: job.requirements,
       });
     if (job.benefits)
       migrated.push({
         id: "migrated-ben",
-        title: "Vorteile",
+        title: "Benefits",
         body: job.benefits,
       });
     return migrated;
@@ -95,29 +95,29 @@ const SECTIONS = [
   },
   {
     key: "description",
-    label: "Beschreibung",
+    label: "Description",
     blurb: "Lead with impact and team. Keep must-haves short and scannable.",
   },
   {
     key: "compensation",
-    label: "Vergütung",
+    label: "Compensation",
     blurb: "Listing a salary range measurably increases applications.",
   },
   {
     key: "application",
-    label: "Bewerbungsformular",
+    label: "Application form",
     blurb:
       "Ask only what you'll actually use to decide , fewer required fields, more completions.",
   },
   {
     key: "advanced",
-    label: "Erweitert",
+    label: "Advanced",
     blurb:
       "Keywords improve search on your careers page. A custom slug keeps URLs clean.",
   },
   {
     key: "review",
-    label: "Team & Veröffentlichung",
+    label: "Team & publish",
     blurb:
       "Assign a hiring team, then preview the listing exactly as candidates will see it.",
   },

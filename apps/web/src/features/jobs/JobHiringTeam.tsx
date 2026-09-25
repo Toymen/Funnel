@@ -34,9 +34,9 @@ import {
 } from "@/components/ui/select";
 
 const ROLES: { value: HiringTeamRole; label: string }[] = [
-  { value: "recruiter", label: "Recruiting" },
-  { value: "hiring_manager", label: "Fachverantwortung" },
-  { value: "interviewer", label: "Gesprächsführung" },
+  { value: "recruiter", label: "Recruiter" },
+  { value: "hiring_manager", label: "Hiring manager" },
+  { value: "interviewer", label: "Interviewer" },
 ];
 
 export function JobHiringTeam({
@@ -64,8 +64,8 @@ export function JobHiringTeam({
 
   return (
     <FormSection
-      title="Auswahlteam"
-      description="Zugewiesene Teammitglieder erhalten Aktualisierungen zu Bewerbenden. Rollen klären die Zuständigkeit für Recruiting, Entscheidung und Gespräche."
+      title="Hiring team"
+      description="Assigned teammates receive candidate updates for this role. Roles clarify who owns recruiting, the decision, and interviews."
       contentClassName="divide-y divide-border/60"
       action={
         available.length > 0 ? (
