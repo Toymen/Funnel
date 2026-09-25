@@ -12,20 +12,20 @@
     "./saml-config": "./src/saml-config.ts"
   },
   "dependencies": {
-    "@better-auth/sso": "^1.7.5",
+    "@better-auth/sso": "1.7.5",
     "@harly/config": "workspace:*",
     "@harly/db": "workspace:*",
     "@harly/emails": "workspace:*",
-    "better-auth": "^1.7.5",
+    "better-auth": "1.7.5",
     "drizzle-orm": "0.45.2",
     "fast-xml-parser": "5.11.1",
-    "resend": "^6.28.1"
+    "resend": "6.28.1"
   },
   "scripts": {
     "test": "vitest run"
   },
   "devDependencies": {
-    "@better-auth/cli": "^1.4.21",
-    "vitest": "^5.0.0"
+    "@better-auth/cli": "1.4.22",
+    "vitest": "5.0.1"
   }
 }

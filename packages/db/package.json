@@ -15,14 +15,14 @@
     "db:backfill-signature-fields": "tsx scripts/backfill-signature-fields.ts"
   },
   "dependencies": {
-    "@opentelemetry/api": "^1.9.1",
-    "drizzle-orm": "^0.45.2",
-    "postgres": "^3.4.9"
+    "@opentelemetry/api": "1.9.1",
+    "drizzle-orm": "0.45.2",
+    "postgres": "3.4.9"
   },
   "devDependencies": {
-    "dotenv": "^17.4.2",
-    "tsx": "^4.23.13",
-    "drizzle-kit": "^0.31.10"
+    "dotenv": "17.4.2",
+    "tsx": "4.23.13",
+    "drizzle-kit": "0.31.10"
   },
   "exports": {
     ".": "./src/index.ts"
