@@ -23,10 +23,13 @@ Image-Build sowie die explizit erlaubte Loopback-URL:
 pnpm docker:local:up       # Image bauen und Stack starten
 pnpm docker:local:down     # Container entfernen, Daten behalten
 pnpm docker:local:reset    # Container und Volumes entfernen, frisch bauen
+pnpm docker:local:seed     # Bier-Schneider-Beispielstellen im Container anlegen
 ```
 
 `docker:local:reset` löscht ausschließlich die lokalen Compose-Volumes dieses
-Projekts. Vor einem Reset produktiver Daten weiterhin ein Backup erstellen.
+Projekts. Vor einem Reset produktiver Daten weiterhin ein Backup erstellen. Der Seed ist
+idempotent und nutzt das lokal gebaute Image; auf dem Host werden weder Node noch pnpm
+benötigt.
 
 Alles läuft als kleine, getrennte Container aus **einem** Image. Dienste mit demselben
 Image teilen sich die Layer auf der Platte.
@@ -39,7 +42,7 @@ Image teilen sich die Layer auf der Platte.
 | `postgres`  | `postgres:16` (offiziell) | Datenbank                                  |
 | `caddy`     | `caddy:2` (offiziell)     | HTTPS, Profil `proxy`                      |
 
-Das App-Image nutzt den Next.js-Standalone-Output auf `node:22-bookworm-slim`, läuft als
+Das App-Image nutzt den Next.js-Standalone-Output auf `node:24.21.0-bookworm-slim`, läuft als
 Benutzer `node` mit read-only Dateisystem und enthält kein npm. Die CI weist die
 Image-Größe bei jedem PR im Job-Summary aus.
 

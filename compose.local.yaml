@@ -30,3 +30,16 @@ services:
       NEXT_PUBLIC_APP_URL: http://localhost:3000
       BETTER_AUTH_URL: http://localhost:3000
       HARLY_ALLOW_LOCAL_ORIGIN: "true"
+
+  seed:
+    image: funnel:local
+    pull_policy: never
+    profiles: ["tools"]
+    entrypoint: ["node", "/app/seed-bier-schneider.cjs"]
+    command: []
+    environment:
+      DATABASE_URL: postgresql://${POSTGRES_USER:?Set POSTGRES_USER}:${POSTGRES_PASSWORD:?Set POSTGRES_PASSWORD}@postgres:5432/${POSTGRES_DB:?Set POSTGRES_DB}
+    depends_on:
+      postgres:
+        condition: service_healthy
+    restart: "no"

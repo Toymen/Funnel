@@ -32,6 +32,7 @@ ENV NEXT_TELEMETRY_DISABLED=1 \
 RUN --mount=type=cache,id=harly-next-cache,target=/src/apps/web/.next/cache \
     pnpm --filter @harly/cli build && pnpm --filter web build
 RUN pnpm exec esbuild tooling/runtime/src/entrypoint.ts --bundle --platform=node --format=esm --target=node24 --outfile=/tmp/harly-runtime.mjs
+RUN pnpm exec esbuild packages/db/scripts/seed-bier-schneider.ts --bundle --platform=node --format=cjs --target=node24 --outfile=/tmp/seed-bier-schneider.cjs
 
 FROM node:24.21.0-bookworm-slim AS runtime
 ENV NODE_ENV=production \
@@ -50,6 +51,7 @@ COPY --from=build --chown=node:node /src/apps/web/.next/static/ /app/apps/web/.n
 COPY --from=build --chown=node:node /src/apps/web/public/ /app/apps/web/public/
 COPY --from=build --chown=node:node /src/packages/db/migrations/ /app/migrations/
 COPY --from=build --chown=node:node /tmp/harly-runtime.mjs /app/runtime.mjs
+COPY --from=build --chown=node:node /tmp/seed-bier-schneider.cjs /app/seed-bier-schneider.cjs
 RUN mkdir -p /data/uploads /app/apps/web/.next/cache \
     && chown -R node:node /data /app/apps/web/.next/cache
 USER node
