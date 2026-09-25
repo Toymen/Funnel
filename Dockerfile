@@ -15,7 +15,8 @@ COPY packages/storage/package.json packages/storage/package.json
 COPY packages/ui/package.json packages/ui/package.json
 COPY packages/validators/package.json packages/validators/package.json
 COPY tooling/harly/package.json tooling/harly/package.json
-RUN pnpm install --frozen-lockfile
+RUN --mount=type=cache,id=funnel-pnpm,target=/pnpm/store \
+    pnpm install --frozen-lockfile --store-dir /pnpm/store
 COPY . .
 ENV NEXT_TELEMETRY_DISABLED=1 \
     NODE_OPTIONS=--max-old-space-size=4096 \
