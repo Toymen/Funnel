@@ -2,12 +2,7 @@
  * Conversion-Berechnung (PRD v1 §46, v2 §10). Rein funktional und getestet.
  */
 export type FunnelStageKey =
-  | "job_view"
-  | "application_started"
-  | "application_submitted"
-  | "interview"
-  | "offer"
-  | "hired";
+  "job_view" | "application_started" | "application_submitted" | "interview" | "offer" | "hired";
 
 export const FUNNEL_STAGE_LABELS: Record<FunnelStageKey, string> = {
   job_view: "Stellenaufrufe",

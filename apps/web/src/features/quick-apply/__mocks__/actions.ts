@@ -15,8 +15,7 @@ export type { QuickApplyErrorKey, QuickApplyResult } from "../actions";
 
 function config(): QuickApplyMockConfig {
   const fromPreview = (globalThis as Record<string, unknown>).__storybookQuickApplyMock as
-    | QuickApplyMockConfig
-    | undefined;
+    QuickApplyMockConfig | undefined;
   return fromPreview ?? { submit: "success", delayMs: 400, upload: "success" };
 }
 
