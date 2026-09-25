@@ -31,6 +31,7 @@ const envSchema = z
   .object({
     NODE_ENV: z.enum(["development", "test", "production"]).default("development"),
     HARLY_URL: optionalString,
+    HARLY_ALLOW_LOCAL_ORIGIN: z.enum(["true", "false"]).default("false"),
     NEXT_PUBLIC_APP_URL: optionalString,
     BETTER_AUTH_URL: optionalString,
     DATABASE_URL: optionalString,
@@ -78,8 +79,11 @@ const envSchema = z
           ipv4Parts.length === 4 &&
           ipv4Parts[0] === "127" &&
           ipv4Parts.slice(1).every((part) => /^(?:0|[1-9]\d{0,2})$/.test(part) && Number(part) <= 255);
+        const isLocalPreview = env.HARLY_ALLOW_LOCAL_ORIGIN === "true" &&
+          (normalizedHostname === "localhost" || isIpv4Loopback || normalizedHostname === "[::1]");
         if (
           env.NODE_ENV === "production" &&
+          !isLocalPreview &&
           (normalizedHostname === "localhost" ||
             normalizedHostname.endsWith(".localhost") ||
             isIpv4Loopback ||
@@ -87,7 +91,7 @@ const envSchema = z
         ) {
           throw new Error("local or unspecified bind address");
         }
-        if (env.NODE_ENV === "production" && parsed.protocol !== "https:") {
+        if (env.NODE_ENV === "production" && parsed.protocol !== "https:" && !isLocalPreview) {
           ctx.addIssue({ code: "custom", path: ["HARLY_URL"], message: "must use HTTPS in production" });
         }
       } catch {

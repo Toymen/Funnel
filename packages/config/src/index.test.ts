@@ -55,6 +55,18 @@ describe("loadHarlyConfig", () => {
     );
   });
 
+  it("allows an explicitly enabled loopback preview", () => {
+    for (const origin of ["http://localhost:3000", "http://127.0.0.1:3000", "http://[::1]:3000"]) {
+      expect(loadHarlyConfig({ ...production, HARLY_URL: origin, HARLY_ALLOW_LOCAL_ORIGIN: "true" }).HARLY_URL).toBe(origin);
+    }
+  });
+
+  it("keeps remote HTTP and unspecified bind addresses forbidden in local preview mode", () => {
+    for (const origin of ["http://example.com", "http://0.0.0.0:3000", "http://tenant.localhost:3000"]) {
+      expect(() => loadHarlyConfig({ ...production, HARLY_URL: origin, HARLY_ALLOW_LOCAL_ORIGIN: "true" })).toThrow(/HARLY_URL/);
+    }
+  });
+
   it("supports the deprecated URL fallback with one warning", () => {
     const warn = vi.fn();
     const config = loadHarlyConfig(
