@@ -39,17 +39,17 @@ export type ScheduleMemberOption = {
 };
 
 const TYPES = [
-  { key: "screening", label: "Vorauswahl" },
-  { key: "technical", label: "Fachgespräch" },
-  { key: "culture_fit", label: "Teamgespräch" },
-  { key: "onsite", label: "Vor Ort" },
-  { key: "final", label: "Abschlussrunde" },
+  { key: "screening", label: "Screening" },
+  { key: "technical", label: "Technical" },
+  { key: "culture_fit", label: "Culture fit" },
+  { key: "onsite", label: "Onsite" },
+  { key: "final", label: "Final round" },
 ] as const;
 
 const MODES = [
   { key: "video", label: "Video", icon: Video },
-  { key: "phone", label: "Telefon", icon: Phone },
-  { key: "onsite", label: "Vor Ort", icon: MapPin },
+  { key: "phone", label: "Phone", icon: Phone },
+  { key: "onsite", label: "Onsite", icon: MapPin },
 ] as const;
 
 const DURATIONS = [30, 45, 60, 90] as const;
@@ -100,7 +100,7 @@ export function ScheduleDrawer({
 
   const hasApplication = applications.length > 0;
   const locationLabel = useMemo(
-    () => (mode === "onsite" ? "Adresse" : "Meeting link"),
+    () => (mode === "onsite" ? "Address" : "Meeting link"),
     [mode],
   );
 
@@ -271,7 +271,7 @@ export function ScheduleDrawer({
             ) : null}
 
             {applications.length > 1 ? (
-              <Field label="Rolle">
+              <Field label="Role">
                 <Select value={applicationId} onValueChange={setApplicationId}>
                   <SelectTrigger className="w-full">
                     <SelectValue />
@@ -300,7 +300,7 @@ export function ScheduleDrawer({
               </p>
             )}
 
-            <Field label="Art">
+            <Field label="Type">
               <div className="grid grid-cols-3 gap-2">
                 {TYPES.map((t) => (
                   <SegButton
@@ -314,7 +314,7 @@ export function ScheduleDrawer({
               </div>
             </Field>
 
-            <Field label="Format">
+            <Field label="Mode">
               <div className="grid grid-cols-3 gap-2">
                 {MODES.map((m) => (
                   <SegButton
@@ -330,7 +330,7 @@ export function ScheduleDrawer({
             </Field>
 
             <div className="grid grid-cols-2 gap-3">
-              <Field label="Datum" htmlFor="schedule-date">
+              <Field label="Date" htmlFor="schedule-date">
                 <Input
                   id="schedule-date"
                   type="date"
@@ -341,7 +341,7 @@ export function ScheduleDrawer({
                   }}
                 />
               </Field>
-              <Field label="Uhrzeit" htmlFor="schedule-time">
+              <Field label="Time" htmlFor="schedule-time">
                 <Input
                   id="schedule-time"
                   type="time"
@@ -361,7 +361,7 @@ export function ScheduleDrawer({
               </div>
             ) : null}
             {checkingAvailability ? (
-              <p className="text-xs text-muted-foreground">Verfügbarkeit wird geprüft …</p>
+              <p className="text-xs text-muted-foreground">Checking availability…</p>
             ) : null}
 
             <div className="grid grid-cols-2 gap-3">
@@ -424,12 +424,12 @@ export function ScheduleDrawer({
               />
             </Field>
 
-            <Field label="Notizen" htmlFor="schedule-notes">
+            <Field label="Notes" htmlFor="schedule-notes">
               <Textarea
                 id="schedule-notes"
                 value={notes}
                 onChange={(e) => setNotes(e.target.value)}
-                placeholder="Schwerpunkte, Teilnehmende, Vorbereitung …"
+                placeholder="Focus areas, panel, prep…"
                 className="min-h-20"
               />
             </Field>

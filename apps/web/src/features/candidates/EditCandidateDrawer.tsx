@@ -50,8 +50,8 @@ export function EditCandidateDrawer({
       open={open}
       onOpenChange={setOpen}
       trigger={trigger}
-      title="Bewerber bearbeiten"
-      description="Name, E-Mail, Telefon und soziale Profile."
+      title="Edit candidate"
+      description="Name, email, phone, and social links."
       footer={
         <>
           <Button variant="outline" disabled={isPending} onClick={() => setOpen(false)}>
@@ -104,18 +104,18 @@ export function EditCandidateDrawer({
               hint="Photo · optional"
             />
             <div className="grid flex-1 grid-cols-2 gap-3">
-              <Field name="firstName" label="Vorname" defaultValue={candidate.firstName} />
-              <Field name="lastName" label="Nachname" defaultValue={candidate.lastName} />
+              <Field name="firstName" label="First name" defaultValue={candidate.firstName} />
+              <Field name="lastName" label="Last name" defaultValue={candidate.lastName} />
             </div>
           </div>
-          <Field name="email" label="E-Mail" type="email" defaultValue={candidate.email} />
-          <Field name="headline" label="Kurzprofil" defaultValue={candidate.headline ?? ""} />
+          <Field name="email" label="Email" type="email" defaultValue={candidate.email} />
+          <Field name="headline" label="Headline" defaultValue={candidate.headline ?? ""} />
           <div className="grid grid-cols-2 gap-3">
-            <Field name="phone" label="Telefon" defaultValue={candidate.phone ?? ""} />
-            <Field name="address" label="Adresse" defaultValue={candidate.address ?? candidate.location ?? ""} />
+            <Field name="phone" label="Phone" defaultValue={candidate.phone ?? ""} />
+            <Field name="address" label="Address" defaultValue={candidate.address ?? candidate.location ?? ""} />
           </div>
           <div className="space-y-1.5">
-            <Label htmlFor="edit-summary">Profilzusammenfassung</Label>
+            <Label htmlFor="edit-summary">Profile summary</Label>
             <Textarea
               id="edit-summary"
               name="summary"
@@ -125,7 +125,7 @@ export function EditCandidateDrawer({
           </div>
           <Field name="linkedinUrl" label="LinkedIn" type="url" defaultValue={candidate.linkedinUrl ?? ""} placeholder="https://linkedin.com/in/…" icon={<LinkedinLogo className="size-3.5" />} />
           <Field name="githubUrl" label="GitHub" type="url" defaultValue={candidate.githubUrl ?? ""} placeholder="https://github.com/…" icon={<GithubIcon className="size-3.5" />} />
-          <Field name="websiteUrl" label="Webseite" type="url" defaultValue={candidate.websiteUrl ?? ""} placeholder="https://yoursite.com" icon={<Globe className="size-3.5" />} />
+          <Field name="websiteUrl" label="Website" type="url" defaultValue={candidate.websiteUrl ?? ""} placeholder="https://yoursite.com" icon={<Globe className="size-3.5" />} />
       </form>
     </SidePanel>
   );

@@ -109,7 +109,7 @@ export function CandidateProfileTabs({
         variant="line"
         className="w-full justify-start gap-5 overflow-x-auto border-b border-hairline text-sm [&>button]:flex-none [&>button]:px-0.5"
       >
-        <TabsTrigger value="profile">Profil</TabsTrigger>
+        <TabsTrigger value="profile">Profile</TabsTrigger>
         <TabsTrigger value="interviews">
           Interviews
           <TabCount value={interviews.length} />
@@ -191,7 +191,7 @@ export function CandidateProfileTabs({
         {interviews.length === 0 ? (
           <EmptySection
             icon={CalendarClock}
-            title="Noch keine Gespräche"
+            title="No interviews yet"
             hint="Schedule one with the button above. The join link, the interviewer and the notes all stay on the card."
           />
         ) : (
@@ -280,7 +280,7 @@ export function CandidateProfileTabs({
               }
             />
           ) : (
-            <Button size="sm" disabled title="Für diese Person liegt keine bewertbare Bewerbung vor">
+            <Button size="sm" disabled title="This candidate has no application to score">
               <ClipboardCheck className="size-4" />
               Add evaluation
             </Button>
@@ -326,7 +326,7 @@ export function CandidateProfileTabs({
         {activity.length === 0 && notes.length === 0 ? (
           <EmptySection
             icon={MessageSquare}
-            title="Noch keine Aktivitäten"
+            title="Nothing has happened yet"
             hint="Stage moves, notes, emails and interviews all land here in order, so you can see how this candidate got to where they are."
           />
         ) : null}

@@ -100,8 +100,8 @@ export function AddCandidateDrawer({
         </Button>
       </SheetTrigger>
       <DrawerLayout
-        title="Bewerber hinzufügen"
-        description="Legen Sie eine Person manuell an und erfassen Sie optional die Empfehlung."
+        title="Add candidate"
+        description="Create a candidate manually, and optionally credit whoever recommended them."
         footer={
           <>
             <SheetClose asChild>
@@ -110,25 +110,25 @@ export function AddCandidateDrawer({
               </Button>
             </SheetClose>
             <Button type="submit" form="add-candidate-form" disabled={isPending}>
-              {isPending ? "Adding…" : "Bewerber hinzufügen"}
+              {isPending ? "Adding…" : "Add candidate"}
             </Button>
           </>
         }
       >
         <form id="add-candidate-form" className="space-y-4" action={submit}>
           <div className="grid grid-cols-2 gap-3">
-            <Field name="firstName" label="Vorname" required />
-            <Field name="lastName" label="Nachname" required />
+            <Field name="firstName" label="First name" required />
+            <Field name="lastName" label="Last name" required />
           </div>
-          <Field name="email" label="E-Mail" type="email" required />
-          <Field name="headline" label="Kurzprofil" />
+          <Field name="email" label="Email" type="email" required />
+          <Field name="headline" label="Headline" />
           <div className="grid grid-cols-2 gap-3">
-            <Field name="phone" label="Telefon" />
-            <Field name="address" label="Adresse" />
+            <Field name="phone" label="Phone" />
+            <Field name="address" label="Address" />
           </div>
           <Field name="linkedinUrl" label="LinkedIn" type="url" placeholder="https://linkedin.com/in/…" />
           <Field name="githubUrl" label="GitHub" type="url" placeholder="https://github.com/…" />
-          <Field name="websiteUrl" label="Webseite" type="url" placeholder="https://yoursite.com" />
+          <Field name="websiteUrl" label="Website" type="url" placeholder="https://yoursite.com" />
 
           <div className="rounded-lg border bg-muted/20 p-4">
             <label className="flex items-center gap-2 text-sm font-medium">
@@ -141,7 +141,7 @@ export function AddCandidateDrawer({
             {referring ? (
               <div className="mt-3 space-y-3">
                 <div className="space-y-1.5">
-                  <Label htmlFor="add-candidate-referrer">Empfohlen von</Label>
+                  <Label htmlFor="add-candidate-referrer">Referred by</Label>
                   <Select value={referredById} onValueChange={setReferredById}>
                     <SelectTrigger id="add-candidate-referrer" className="w-full">
                       <SelectValue />
@@ -156,13 +156,13 @@ export function AddCandidateDrawer({
                   </Select>
                 </div>
                 <div className="space-y-1.5">
-                  <Label htmlFor="add-candidate-job">Stelle (optional)</Label>
+                  <Label htmlFor="add-candidate-job">Job (optional)</Label>
                   <Select value={jobId} onValueChange={setJobId}>
                     <SelectTrigger id="add-candidate-job" className="w-full">
                       <SelectValue />
                     </SelectTrigger>
                     <SelectContent>
-                      <SelectItem value={NO_JOB}>Keine bestimmte Stelle</SelectItem>
+                      <SelectItem value={NO_JOB}>No specific job</SelectItem>
                       {jobs.map((job) => (
                         <SelectItem key={job.id} value={job.id}>
                           {job.title}
@@ -172,12 +172,12 @@ export function AddCandidateDrawer({
                   </Select>
                 </div>
                 <div className="space-y-1.5">
-                  <Label htmlFor="add-candidate-referral-note">Notiz (optional)</Label>
+                  <Label htmlFor="add-candidate-referral-note">Note (optional)</Label>
                   <Textarea
                     id="add-candidate-referral-note"
                     name="referralNote"
                     rows={3}
-                    placeholder="Warum passt diese Person gut?"
+                    placeholder="Why are they a good fit?"
                   />
                 </div>
                 <label className="flex items-center gap-2 text-sm">

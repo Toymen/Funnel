@@ -49,7 +49,7 @@ export function CandidateActivityRail({ activity }: { activity: ActivityItem[] }
         >
           <span className="flex items-center gap-2">
             <PulseIcon className="size-4 text-primary" />
-            <span className="text-sm font-semibold">Aktivität</span>
+            <span className="text-sm font-semibold">Activity</span>
             {activity.length > 0 ? (
               <span className="rounded-full bg-muted px-1.5 text-xs font-medium tabular-nums text-muted-foreground">
                 {activity.length}
@@ -76,7 +76,7 @@ export function CandidateActivityRail({ activity }: { activity: ActivityItem[] }
                 <span className="flex size-10 items-center justify-center rounded-xl bg-muted text-muted-foreground">
                   <PulseIcon className="size-5" />
                 </span>
-                <p className="text-sm font-medium">Noch keine Aktivität</p>
+                <p className="text-sm font-medium">No activity yet</p>
                 <p className="max-w-[16rem] text-xs text-muted-foreground">
                   Stage moves, comments, messages and AI events will show up here.
                 </p>

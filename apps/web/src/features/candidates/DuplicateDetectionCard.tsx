@@ -55,7 +55,7 @@ export function DuplicateDetectionCard({
         <CardContent className="space-y-3">
           <div className="flex items-center gap-2 text-clay">
             <Users className="size-4 shrink-0" />
-            <p className="text-sm font-medium">Mögliche doppelte Einträge</p>
+            <p className="text-sm font-medium">Possible duplicate candidates</p>
           </div>
           <ul className="space-y-2">
             {matches.map((m) => (

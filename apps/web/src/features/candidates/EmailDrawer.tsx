@@ -25,11 +25,11 @@ export type EmailTemplateOption = {
 type DraftType = "screening" | "interview_invite" | "rejection" | "offer" | "followup";
 
 const DRAFT_TYPES: { id: DraftType; label: string }[] = [
-  { id: "screening", label: "Vorauswahl" },
-  { id: "interview_invite", label: "Gespräch" },
-  { id: "rejection", label: "Absage" },
-  { id: "offer", label: "Angebot" },
-  { id: "followup", label: "Nachfassen" },
+  { id: "screening", label: "Screening" },
+  { id: "interview_invite", label: "Interview" },
+  { id: "rejection", label: "Rejection" },
+  { id: "offer", label: "Offer" },
+  { id: "followup", label: "Follow-up" },
 ];
 
 export function EmailDrawer({
@@ -70,12 +70,12 @@ export function EmailDrawer({
       <SheetTrigger asChild>{trigger}</SheetTrigger>
       <DrawerLayout
         title={`Email ${name}`}
-        description="Verfassen und senden Sie direkt eine E-Mail an diese Person."
+        description="Compose and send an email directly to this candidate."
       >
         <div className="space-y-4">
           {aiConfigured ? (
             <div className="space-y-2 rounded-xl border bg-muted/30 p-3.5">
-              <p className="text-[12px] font-semibold uppercase tracking-wide text-muted-foreground">Mit KI entwerfen</p>
+              <p className="text-[12px] font-semibold uppercase tracking-wide text-muted-foreground">Draft with AI</p>
               <p className="text-xs text-muted-foreground">Pick a type, then use “Draft with AI” below to fill the subject and message.</p>
               <div className="flex flex-wrap gap-1.5">
                 {DRAFT_TYPES.map(({ id, label }) => (

@@ -47,14 +47,14 @@ export function DocumentRequestsList({
     return (
       <EmptySection
         icon={FileText}
-        title="Noch nichts angefordert"
+        title="Nothing requested yet"
         hint="Request an ID, signed NDA, or any file — the candidate uploads it from their portal."
       />
     );
   }
   return (
     <div className="space-y-2">
-      <SectionHeading>Von der Person angefordert</SectionHeading>
+      <SectionHeading>Requested from candidate</SectionHeading>
       <div className="divide-y rounded-xl border">
         {requests.map((request) => (
           <RequestRow key={request.id} request={request} canManage={canManage} />
@@ -221,14 +221,14 @@ export function RequestDialog({
     <Dialog open={open} onOpenChange={(value) => { if (!value) reset(); onOpenChange(value); }}>
       <DialogContent>
         <DialogHeader>
-          <DialogTitle>Dokumente anfordern</DialogTitle>
+          <DialogTitle>Request documents</DialogTitle>
           <DialogDescription>
             The candidate is notified in their portal and uploads each file there. You review the uploads here.
           </DialogDescription>
         </DialogHeader>
         <div className="space-y-4 py-2">
           <div className="space-y-2">
-            <Label htmlFor="request-application">Bewerbung</Label>
+            <Label htmlFor="request-application">Application</Label>
             <select
               id="request-application"
               value={applicationId}
@@ -244,7 +244,7 @@ export function RequestDialog({
           </div>
 
           <div className="space-y-3">
-            <Label>Dokumente</Label>
+            <Label>Documents</Label>
             {items.map((item, index) => (
               <div key={index} className="space-y-2 rounded-lg border p-3">
                 <div className="flex items-center gap-2">
@@ -271,7 +271,7 @@ export function RequestDialog({
                   onChange={(event) =>
                     setItems((current) => current.map((it, i) => (i === index ? { ...it, instructions: event.target.value } : it)))
                   }
-                  placeholder="Hinweise (optional)"
+                  placeholder="Instructions (optional)"
                   className="text-xs"
                 />
               </div>
@@ -288,7 +288,7 @@ export function RequestDialog({
           </div>
 
           <div className="space-y-2">
-            <Label htmlFor="request-due">Fälligkeitsdatum (optional)</Label>
+            <Label htmlFor="request-due">Due date (optional)</Label>
             <Input id="request-due" type="date" value={dueAt} onChange={(event) => setDueAt(event.target.value)} />
           </div>
         </div>

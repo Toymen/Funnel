@@ -98,14 +98,14 @@ export function ApplicationsBoardTable({
     <section className="mt-6">
       <div className="flex flex-wrap items-center gap-2">
         <FilterPill
-          label="Stelle"
+          label="Job"
           value={jobValue}
           onChange={(value) => setFilter("job", value)}
           options={board.jobOptions.map((option) => option.value)}
           labelMap={jobLabels}
         />
         <FilterPill
-          label="Phase"
+          label="Stage"
           value={stageValue}
           onChange={(value) => setFilter("stage", value)}
           options={board.stageOptions.map((option) => option.value)}
@@ -121,15 +121,15 @@ export function ApplicationsBoardTable({
           {board.totalActive === 0 ? (
             <EmptyState
               icon={Users}
-              title="Niemand wartet auf Ihre Entscheidung"
-              description="Neue Bewerbungen erscheinen hier zur Entscheidung."
-              action={{ href: "/dashboard/jobs/new", label: "Stelle veröffentlichen" }}
+              title="No one is waiting on you"
+              description="When candidates apply, they land here for a decision."
+              action={{ href: "/dashboard/jobs/new", label: "Publish a job" }}
             />
           ) : (
             <EmptyState
               icon={Filter}
-              title="Keine Einträge entsprechen diesen Filtern"
-              description="Entfernen Sie den Stellen- oder Phasenfilter, um den restlichen Prozess zu sehen."
+              title="Nothing matches these filters"
+              description="Clear the job or stage filter to see the rest of the pipeline."
             />
           )}
         </div>
@@ -141,13 +141,13 @@ export function ApplicationsBoardTable({
                 <RowCheckbox
                   checked={allSelected}
                   onChange={toggleAll}
-                  label="Alle Bewerbungen auswählen"
+                  label="Select all applications"
                 />
               </Th>
-              <Th>Bewerber</Th>
-              <Th>Rolle</Th>
-              <Th>Phase</Th>
-              <Th>Wartezeit</Th>
+              <Th>Candidate</Th>
+              <Th>Role</Th>
+              <Th>Stage</Th>
+              <Th>Waiting</Th>
               <Th>Team</Th>
               <Th className="w-14" srOnly>
                 Actions
@@ -266,7 +266,7 @@ function BulkBar({
         <button
           type="button"
           onClick={onClear}
-          aria-label="Auswahl aufheben"
+          aria-label="Clear selection"
           className="flex size-8 items-center justify-center rounded-full text-soft-ink transition-colors hover:bg-row-wash hover:text-near-ink focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-near-ink"
         >
           <X className="size-4" strokeWidth={2} />
@@ -294,7 +294,7 @@ function RowMenu({
       </DropdownMenuTrigger>
       <DropdownMenuContent align="end" className="min-w-44">
         <DropdownMenuItem asChild>
-          <a href={`/dashboard/candidates/${candidateId}`}>Bewerber öffnen</a>
+          <a href={`/dashboard/candidates/${candidateId}`}>Open candidate</a>
         </DropdownMenuItem>
         <DropdownMenuItem asChild>
           <a href={`/dashboard/candidates/${candidateId}#process`}>

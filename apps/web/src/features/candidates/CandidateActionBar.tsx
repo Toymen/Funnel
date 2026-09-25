@@ -452,10 +452,10 @@ export function CandidateActionBar({
             size="sm"
             variant="ghost"
             className="size-8 p-0 text-muted-foreground hover:text-foreground"
-            title="E-Mail"
+            title="Email"
           >
             <Mail className="size-4" />
-            <span className="sr-only">E-Mail</span>
+            <span className="sr-only">Email</span>
           </Button>
         ) : (
           <Button size="sm" variant="outline">
@@ -599,7 +599,7 @@ export function CandidateActionBar({
               size="sm"
               variant="ghost"
               className="size-8 p-0 text-muted-foreground hover:text-foreground"
-              title="Bewerber bearbeiten"
+              title="Edit candidate"
             >
               <Pencil className="size-4" />
               <span className="sr-only">Edit</span>
@@ -617,7 +617,7 @@ export function CandidateActionBar({
                   title="View resume"
                 >
                   <FileText className="size-4" />
-                  <span className="sr-only">Lebenslauf</span>
+                  <span className="sr-only">Resume</span>
                 </Button>
               </DialogTrigger>
               <DialogContent className="sm:max-w-3xl">
@@ -654,7 +654,7 @@ export function CandidateActionBar({
             >
               <a href={resumeUrl} target="_blank" rel="noreferrer">
                 <FileText className="size-4" />
-                <span className="sr-only">Lebenslauf</span>
+                <span className="sr-only">Resume</span>
               </a>
             </Button>
           )

@@ -85,7 +85,7 @@ export function CandidateTags({
             }
           }}
           onBlur={add}
-          placeholder="Schlagwort …"
+          placeholder="Tag name…"
           className="h-7 w-32 rounded-full px-3 text-xs"
         />
       ) : (

@@ -8,19 +8,19 @@ import type { Scorecard } from "./types";
 
 const RATING_META = {
   strong: {
-    label: "Stark",
+    label: "Strong",
     icon: ThumbsUp,
     className: "text-primary",
     accent: "bg-lime",
   },
   mixed: {
-    label: "Gemischt",
+    label: "Mixed",
     icon: Minus,
     className: "text-clay",
     accent: "bg-clay",
   },
   weak: {
-    label: "Schwach",
+    label: "Weak",
     icon: ThumbsDown,
     className: "text-destructive",
     accent: "bg-destructive",

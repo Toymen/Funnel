@@ -22,9 +22,9 @@ import {
 import { cn } from "@/lib/utils";
 
 const RATINGS = [
-  { key: "strong", label: "Stark", icon: ThumbsUp },
-  { key: "mixed", label: "Gemischt", icon: Minus },
-  { key: "weak", label: "Schwach", icon: ThumbsDown },
+  { key: "strong", label: "Strong", icon: ThumbsUp },
+  { key: "mixed", label: "Mixed", icon: Minus },
+  { key: "weak", label: "Weak", icon: ThumbsDown },
 ] as const;
 
 type RatingKey = (typeof RATINGS)[number]["key"];
@@ -65,7 +65,7 @@ export function EvaluationDrawer({
       }
       if (result.attributes.length === 0) {
         toast.message("No attributes suggested", {
-          description: "Versuchen Sie es erneut oder ergänzen Sie unten eine eigene Bewertung.",
+          description: "Try again or add your own below.",
         });
         return;
       }
@@ -144,7 +144,7 @@ export function EvaluationDrawer({
       onOpenChange={setOpen}
       trigger={trigger}
       title={`Add evaluation${stageName ? ` · ${stageName}` : ""}`}
-      description="Bewerten Sie diese Person und hinterlassen Sie eine Rückmeldung für das Team."
+      description="Rate this candidate and leave feedback for the team."
       footer={
         <>
           <Button
@@ -244,7 +244,7 @@ export function EvaluationDrawer({
               id="evaluation-comment"
               value={comment}
               onChange={(e) => setComment(e.target.value)}
-              placeholder="Stärken, Bedenken und Ihre Empfehlung …"
+              placeholder="Strengths, concerns, and your recommendation…"
               className="min-h-32 pb-11"
             />
             <button

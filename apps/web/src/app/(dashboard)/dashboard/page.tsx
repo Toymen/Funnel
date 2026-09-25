@@ -91,24 +91,24 @@ export default async function DashboardPage({
         <TriageStrip
           items={[
             {
-              label: "Ihre Prüfung steht aus",
+              label: "Awaiting your review",
               value: review.length,
               href: "/dashboard/candidates",
               urgent: true,
             },
             {
-              label: "Überfällige Antworten",
+              label: "Overdue replies",
               value: overdue,
               href: "/dashboard/inbox",
               urgent: true,
             },
             {
-              label: "Heutige Gespräche",
+              label: "Interviews today",
               value: interviews.length,
               href: "/dashboard/calendars",
             },
             {
-              label: "Bewerbende im Prozess",
+              label: "Candidates in pipeline",
               value: activeCandidates,
               href: "/dashboard/pipeline",
             },

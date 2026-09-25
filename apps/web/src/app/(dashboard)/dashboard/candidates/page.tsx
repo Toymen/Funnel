@@ -197,16 +197,16 @@ const initialImportSource: ImportSource | undefined =
         ) : (
           <EmptyState
             icon={Trash2}
-            title="Papierkorb ist leer"
-            description="Gelöschte Bewerbende erscheinen hier und können wiederhergestellt werden."
+            title="Trash is empty"
+            description="Candidates you delete show up here and can be restored."
           />
         )
       ) : rows.length === 0 ? (
         <div className="space-y-4">
           <EmptyState
             icon={Users}
-            title="Noch keine Bewerbenden"
-            description="Teilen Sie Ihre öffentliche Stellenbörse oder importieren Sie Bewerbende aus einem anderen ATS."
+            title="No candidates yet"
+            description="Share your public job board or import candidates from another ATS."
           />
           <div className="flex justify-center gap-2">
             {canCreateCandidates ? (
