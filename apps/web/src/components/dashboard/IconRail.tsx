@@ -33,6 +33,7 @@ import {
 } from "@/components/ui/tooltip";
 import type { SidebarBranding } from "@/features/workspaces/data";
 import type { Permission } from "@/features/workspaces/permissions";
+import { useAdminI18n } from "@/features/i18n/admin-i18n";
 
 /**
  * The icon rail , Harly's primary navigation (DESIGN.md , Icon Rail Sidebar).
@@ -59,10 +60,11 @@ export function IconRail({
   assignableRoles: AssignableRole[];
 }) {
   const pathname = usePathname();
+  const { t } = useAdminI18n();
 
   return (
     <nav
-      aria-label="Main"
+      aria-label={t("Main")}
       className="hidden w-[var(--spacing-rail)] shrink-0 flex-col items-center gap-1 bg-warm-paper py-3 md:flex"
     >
       <Link
@@ -79,6 +81,7 @@ export function IconRail({
           item={item}
           active={isNavActive(pathname, item)}
           count={badgeCount(item, inboxCount, taskDueCount)}
+          label={t(item.label)}
         />
       ))}
 
@@ -93,11 +96,15 @@ export function IconRail({
       </div>
 
       <div className="mt-auto flex flex-col items-center gap-1">
-        <InviteButton assignableRoles={assignableRoles} userPermissions={userPermissions} />
+        <InviteButton
+          assignableRoles={assignableRoles}
+          userPermissions={userPermissions}
+        />
         {hasNavPermission(settingsNav, userPermissions) ? (
           <RailLink
             item={settingsNav}
             active={isNavActive(pathname, settingsNav)}
+            label={t(settingsNav.label)}
           />
         ) : null}
       </div>
@@ -116,10 +123,12 @@ function RailLink({
   item,
   active,
   count = 0,
+  label,
 }: {
   item: NavItem;
   active: boolean;
   count?: number;
+  label?: string;
 }) {
   const Icon = item.icon;
   return (
@@ -127,7 +136,7 @@ function RailLink({
       <TooltipTrigger asChild>
         <Link
           href={item.href}
-          aria-label={item.label}
+          aria-label={label ?? item.label}
           aria-current={active ? "page" : undefined}
           className={cn(
             "relative flex size-10 items-center justify-center rounded-[12px] transition-colors",
@@ -141,7 +150,7 @@ function RailLink({
           {count > 0 ? <UnreadDot count={count} /> : null}
         </Link>
       </TooltipTrigger>
-      <TooltipContent side="right">{item.label}</TooltipContent>
+      <TooltipContent side="right">{label ?? item.label}</TooltipContent>
     </Tooltip>
   );
 }
@@ -195,6 +204,7 @@ function MoreMenu({
   userPermissions: Permission[];
   taskDueCount: number;
 }) {
+  const { t } = useAdminI18n();
   const [open, setOpen] = useState(false);
 
   const groups = moreNav
@@ -215,7 +225,7 @@ function MoreMenu({
       <Tooltip>
         <TooltipTrigger asChild>
           <PopoverTrigger
-            aria-label="More"
+            aria-label={t("More")}
             className={cn(
               "relative flex size-10 items-center justify-center rounded-[12px] transition-colors",
               "focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-near-ink",
@@ -227,7 +237,7 @@ function MoreMenu({
             <MoreHorizontal className="size-[19px]" strokeWidth={1.8} />
           </PopoverTrigger>
         </TooltipTrigger>
-        <TooltipContent side="right">More</TooltipContent>
+        <TooltipContent side="right">{t("More")}</TooltipContent>
       </Tooltip>
       <PopoverContent
         side="right"
@@ -237,7 +247,7 @@ function MoreMenu({
       >
         {groups.map((group, index) => (
           <div key={group.label} className={cn(index > 0 && "mt-1 pt-1")}>
-            <p className="type-col-head px-2 py-1.5">{group.label}</p>
+            <p className="type-col-head px-2 py-1.5">{t(group.label)}</p>
             {group.items.map((item) => {
               const Icon = item.icon;
               const active = isNavActive(pathname, item);
@@ -260,7 +270,7 @@ function MoreMenu({
                   <span className="min-w-0 flex-1">
                     <span className="flex items-center gap-1.5">
                       <span className="text-[14px] font-medium text-near-ink">
-                        {item.label}
+                        {t(item.label)}
                       </span>
                       {count > 0 ? (
                         <span className="font-chrome rounded-full bg-chartreuse-signal px-1.5 text-[11px] leading-[17px] text-chartreuse-ink">
@@ -270,7 +280,7 @@ function MoreMenu({
                     </span>
                     {item.hint ? (
                       <span className="mt-0.5 block truncate text-[12px] text-soft-ink">
-                        {item.hint}
+                        {t(item.hint)}
                       </span>
                     ) : null}
                   </span>
@@ -291,6 +301,7 @@ function InviteButton({
   assignableRoles: AssignableRole[];
   userPermissions: Permission[];
 }) {
+  const { t } = useAdminI18n();
   const [open, setOpen] = useState(false);
   if (!userPermissions.includes("members:invite")) return null;
 
@@ -306,13 +317,13 @@ function InviteButton({
           <button
             type="button"
             onClick={() => setOpen(true)}
-            aria-label="Invite team"
+            aria-label={t("Invite team")}
             className="flex size-10 items-center justify-center rounded-[12px] text-soft-ink transition-colors hover:bg-row-wash/70 hover:text-near-ink focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-near-ink"
           >
             <UserPlus className="size-[19px]" strokeWidth={1.8} />
           </button>
         </TooltipTrigger>
-        <TooltipContent side="right">Invite team</TooltipContent>
+        <TooltipContent side="right">{t("Invite team")}</TooltipContent>
       </Tooltip>
     </>
   );
@@ -339,6 +350,7 @@ export function MobileNav({
   userPermissions: Permission[];
 }) {
   const pathname = usePathname();
+  const { t } = useAdminI18n();
 
   const groups: { label: string | null; items: NavItem[] }[] = [
     { label: null, items: primaryNav },
@@ -359,7 +371,7 @@ export function MobileNav({
   return (
     <Sheet open={open} onOpenChange={onOpenChange}>
       <SheetContent side="left" className="w-[280px] p-0">
-        <SheetTitle className="sr-only">Navigation</SheetTitle>
+        <SheetTitle className="sr-only">{t("Navigation")}</SheetTitle>
         <div className="flex items-center gap-2.5 px-4 py-4">
           <WorkspaceMark
             name={workspace.name}
@@ -374,7 +386,7 @@ export function MobileNav({
           {groups.map((group, index) => (
             <div key={group.label ?? `group-${index}`} className="mb-1">
               {group.label ? (
-                <p className="type-col-head px-3 py-2">{group.label}</p>
+                <p className="type-col-head px-3 py-2">{t(group.label)}</p>
               ) : null}
               {group.items.map((item) => {
                 const Icon = item.icon;
@@ -396,7 +408,7 @@ export function MobileNav({
                       strokeWidth={1.8}
                     />
                     <span className="flex-1 text-[15px] font-medium text-near-ink">
-                      {item.label}
+                      {t(item.label)}
                     </span>
                     {count > 0 ? (
                       <span className="font-chrome rounded-full bg-chartreuse-signal px-1.5 text-[11px] leading-[17px] text-chartreuse-ink">

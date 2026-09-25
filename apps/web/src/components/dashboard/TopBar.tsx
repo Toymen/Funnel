@@ -2,7 +2,7 @@
 
 import { useState } from "react";
 import { usePathname } from "next/navigation";
-import { Menu, Moon, Search, Sun, X } from "lucide-react";
+import { Check, Languages, Menu, Moon, Search, Sun, X } from "lucide-react";
 import { useTheme } from "next-themes";
 
 import { HarlyAILogoMark } from "@/components/ui/icons/HarlyAILogoMark";
@@ -30,6 +30,7 @@ import { cn } from "@/lib/utils";
 import type { NotificationItem } from "@/features/notifications/data";
 import type { WorkspaceOption } from "@/features/workspaces/data";
 import type { Permission } from "@/features/workspaces/permissions";
+import { useAdminI18n } from "@/features/i18n/admin-i18n";
 
 type TopBarProps = {
   user: {
@@ -72,6 +73,7 @@ export function TopBar({
   const [mobileNavOpen, setMobileNavOpen] = useState(false);
   const { stickyBarVisible } = useStickyBar();
   const pathname = usePathname();
+  const { t } = useAdminI18n();
 
   const activeNav = allNavItems().find((item) => isNavActive(pathname, item));
   const SectionIcon = activeNav?.icon;
@@ -92,7 +94,7 @@ export function TopBar({
         <button
           type="button"
           onClick={() => setMobileNavOpen(true)}
-          aria-label="Open navigation"
+          aria-label={t("Open navigation")}
           className="flex size-9 items-center justify-center rounded-[12px] text-soft-ink transition-colors hover:bg-row-wash hover:text-near-ink focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-near-ink md:hidden"
         >
           <Menu className="size-[18px]" strokeWidth={1.8} />
@@ -107,7 +109,7 @@ export function TopBar({
               />
             ) : null}
             <h1 className="truncate text-[15px] font-semibold tracking-tight text-near-ink">
-              {activeNav.label}
+              {t(activeNav.label)}
             </h1>
           </div>
         ) : null}
@@ -133,7 +135,7 @@ export function TopBar({
             workspaceOptions={workspaceOptions}
           />
           <IconButton
-            label="Search"
+            label={t("Search")}
             onClick={() => setCommandOpen(true)}
             hint="⌘K"
           >
@@ -208,6 +210,7 @@ function IconButton({
  */
 function AiSignalButton() {
   const { open, toggle, enabled } = useHarlyAI();
+  const { t } = useAdminI18n();
   if (!enabled) return null;
 
   return (
@@ -216,7 +219,7 @@ function AiSignalButton() {
         <button
           type="button"
           onClick={toggle}
-          aria-label={open ? "Close Harly AI" : "Ask Harly AI"}
+          aria-label={t(open ? "Close Harly AI" : "Ask Harly AI")}
           aria-pressed={open}
           className={cn(
             "mr-1 flex size-9 items-center justify-center rounded-full transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-near-ink",
@@ -232,7 +235,9 @@ function AiSignalButton() {
           )}
         </button>
       </TooltipTrigger>
-      <TooltipContent>{open ? "Close Harly AI" : "Ask Harly AI"}</TooltipContent>
+      <TooltipContent>
+        {t(open ? "Close Harly AI" : "Ask Harly AI")}
+      </TooltipContent>
     </Tooltip>
   );
 }
@@ -240,11 +245,12 @@ function AiSignalButton() {
 /** Rare chrome lives here so the bar stays at five controls. */
 function OverflowMenu() {
   const { resolvedTheme, setTheme } = useTheme();
+  const { locale, setLocale, t } = useAdminI18n();
 
   return (
     <DropdownMenu>
       <DropdownMenuTrigger
-        aria-label="More options"
+        aria-label={t("More options")}
         className="flex size-9 items-center justify-center rounded-[12px] text-soft-ink transition-colors hover:bg-row-wash hover:text-near-ink focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-near-ink"
       >
         <svg
@@ -272,7 +278,17 @@ function OverflowMenu() {
             className="hidden size-4 text-soft-ink dark:block"
             strokeWidth={1.8}
           />
-          {resolvedTheme === "dark" ? "Light mode" : "Dark mode"}
+          {t(resolvedTheme === "dark" ? "Light mode" : "Dark mode")}
+        </DropdownMenuItem>
+        <DropdownMenuItem className="gap-2.5" onClick={() => setLocale("de")}>
+          <Languages className="size-4 text-soft-ink" strokeWidth={1.8} />
+          <span className="flex-1">{t("German")}</span>
+          {locale === "de" ? <Check className="size-4" /> : null}
+        </DropdownMenuItem>
+        <DropdownMenuItem className="gap-2.5" onClick={() => setLocale("en")}>
+          <Languages className="size-4 text-soft-ink" strokeWidth={1.8} />
+          <span className="flex-1">{t("English")}</span>
+          {locale === "en" ? <Check className="size-4" /> : null}
         </DropdownMenuItem>
       </DropdownMenuContent>
     </DropdownMenu>
