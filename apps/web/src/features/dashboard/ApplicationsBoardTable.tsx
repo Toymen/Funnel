@@ -27,6 +27,7 @@ import {
 } from "@/components/ui/dropdown-menu";
 import { EmptyState } from "@/components/ui/EmptyState";
 import type { ApplicationsBoard } from "@/features/dashboard/applications-board";
+import { useAdminI18n } from "@/features/i18n/admin-i18n";
 
 /**
  * Home's hero surface. One table of people who need a decision, replacing the
@@ -48,6 +49,7 @@ export function ApplicationsBoardTable({
    */
   filters: { job?: string; stage?: string };
 }) {
+  const { t } = useAdminI18n();
   const router = useRouter();
   const [isPending, startTransition] = useTransition();
   const [selected, setSelected] = useState<Set<string>>(() => new Set());
@@ -98,14 +100,14 @@ export function ApplicationsBoardTable({
     <section className="mt-6">
       <div className="flex flex-wrap items-center gap-2">
         <FilterPill
-          label="Job"
+          label={t("Job")}
           value={jobValue}
           onChange={(value) => setFilter("job", value)}
           options={board.jobOptions.map((option) => option.value)}
           labelMap={jobLabels}
         />
         <FilterPill
-          label="Stage"
+          label={t("Stage")}
           value={stageValue}
           onChange={(value) => setFilter("stage", value)}
           options={board.stageOptions.map((option) => option.value)}
@@ -121,15 +123,15 @@ export function ApplicationsBoardTable({
           {board.totalActive === 0 ? (
             <EmptyState
               icon={Users}
-              title="No one is waiting on you"
-              description="When candidates apply, they land here for a decision."
-              action={{ href: "/dashboard/jobs/new", label: "Publish a job" }}
+              title={t("No one is waiting on you")}
+              description={t("When candidates apply, they land here for a decision.")}
+              action={{ href: "/dashboard/jobs/new", label: t("Publish a job") }}
             />
           ) : (
             <EmptyState
               icon={Filter}
-              title="Nothing matches these filters"
-              description="Clear the job or stage filter to see the rest of the pipeline."
+              title={t("Nothing matches these filters")}
+              description={t("Clear the job or stage filter to see the rest of the pipeline.")}
             />
           )}
         </div>
@@ -141,13 +143,13 @@ export function ApplicationsBoardTable({
                 <RowCheckbox
                   checked={allSelected}
                   onChange={toggleAll}
-                  label="Select all applications"
+                  label={t("Select all applications")}
                 />
               </Th>
-              <Th>Candidate</Th>
-              <Th>Role</Th>
-              <Th>Stage</Th>
-              <Th>Waiting</Th>
+              <Th>{t("Candidate")}</Th>
+              <Th>{t("Role")}</Th>
+              <Th>{t("Stage")}</Th>
+              <Th>{t("Waiting")}</Th>
               <Th>Team</Th>
               <Th className="w-14" srOnly>
                 Actions
@@ -243,6 +245,7 @@ function BulkBar({
   count: number;
   onClear: () => void;
 }) {
+  const { t } = useAdminI18n();
   return (
     <div className="mt-3 flex flex-wrap items-center gap-2 rounded-[var(--radius-md)] bg-soft-kraft px-3 py-2">
       <span className="font-chrome text-[12px] text-soft-ink">
@@ -266,7 +269,7 @@ function BulkBar({
         <button
           type="button"
           onClick={onClear}
-          aria-label="Clear selection"
+          aria-label={t("Clear selection")}
           className="flex size-8 items-center justify-center rounded-full text-soft-ink transition-colors hover:bg-row-wash hover:text-near-ink focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-near-ink"
         >
           <X className="size-4" strokeWidth={2} />
@@ -284,6 +287,7 @@ function RowMenu({
   candidateId: string;
   name: string;
 }) {
+  const { t } = useAdminI18n();
   return (
     <DropdownMenu>
       <DropdownMenuTrigger
@@ -294,7 +298,7 @@ function RowMenu({
       </DropdownMenuTrigger>
       <DropdownMenuContent align="end" className="min-w-44">
         <DropdownMenuItem asChild>
-          <a href={`/dashboard/candidates/${candidateId}`}>Open candidate</a>
+          <a href={`/dashboard/candidates/${candidateId}`}>{t("Open candidate")}</a>
         </DropdownMenuItem>
         <DropdownMenuItem asChild>
           <a href={`/dashboard/candidates/${candidateId}#process`}>

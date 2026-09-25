@@ -45,6 +45,14 @@ vi.mock("@/components/ui/dropdown-menu", () => ({
   DropdownMenuTrigger: () => null,
 }));
 vi.mock("@/components/ui/icons/phosphor", () => ({ ProhibitIcon: () => null }));
+// Rendered outside the dashboard layout, so there is no AdminI18nProvider here.
+vi.mock("@/features/i18n/admin-i18n", () => ({
+  useAdminI18n: () => ({
+    locale: "en" as const,
+    setLocale: vi.fn(),
+    t: (message: string) => message,
+  }),
+}));
 
 import {
   CandidateActionBar,

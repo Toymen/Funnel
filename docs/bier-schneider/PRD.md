@@ -106,6 +106,7 @@ Optional nach dem Absenden: „Möchten Sie noch etwas hochladen?“ Hier sind L
 
 - Sprachwahl erfolgt über **Sprachnamen in eigener Schreibweise**, keine Flaggen (Flaggen stehen für Länder, nicht für Sprachen).
 - Die Sprache wird aus `Accept-Language` vorgeschlagen und kann jederzeit gewechselt werden.
+- In Rheinland-Pfalz stehen Deutsch, Englisch, Türkisch, Arabisch und Ukrainisch in der Auswahl zuerst. Leichte Sprache, Polnisch, Rumänisch und Russisch bleiben gemäß MVP barrierefrei erreichbar.
 - Übersetzungen der Oberfläche liegen als Code-Dateien im Repo und werden von Muttersprachlern geprüft (Issue-Vorlage „Übersetzung prüfen“).
 - Die gewählte Sprache wird an der Bewerbung gespeichert. HR sieht sie als Badge und weiß, in welcher Sprache sie zurückrufen sollte.
 

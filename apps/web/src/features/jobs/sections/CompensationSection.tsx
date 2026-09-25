@@ -9,14 +9,16 @@ import {
   SelectTrigger,
   SelectValue,
 } from "@/components/ui/select";
+import { useAdminI18n } from "@/features/i18n/admin-i18n";
 
 const currencies = ["USD", "EUR", "GBP", "CLP", "MXN", "ARS", "BRL", "COP"];
 
 export function CompensationSection({ job }: { job?: Job }) {
+  const { t } = useAdminI18n();
   return (
     <div className="space-y-4">
       <div className="grid gap-4 sm:grid-cols-4">
-        <FieldBox label="Salary min" htmlFor="salaryMin">
+        <FieldBox label={t("Salary min")} htmlFor="salaryMin">
           <Input
             id="salaryMin"
             name="salaryMin"
@@ -26,7 +28,7 @@ export function CompensationSection({ job }: { job?: Job }) {
             className={fieldBoxControlClassName}
           />
         </FieldBox>
-        <FieldBox label="Salary max" htmlFor="salaryMax">
+        <FieldBox label={t("Salary max")} htmlFor="salaryMax">
           <Input
             id="salaryMax"
             name="salaryMax"
@@ -36,7 +38,7 @@ export function CompensationSection({ job }: { job?: Job }) {
             className={fieldBoxControlClassName}
           />
         </FieldBox>
-        <FieldBox label="Currency" htmlFor="currency">
+        <FieldBox label={t("Currency")} htmlFor="currency">
           <Select name="currency" defaultValue={job?.currency ?? "USD"}>
             <SelectTrigger id="currency" className={fieldBoxSelectTriggerClassName}>
               <SelectValue />
@@ -50,14 +52,14 @@ export function CompensationSection({ job }: { job?: Job }) {
             </SelectContent>
           </Select>
         </FieldBox>
-        <FieldBox label="Period" htmlFor="salaryPeriod">
+        <FieldBox label={t("Period")} htmlFor="salaryPeriod">
           <Select name="salaryPeriod" defaultValue={job?.salaryPeriod ?? "annual"}>
             <SelectTrigger id="salaryPeriod" className={fieldBoxSelectTriggerClassName}>
               <SelectValue />
             </SelectTrigger>
             <SelectContent>
-              <SelectItem value="annual">Per year</SelectItem>
-              <SelectItem value="monthly">Per month</SelectItem>
+              <SelectItem value="annual">{t("Per year")}</SelectItem>
+              <SelectItem value="monthly">{t("Per month")}</SelectItem>
             </SelectContent>
           </Select>
         </FieldBox>

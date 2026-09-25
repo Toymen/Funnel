@@ -21,6 +21,7 @@ import {
 } from "@/components/ui/select";
 import { Textarea } from "@/components/ui/textarea";
 import { cn } from "@/lib/utils";
+import { useAdminI18n } from "@/features/i18n/admin-i18n";
 
 type SuggestedQuestion = {
   label: string;
@@ -66,6 +67,7 @@ function textToOptions(value: string) {
 }
 
 export function JobQuestionBuilder({ initialQuestions, aiContext }: JobQuestionBuilderProps) {
+  const { t } = useAdminI18n();
   const router = useRouter();
   const [questions, setQuestions] = useState<JobApplicationQuestion[]>(initialQuestions);
   const [suggestions, setSuggestions] = useState<SuggestedQuestion[]>([]);
@@ -202,15 +204,15 @@ export function JobQuestionBuilder({ initialQuestions, aiContext }: JobQuestionB
       {questions.map((question, index) => (
         <div key={`${question.id}-${index}`} className="space-y-3 rounded-lg border bg-muted/30 p-4">
           <div className="grid gap-3 md:grid-cols-[1fr_180px]">
-            <FieldBox label="Question label">
+            <FieldBox label={t("Question label")}>
               <Input
                 value={question.label}
                 onChange={(event) => updateQuestion(index, { label: event.target.value })}
-                placeholder="What makes you a strong fit?"
+                placeholder={t("What makes you a strong fit?")}
                 className={fieldBoxControlClassName}
               />
             </FieldBox>
-            <FieldBox label="Type">
+            <FieldBox label={t("Type")}>
               <Select
                 value={question.type}
                 onValueChange={(value) =>
@@ -223,7 +225,7 @@ export function JobQuestionBuilder({ initialQuestions, aiContext }: JobQuestionB
                 <SelectContent>
                   {questionTypes.map((type) => (
                     <SelectItem key={type.value} value={type.value}>
-                      {type.label}
+                      {t(type.label)}
                     </SelectItem>
                   ))}
                 </SelectContent>
@@ -232,15 +234,15 @@ export function JobQuestionBuilder({ initialQuestions, aiContext }: JobQuestionB
           </div>
 
           <div className="grid gap-3 md:grid-cols-2">
-            <FieldBox label="Placeholder">
+            <FieldBox label={t("Placeholder")}>
               <Input
                 value={question.placeholder ?? ""}
                 onChange={(event) => updateQuestion(index, { placeholder: event.target.value })}
-                placeholder="Optional helper text"
+                placeholder={t("Optional helper text")}
                 className={fieldBoxControlClassName}
               />
             </FieldBox>
-            <FieldBox label="Minimum characters">
+            <FieldBox label={t("Minimum characters")}>
               <Input
                 value={question.minLength ?? ""}
                 onChange={(event) =>
@@ -256,7 +258,7 @@ export function JobQuestionBuilder({ initialQuestions, aiContext }: JobQuestionB
           </div>
 
           {question.type === "select" ? (
-            <FieldBox label="Options">
+            <FieldBox label={t("Options")}>
               <Textarea
                 value={optionsToText(question.options)}
                 onChange={(event) =>

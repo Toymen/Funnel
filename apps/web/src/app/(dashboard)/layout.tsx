@@ -25,6 +25,8 @@ import { getMyTasksDueCount } from "@/features/tasks/data";
 import { getOwnProfileAction } from "@/features/people/actions";
 import { RealtimeProvider } from "@/components/dashboard/RealtimeProvider";
 import { RealtimePageSync } from "@/components/dashboard/RealtimePageSync";
+import { AdminI18nProvider } from "@/features/i18n/admin-i18n";
+import { getAdminLocale } from "@/features/i18n/admin-i18n-server";
 
 export async function generateMetadata(): Promise<Metadata> {
   const { organization } = await getWorkspaceContext();
@@ -40,6 +42,7 @@ export default async function DashboardLayout({
 }: {
   children: React.ReactNode;
 }) {
+  const adminLocale = await getAdminLocale();
   const { organization, user, role } = await getWorkspaceContext();
   const [
     workspaceOptions,
@@ -73,58 +76,63 @@ export default async function DashboardLayout({
   };
 
   return (
-    <RealtimeProvider>
-      <RealtimePageSync />
-      <StickyBarProvider>
-        <HarlyAIProvider
-          userName={user.name}
-          userId={user.id}
-          workspaceId={organization.id}
-          aiEnabled={
-            aiStatus.enabled && aiStatus.hasApiKey && aiStatus.encryptionReady
-          }
-        >
-          {/*
+    <AdminI18nProvider initialLocale={adminLocale}>
+      <RealtimeProvider>
+        <RealtimePageSync />
+        <StickyBarProvider>
+          <HarlyAIProvider
+            userName={user.name}
+            userId={user.id}
+            workspaceId={organization.id}
+            aiEnabled={
+              aiStatus.enabled && aiStatus.hasApiKey && aiStatus.encryptionReady
+            }
+          >
+            {/*
           The shell from frame 01: a warm-paper viewport with the icon rail flat
           on the canvas, and the work sitting inside one rounded snow stage. Not
           a pile of cards , a single calm window. The outer radius only appears
           from md up, where there is room for the paper margin to read.
         */}
-          <div className="flex h-dvh w-full overflow-hidden bg-warm-paper">
-            <IconRail
-              workspace={workspace}
-              inboxCount={unreadInboxThreadCount}
-              taskDueCount={taskDueCount}
-              userPermissions={userPermissions}
-              sidebarLogo={sidebarLogo}
-              assignableRoles={assignableRoles}
-            />
-            <div className="flex min-w-0 flex-1 flex-col overflow-hidden bg-pure-snow md:my-2 md:mr-2 md:rounded-[var(--radius-shell)] md:border md:border-hairline">
-              <TopBar
-                user={{
-                  name: user.name,
-                  email: user.email,
-                  image: user.image ?? null,
-                  username: ownProfile?.username ?? null,
-                }}
-                role={role}
+            <div className="flex h-dvh w-full overflow-hidden bg-warm-paper">
+              <IconRail
                 workspace={workspace}
-                workspaceOptions={workspaceOptions}
-                notifications={notifications}
-                unreadNotificationCount={unreadNotificationCount}
-                userPermissions={userPermissions}
                 inboxCount={unreadInboxThreadCount}
                 taskDueCount={taskDueCount}
+                userPermissions={userPermissions}
+                sidebarLogo={sidebarLogo}
+                assignableRoles={assignableRoles}
               />
-              <PageTitleProvider>
-                <main data-mobile-admin="" className="min-h-0 w-full flex-1 overflow-y-auto px-4 pb-8 pt-2 md:px-7">
-                  {children}
-                </main>
-              </PageTitleProvider>
+              <div className="flex min-w-0 flex-1 flex-col overflow-hidden bg-pure-snow md:my-2 md:mr-2 md:rounded-[var(--radius-shell)] md:border md:border-hairline">
+                <TopBar
+                  user={{
+                    name: user.name,
+                    email: user.email,
+                    image: user.image ?? null,
+                    username: ownProfile?.username ?? null,
+                  }}
+                  role={role}
+                  workspace={workspace}
+                  workspaceOptions={workspaceOptions}
+                  notifications={notifications}
+                  unreadNotificationCount={unreadNotificationCount}
+                  userPermissions={userPermissions}
+                  inboxCount={unreadInboxThreadCount}
+                  taskDueCount={taskDueCount}
+                />
+                <PageTitleProvider>
+                  <main
+                    data-mobile-admin=""
+                    className="min-h-0 w-full flex-1 overflow-y-auto px-4 pb-8 pt-2 md:px-7"
+                  >
+                    {children}
+                  </main>
+                </PageTitleProvider>
+              </div>
             </div>
-          </div>
-        </HarlyAIProvider>
-      </StickyBarProvider>
-    </RealtimeProvider>
+          </HarlyAIProvider>
+        </StickyBarProvider>
+      </RealtimeProvider>
+    </AdminI18nProvider>
   );
 }

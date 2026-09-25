@@ -22,8 +22,12 @@ import {
   PlusCircleIcon,
   UserCircleIcon,
 } from "@/components/ui/icons/command";
-import { allNavItems, hasNavPermission } from "@/components/dashboard/nav-items";
+import {
+  allNavItems,
+  hasNavPermission,
+} from "@/components/dashboard/nav-items";
 import type { Permission } from "@/features/workspaces/permissions";
+import { useAdminI18n } from "@/features/i18n/admin-i18n";
 
 const emptyResults: SearchResults = { jobs: [], candidates: [] };
 
@@ -38,6 +42,7 @@ export function CommandMenu({
   onOpenChange: (open: boolean) => void;
   userPermissions: Permission[];
 }) {
+  const { t } = useAdminI18n();
   // The rail only shows five destinations now, so the palette carries the full
   // index , it is the fast path to everything that moved behind More.
   const navItems = allNavItems().filter((item) =>
@@ -60,7 +65,7 @@ export function CommandMenu({
     return () => document.removeEventListener("keydown", onKeyDown);
   }, [open, onOpenChange]);
 
-    // Reset to a clean slate every time the palette opens.
+  // Reset to a clean slate every time the palette opens.
   useEffect(() => {
     if (!open) {
       queueMicrotask(() => {
@@ -71,7 +76,7 @@ export function CommandMenu({
     }
   }, [open]);
 
-  // Debounced workspace search.  
+  // Debounced workspace search.
   useEffect(() => {
     const q = query.trim();
     if (q.length < 1) {
@@ -112,7 +117,7 @@ export function CommandMenu({
   const showSkeleton = hasQuery && loading && !hasResults;
 
   return (
-        <CommandDialog
+    <CommandDialog
       open={open}
       onOpenChange={onOpenChange}
       shouldFilter={false}
@@ -122,7 +127,7 @@ export function CommandMenu({
     >
       <CommandInput
         icon={<MagnifyingGlassIcon className="size-5 shrink-0 text-ink-soft" />}
-        placeholder="Search jobs, candidates, or jump to…"
+        placeholder={t("Search jobs, candidates, or jump to…")}
         value={query}
         onValueChange={handleQueryChange}
         className="text-base"
@@ -130,7 +135,7 @@ export function CommandMenu({
       <CommandList className="max-h-[min(420px,60vh)] p-2">
         {hasQuery && !hasResults && !loading ? (
           <div className="spotlight-item-enter px-2 pt-3 pb-1 text-sm text-ink-soft">
-            No results for &ldquo;{query}&rdquo;.
+            {t("No results for")} &ldquo;{query}&rdquo;.
           </div>
         ) : null}
 
@@ -153,7 +158,7 @@ export function CommandMenu({
         ) : null}
 
         {!showSkeleton && results.jobs.length > 0 ? (
-          <CommandGroup heading="Jobs">
+          <CommandGroup heading={t("Jobs")}>
             {results.jobs.map((job, i) => (
               <CommandItem
                 key={job.id}
@@ -162,7 +167,7 @@ export function CommandMenu({
                 className="spotlight-item-enter gap-3 rounded-2xl"
                 style={{ animationDelay: `${i * 30}ms` }}
               >
-               <span className="flex size-9 shrink-0 items-center justify-center rounded-xl bg-sage">
+                <span className="flex size-9 shrink-0 items-center justify-center rounded-xl bg-sage">
                   <BriefcaseIcon className="text-sage-ink" />
                 </span>
                 <div className="flex min-w-0 flex-col">
@@ -179,7 +184,7 @@ export function CommandMenu({
         ) : null}
 
         {!showSkeleton && results.candidates.length > 0 ? (
-          <CommandGroup heading="Candidates">
+          <CommandGroup heading={t("Candidates")}>
             {results.candidates.map((candidate, i) => (
               <CommandItem
                 key={candidate.id}
@@ -209,9 +214,9 @@ export function CommandMenu({
           <CommandSeparator className="my-2" />
         ) : null}
 
-         {!showSkeleton ? (
+        {!showSkeleton ? (
           <>
-            <CommandGroup heading="Navigate">
+            <CommandGroup heading={t("Navigate")}>
               {navItems.map((item) => (
                 <CommandItem
                   key={item.href}
@@ -220,18 +225,18 @@ export function CommandMenu({
                   className="gap-3 rounded-2xl"
                 >
                   <item.icon className="size-4" strokeWidth={1.8} />
-                  {item.label}
+                  {t(item.label)}
                 </CommandItem>
               ))}
             </CommandGroup>
-            <CommandGroup heading="Actions">
+            <CommandGroup heading={t("Actions")}>
               <CommandItem
                 value="action-new-job"
                 onSelect={() => go("/dashboard/jobs/new")}
                 className="gap-3 rounded-2xl"
               >
                 <PlusCircleIcon />
-                Create new job
+                {t("Create new job")}
               </CommandItem>
               <CommandItem
                 value="action-account"
@@ -239,7 +244,7 @@ export function CommandMenu({
                 className="gap-3 rounded-2xl"
               >
                 <UserCircleIcon />
-                Account settings
+                {t("Account settings")}
               </CommandItem>
             </CommandGroup>
           </>
@@ -248,13 +253,13 @@ export function CommandMenu({
       <div className="flex items-center gap-3 border-t px-4 py-2.5 text-xs text-ink-soft">
         <span className="flex items-center gap-1">
           <Kbd>↑</Kbd>
-          <Kbd>↓</Kbd> navigate
+          <Kbd>↓</Kbd> {t("navigate")}
         </span>
         <span className="flex items-center gap-1">
-          <Kbd>↵</Kbd> select
+          <Kbd>↵</Kbd> {t("select")}
         </span>
         <span className="ml-auto flex items-center gap-1">
-          <Kbd>esc</Kbd> close
+          <Kbd>esc</Kbd> {t("close")}
         </span>
       </div>
     </CommandDialog>

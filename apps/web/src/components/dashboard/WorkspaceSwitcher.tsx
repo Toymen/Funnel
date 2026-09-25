@@ -12,6 +12,7 @@ import {
   PopoverTrigger,
 } from "@/components/ui/popover";
 import type { WorkspaceOption } from "@/features/workspaces/data";
+import { useAdminI18n } from "@/features/i18n/admin-i18n";
 
 /** Company logo, or its initial as a fallback mark. */
 export function WorkspaceMark({
@@ -67,6 +68,7 @@ export function WorkspacePill({
   workspace: { id: string; name: string; logoUrl: string | null };
   workspaceOptions: WorkspaceOption[];
 }) {
+  const { t } = useAdminI18n();
   const router = useRouter();
   const [open, setOpen] = useState(false);
   const [isPending, startTransition] = useTransition();
@@ -125,7 +127,7 @@ export function WorkspacePill({
         />
       </PopoverTrigger>
       <PopoverContent align="center" sideOffset={8} className="w-64 p-2">
-        <p className="type-col-head px-2 py-1.5">Workspace</p>
+        <p className="type-col-head px-2 py-1.5">{t("Workspace")}</p>
         {workspaceOptions.map((ws) => (
           <button
             key={ws.authOrganizationId}
@@ -146,7 +148,10 @@ export function WorkspacePill({
               {ws.name}
             </span>
             {ws.isActive ? (
-              <Check className="size-4 shrink-0 text-near-ink" strokeWidth={2} />
+              <Check
+                className="size-4 shrink-0 text-near-ink"
+                strokeWidth={2}
+              />
             ) : null}
           </button>
         ))}

@@ -19,6 +19,7 @@ import {
   SealCheckDuotoneIcon,
 } from "@/components/ui/icons/phosphor";
 import { cn } from "@/lib/utils";
+import { useAdminI18n } from "@/features/i18n/admin-i18n";
 
 type SettingsSection = {
   href: Route;
@@ -94,6 +95,7 @@ const sections: SettingsSection[] = [
 
 export function SettingsNav({ deniedHrefs }: { deniedHrefs: string[] }) {
   const pathname = usePathname();
+  const { t } = useAdminI18n();
 
   const visible = sections.filter(
     (section) => !deniedHrefs.includes(section.href),
@@ -144,15 +146,31 @@ export function SettingsNav({ deniedHrefs }: { deniedHrefs: string[] }) {
                   active ? "text-foreground" : "text-foreground/80",
                 )}
               >
-                {section.label}
+                {t(section.label)}
               </span>
               <span className="hidden truncate text-xs text-muted-foreground lg:block">
-                {section.hint}
+                {t(section.hint)}
               </span>
             </span>
           </Link>
         );
       })}
     </nav>
+  );
+}
+
+export function SettingsHeading() {
+  const { locale } = useAdminI18n();
+  return (
+    <div>
+      <h1 className="font-display text-2xl font-semibold tracking-tight">
+        {locale === "de" ? "Einstellungen" : "Settings"}
+      </h1>
+      <p className="mt-1 text-sm text-muted-foreground">
+        {locale === "de"
+          ? "Verwalten Sie Ihr Organisationsprofil, Ihr Team und Ihre Integrationen."
+          : "Manage your organization profile, team, and integrations."}
+      </p>
+    </div>
   );
 }

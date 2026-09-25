@@ -5,6 +5,7 @@ import type { HiringTeamMember, WorkspaceMemberOption } from "../hiring-team-dat
 import { JobHiringTeam } from "../JobHiringTeam";
 import { PublicJobPreview } from "../PublicJobPreview";
 import { SemanticMatchPanel } from "@/features/matching/SemanticMatchPanel";
+import { useAdminI18n } from "@/features/i18n/admin-i18n";
 
 const WORKPLACE_LABEL: Record<string, string> = {
   remote: "Remote",
@@ -33,6 +34,7 @@ export function ReviewSection({
   aiConfigured?: boolean;
   candidatePoolCount?: number;
 }) {
+  const { t } = useAdminI18n();
   return (
     <div data-section="review" className="space-y-5">
       <div className="rounded-2xl border border-border/70 bg-card p-5">
@@ -71,7 +73,7 @@ export function ReviewSection({
           <span className="flex size-10 items-center justify-center rounded-full bg-muted text-muted-foreground">
             <Rocket className="size-5" />
           </span>
-          <p className="text-sm font-medium">Hiring team, AI matching, and live preview unlock after you publish</p>
+          <p className="text-sm font-medium">{t("Hiring team, AI matching, and live preview unlock after you publish")}</p>
           <p className="max-w-sm text-sm text-muted-foreground">
             Save this job first. You&apos;ll be able to assign a hiring team, rank your candidate pool, and preview
             the public listing right after.

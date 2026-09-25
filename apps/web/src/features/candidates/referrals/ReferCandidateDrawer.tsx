@@ -18,6 +18,7 @@ import {
 } from "@/components/ui/select";
 import { SidePanel } from "@/components/ui/side-panel";
 import { Textarea } from "@/components/ui/textarea";
+import { useAdminI18n } from "@/features/i18n/admin-i18n";
 
 const NO_JOB = "__none__";
 
@@ -39,6 +40,7 @@ export function ReferCandidateDrawer({
   /** collab:write can only refer themselves and can't feature; candidates:edit unlocks both. */
   canAttributeToOthers: boolean;
 }) {
+  const { t } = useAdminI18n();
   const router = useRouter();
   const [open, setOpen] = useState(false);
   const [isPending, startTransition] = useTransition();
@@ -98,7 +100,7 @@ export function ReferCandidateDrawer({
     >
       <div className="space-y-4">
         <div className="space-y-1.5">
-          <Label htmlFor="refer-candidate-referrer">Referred by</Label>
+          <Label htmlFor="refer-candidate-referrer">{t("Referred by")}</Label>
           <Select
             value={referredById}
             onValueChange={setReferredById}
@@ -121,13 +123,13 @@ export function ReferCandidateDrawer({
           </Select>
         </div>
         <div className="space-y-1.5">
-          <Label htmlFor="refer-candidate-job">Job (optional)</Label>
+          <Label htmlFor="refer-candidate-job">{t("Job (optional)")}</Label>
           <Select value={jobId} onValueChange={setJobId}>
             <SelectTrigger id="refer-candidate-job" className="w-full">
               <SelectValue />
             </SelectTrigger>
             <SelectContent>
-              <SelectItem value={NO_JOB}>No specific job</SelectItem>
+              <SelectItem value={NO_JOB}>{t("No specific job")}</SelectItem>
               {jobs.map((job) => (
                 <SelectItem key={job.id} value={job.id}>
                   {job.title}
@@ -137,13 +139,13 @@ export function ReferCandidateDrawer({
           </Select>
         </div>
         <div className="space-y-1.5">
-          <Label htmlFor="refer-candidate-note">Note (optional)</Label>
+          <Label htmlFor="refer-candidate-note">{t("Note (optional)")}</Label>
           <Textarea
             id="refer-candidate-note"
             rows={3}
             value={note}
             onChange={(event) => setNote(event.target.value)}
-            placeholder="Why are they a good fit?"
+            placeholder={t("Why are they a good fit?")}
           />
         </div>
         {canAttributeToOthers ? (

@@ -16,6 +16,7 @@ import {
   formatEmploymentType,
   formatWorkplaceType,
 } from "@/lib/format";
+import { useAdminI18n } from "@/features/i18n/admin-i18n";
 
 export type JobRow = {
   id: string;
@@ -59,6 +60,7 @@ const SORT_LABELS: Record<string, string> = {
 };
 
 export function JobsTable({ jobs }: { jobs: JobRow[] }) {
+  const { t } = useAdminI18n();
   const [query, setQuery] = useState("");
   const [status, setStatus] = useState(FILTER_ALL);
   const [dept, setDept] = useState(FILTER_ALL);
@@ -123,7 +125,7 @@ export function JobsTable({ jobs }: { jobs: JobRow[] }) {
         <Input
           value={query}
           onChange={(e) => setQuery(e.target.value)}
-          placeholder="Search jobs by title, department or location…"
+          placeholder={t("Search jobs by title, department or location…")}
           className="h-11 rounded-full pl-11"
         />
       </div>
@@ -138,13 +140,13 @@ export function JobsTable({ jobs }: { jobs: JobRow[] }) {
           labelMap={STATUS_LABELS}
         />
         <FilterPill
-          label="Department"
+          label={t("Department")}
           value={dept}
           onChange={setDept}
           options={departments}
         />
         <FilterPill
-          label="Type"
+          label={t("Type")}
           value={employment}
           onChange={setEmployment}
           options={EMPLOYMENT_OPTIONS}
@@ -153,7 +155,7 @@ export function JobsTable({ jobs }: { jobs: JobRow[] }) {
           )}
         />
         <FilterPill
-          label="Workplace"
+          label={t("Workplace")}
           value={workplace}
           onChange={setWorkplace}
           options={WORKPLACE_OPTIONS}
@@ -162,7 +164,7 @@ export function JobsTable({ jobs }: { jobs: JobRow[] }) {
           )}
         />
         <FilterPill
-          label="Sort"
+          label={t("Sort")}
           value={sortKey}
           onChange={(v) => setSortKey(v as SortKey)}
           options={SORT_OPTIONS}

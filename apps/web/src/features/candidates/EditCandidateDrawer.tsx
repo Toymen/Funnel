@@ -15,6 +15,7 @@ import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { SidePanel } from "@/components/ui/side-panel";
 import { Textarea } from "@/components/ui/textarea";
+import { useAdminI18n } from "@/features/i18n/admin-i18n";
 
 export type EditableCandidate = {
   id: string;
@@ -40,6 +41,7 @@ export function EditCandidateDrawer({
   candidate: EditableCandidate;
   trigger: ReactNode;
 }) {
+  const { t } = useAdminI18n();
   const router = useRouter();
   const [open, setOpen] = useState(false);
   const [isPending, startTransition] = useTransition();
@@ -50,8 +52,8 @@ export function EditCandidateDrawer({
       open={open}
       onOpenChange={setOpen}
       trigger={trigger}
-      title="Edit candidate"
-      description="Name, email, phone, and social links."
+      title={t("Edit candidate")}
+      description={t("Name, email, phone, and social links.")}
       footer={
         <>
           <Button variant="outline" disabled={isPending} onClick={() => setOpen(false)}>
@@ -104,18 +106,18 @@ export function EditCandidateDrawer({
               hint="Photo · optional"
             />
             <div className="grid flex-1 grid-cols-2 gap-3">
-              <Field name="firstName" label="First name" defaultValue={candidate.firstName} />
-              <Field name="lastName" label="Last name" defaultValue={candidate.lastName} />
+              <Field name="firstName" label={t("First name")} defaultValue={candidate.firstName} />
+              <Field name="lastName" label={t("Last name")} defaultValue={candidate.lastName} />
             </div>
           </div>
-          <Field name="email" label="Email" type="email" defaultValue={candidate.email} />
-          <Field name="headline" label="Headline" defaultValue={candidate.headline ?? ""} />
+          <Field name="email" label={t("Email")} type="email" defaultValue={candidate.email} />
+          <Field name="headline" label={t("Headline")} defaultValue={candidate.headline ?? ""} />
           <div className="grid grid-cols-2 gap-3">
-            <Field name="phone" label="Phone" defaultValue={candidate.phone ?? ""} />
-            <Field name="address" label="Address" defaultValue={candidate.address ?? candidate.location ?? ""} />
+            <Field name="phone" label={t("Phone")} defaultValue={candidate.phone ?? ""} />
+            <Field name="address" label={t("Address")} defaultValue={candidate.address ?? candidate.location ?? ""} />
           </div>
           <div className="space-y-1.5">
-            <Label htmlFor="edit-summary">Profile summary</Label>
+            <Label htmlFor="edit-summary">{t("Profile summary")}</Label>
             <Textarea
               id="edit-summary"
               name="summary"
@@ -125,7 +127,7 @@ export function EditCandidateDrawer({
           </div>
           <Field name="linkedinUrl" label="LinkedIn" type="url" defaultValue={candidate.linkedinUrl ?? ""} placeholder="https://linkedin.com/in/…" icon={<LinkedinLogo className="size-3.5" />} />
           <Field name="githubUrl" label="GitHub" type="url" defaultValue={candidate.githubUrl ?? ""} placeholder="https://github.com/…" icon={<GithubIcon className="size-3.5" />} />
-          <Field name="websiteUrl" label="Website" type="url" defaultValue={candidate.websiteUrl ?? ""} placeholder="https://yoursite.com" icon={<Globe className="size-3.5" />} />
+          <Field name="websiteUrl" label={t("Website")} type="url" defaultValue={candidate.websiteUrl ?? ""} placeholder="https://yoursite.com" icon={<Globe className="size-3.5" />} />
       </form>
     </SidePanel>
   );

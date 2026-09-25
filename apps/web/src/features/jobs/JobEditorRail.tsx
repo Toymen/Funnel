@@ -3,6 +3,7 @@
 import { useEffect, useState, type ReactNode } from "react";
 
 import { cn } from "@/lib/utils";
+import { useAdminI18n } from "@/features/i18n/admin-i18n";
 
 export type EditorRailSection = { key: string; label: string };
 
@@ -20,6 +21,7 @@ export function JobEditorRail({
    *  the title at in-between widths). */
   secondaryActions?: ReactNode;
 }) {
+  const { t } = useAdminI18n();
   const [active, setActive] = useState(sections[0]?.key ?? "");
 
   useEffect(() => {
@@ -50,7 +52,7 @@ export function JobEditorRail({
   return (
     <>
       <nav
-        aria-label="Job sections"
+        aria-label={t("Job sections")}
         className="hidden w-48 shrink-0 flex-col gap-0.5 overflow-y-auto border-r border-border bg-paper px-3 py-4 md:flex"
       >
         {sections.map((s) => {
@@ -82,7 +84,7 @@ export function JobEditorRail({
       </nav>
 
       <nav
-        aria-label="Job sections"
+        aria-label={t("Job sections")}
         className="sticky top-0 z-10 flex gap-1.5 overflow-x-auto border-b border-border bg-paper px-3 py-2 md:hidden"
       >
         {sections.map((s) => {

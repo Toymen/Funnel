@@ -38,6 +38,7 @@ import {
 import { Input } from "@/components/ui/input";
 import { ShortDate } from "@/lib/date-hydration";
 import { cn } from "@/lib/utils";
+import { useAdminI18n } from "@/features/i18n/admin-i18n";
 
 type PipelineListProps = {
   stages: PipelineStage[];
@@ -50,6 +51,7 @@ export function PipelineList({
   stages,
   applications,
 }: PipelineListProps) {
+  const { t } = useAdminI18n();
   const router = useRouter();
   const [activeStage, setActiveStage] = useState<string>(ALL);
   const [query, setQuery] = useState("");
@@ -164,8 +166,8 @@ export function PipelineList({
           <Input
             value={query}
             onChange={(e) => setQuery(e.target.value)}
-            placeholder="Search candidates…"
-            aria-label="Search candidates"
+            placeholder={t("Search candidates…")}
+            aria-label={t("Search candidates")}
             className="h-9 pl-9"
           />
         </div>
@@ -174,7 +176,7 @@ export function PipelineList({
       {/* Stage tabs */}
       <div className="flex items-center gap-1 overflow-x-auto rounded-xl border border-border/70 bg-card p-1">
         <StageTab
-          label="All"
+          label={t("All")}
           count={applications.length}
           active={activeStage === ALL}
           onClick={() => setActiveStage(ALL)}
@@ -206,7 +208,7 @@ export function PipelineList({
                 </Button>
               </DropdownMenuTrigger>
               <DropdownMenuContent align="end">
-                <DropdownMenuLabel>Move to</DropdownMenuLabel>
+                <DropdownMenuLabel>{t("Move to")}</DropdownMenuLabel>
                 {stages
                   .slice()
                   .sort((a, b) => a.order - b.order)
@@ -239,7 +241,7 @@ export function PipelineList({
       {/* Rows */}
       <div className="overflow-hidden rounded-2xl border border-border/70 bg-card">
         <div className="flex items-center gap-3 border-b border-border/60 px-4 py-2.5">
-          <Checkbox checked={allVisibleSelected} onCheckedChange={toggleAll} aria-label="Select all" />
+          <Checkbox checked={allVisibleSelected} onCheckedChange={toggleAll} aria-label={t("Select all")} />
           <span className="text-xs font-medium uppercase tracking-wide text-muted-foreground">
             Candidate
           </span>

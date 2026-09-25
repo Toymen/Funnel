@@ -28,6 +28,7 @@ import type { DocumentRequestItem } from "@/features/documents/requests-shared";
 
 import { EmptySection, SectionHeading } from "./shared";
 import type { RelatedDocument } from "./types";
+import { useAdminI18n } from "@/features/i18n/admin-i18n";
 
 export function DocumentsSection({
   candidateId,
@@ -46,6 +47,7 @@ export function DocumentsSection({
   hasSignableDocuments: boolean;
   onRequestSignature: () => void;
 }) {
+  const { t } = useAdminI18n();
   const [requestDialogOpen, setRequestDialogOpen] = useState(false);
   const upload = useCandidateDocumentUpload(candidateId);
   const canRequestDocument = applications.length > 0;
@@ -58,7 +60,7 @@ export function DocumentsSection({
             <NotebookTabs className="size-4" />
           </span>
           <div>
-            <p className="text-sm font-medium">Documents</p>
+            <p className="text-sm font-medium">{t("Documents")}</p>
             <p className="mt-1 text-xs leading-5 text-muted-foreground">
               Files on file, and anything still awaiting upload from the
               candidate. The Documents hub remains the source of truth.

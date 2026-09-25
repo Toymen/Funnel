@@ -41,6 +41,7 @@ import { Button } from "@/components/ui/button";
 import { cn } from "@/lib/utils";
 import type { CareerPageConfig } from "@/features/career-page/config";
 import type { WorkspaceBoardBranding } from "@/features/workspaces/board";
+import { useAdminI18n } from "@/features/i18n/admin-i18n";
 
 type JobFormProps = {
   action: (formData: FormData) => Promise<void>;
@@ -192,6 +193,7 @@ export function JobForm({
   previewWorkspace,
   previewConfig,
 }: JobFormProps) {
+  const { t } = useAdminI18n();
   const router = useRouter();
   const formRef = useRef<HTMLFormElement>(null);
   const scrollRef = useRef<HTMLDivElement>(null);
@@ -488,7 +490,7 @@ export function JobForm({
                 >
                   <header className="mb-4 px-1">
                     <h2 className="font-display text-lg font-semibold tracking-tight text-foreground">
-                      {s.label}
+                      {t(s.label)}
                     </h2>
                     <p className="mt-1 text-sm text-muted-foreground">
                       {s.blurb}

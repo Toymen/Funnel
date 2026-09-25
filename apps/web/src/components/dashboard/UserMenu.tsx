@@ -20,12 +20,18 @@ import { WorkspaceMark } from "@/components/dashboard/WorkspaceSwitcher";
 import { Badge } from "@/components/ui/badge";
 import { cn } from "@/lib/utils";
 import type { WorkspaceOption } from "@/features/workspaces/data";
+import { useAdminI18n } from "@/features/i18n/admin-i18n";
 
 const VERSION = "v0.1.0";
 const REPO_URL = "https://github.com/Vytral/harly";
 
 type UserMenuProps = {
-  user: { name: string; email: string; image: string | null; username: string | null };
+  user: {
+    name: string;
+    email: string;
+    image: string | null;
+    username: string | null;
+  };
   role: string;
   workspace: { id: string; name: string; logoUrl: string | null };
   workspaceOptions: WorkspaceOption[];
@@ -42,6 +48,7 @@ export function UserMenu({
   workspaceOptions,
 }: UserMenuProps) {
   const router = useRouter();
+  const { locale, t } = useAdminI18n();
   const triggerRef = useRef<HTMLButtonElement>(null);
   const [open, setOpen] = useState(false);
   const [isPending, startTransition] = useTransition();
@@ -95,7 +102,7 @@ export function UserMenu({
         type="button"
         onClick={() => setOpen((v) => !v)}
         className="flex items-center rounded-full ring-offset-background transition focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2"
-        aria-label="Account menu"
+        aria-label={t("Account menu")}
         aria-expanded={open}
       >
         <UserAvatar name={user.name} src={user.image} size="md" priority />
@@ -133,7 +140,9 @@ export function UserMenu({
                   variant="secondary"
                   className="shrink-0 text-[11px] font-normal"
                 >
-                  {formatRole(role)}
+                  {locale === "de" && role === "owner"
+                    ? "Inhaber"
+                    : formatRole(role)}
                 </Badge>
               </div>
 
@@ -142,7 +151,7 @@ export function UserMenu({
               {/* ── Workspace switcher ── */}
               <div className="px-3 py-3">
                 <p className="mb-2 px-1 text-[11px] font-medium uppercase tracking-widest text-muted-foreground">
-                  Workspace
+                  {t("Workspace")}
                 </p>
                 <div className="space-y-0.5">
                   {workspaceOptions.map((ws) => (
@@ -188,7 +197,7 @@ export function UserMenu({
                       className="size-4 text-muted-foreground"
                       strokeWidth={1.5}
                     />
-                    View profile
+                    {t("View profile")}
                   </Link>
                 )}
                 <Link
@@ -200,7 +209,7 @@ export function UserMenu({
                     className="size-4 text-muted-foreground"
                     strokeWidth={1.5}
                   />
-                  Account settings
+                  {t("Account settings")}
                 </Link>
                 <Link
                   href="/settings"
@@ -211,7 +220,7 @@ export function UserMenu({
                     className="size-4 text-muted-foreground"
                     strokeWidth={1.5}
                   />
-                  Organization settings
+                  {t("Organization settings")}
                 </Link>
               </div>
 
@@ -227,7 +236,7 @@ export function UserMenu({
                   className="flex items-center gap-2.5 rounded-lg px-2 py-2 text-sm text-foreground/80 transition-colors hover:bg-accent hover:text-foreground"
                 >
                   <GithubIcon className="size-4 text-muted-foreground" />
-                  <span className="flex-1">Star on GitHub</span>
+                  <span className="flex-1">{t("Star on GitHub")}</span>
                   <Badge
                     variant="secondary"
                     className="font-mono text-[0.65rem] font-normal"
@@ -249,14 +258,13 @@ export function UserMenu({
                   className="flex w-full items-center gap-2.5 rounded-lg px-2 py-2 text-sm text-destructive transition-colors hover:bg-destructive/10 disabled:opacity-50"
                 >
                   <LogOut className="size-4" strokeWidth={1.5} />
-                  {isPending ? "Signing out…" : "Sign out"}
+                  {t(isPending ? "Signing out…" : "Sign out")}
                 </button>
               </div>
             </div>
           </>,
           document.body,
         )}
-
     </>
   );
 }

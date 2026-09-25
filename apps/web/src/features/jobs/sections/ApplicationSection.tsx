@@ -9,6 +9,7 @@ import type {
 } from "../config";
 import { JobQuestionBuilder } from "../JobQuestionBuilder";
 import { cn } from "@/lib/utils";
+import { useAdminI18n } from "@/features/i18n/admin-i18n";
 
 const visibilityOptions: Array<{
   value: ApplicationFieldVisibility;
@@ -43,6 +44,7 @@ function VisibilityField({
   value: JobApplicationFieldConfig;
   description?: string;
 }) {
+  const { t } = useAdminI18n();
   const [selected, setSelected] = useState<ApplicationFieldVisibility>(
     value.visibility,
   );
@@ -76,9 +78,9 @@ function VisibilityField({
                 onChange={() => setSelected(option.value)}
                 className="sr-only"
               />
-              <span className="text-sm font-medium">{option.label}</span>
+              <span className="text-sm font-medium">{t(option.label)}</span>
               <span className="mt-1 text-xs text-muted-foreground">
-                {option.description}
+                {t(option.description)}
               </span>
             </label>
           );
@@ -119,45 +121,46 @@ export function ApplicationSection({
     keywords: string[];
   };
 }) {
+  const { t } = useAdminI18n();
   return (
     <div className="space-y-6">
       <FieldGroup
-        title="Personal information"
-        description="Name and email stay required. Configure the additional fields shown in the first section of the application form."
+        title={t("Personal information")}
+        description={t("Name and email stay required. Configure the additional fields shown in the first section of the application form.")}
       >
         <VisibilityField
           name="applicationPhoneVisibility"
-          label="Phone"
+          label={t("Phone")}
           value={applicationConfig.sections.personal.phone}
         />
         <VisibilityField
           name="applicationAddressVisibility"
-          label="Address"
+          label={t("Address")}
           value={applicationConfig.sections.personal.address}
         />
         <VisibilityField
           name="applicationPhotoVisibility"
-          label="Photo"
+          label={t("Photo")}
           value={applicationConfig.sections.personal.photo}
-          description="Candidates can upload a profile photo."
+          description={t("Candidates can upload a profile photo.")}
         />
         <VisibilityField
           name="applicationHeadlineVisibility"
-          label="Headline"
+          label={t("Headline")}
           value={applicationConfig.sections.personal.headline}
-          description="Short professional title or summary."
+          description={t("Short professional title or summary.")}
         />
       </FieldGroup>
 
       <FieldGroup
-        title="Profile"
-        description="Control resume and profile links."
+        title={t("Profile")}
+        description={t("Control resume and profile links.")}
       >
         <VisibilityField
           name="applicationResumeVisibility"
-          label="Resume / CV"
+          label={t("Resume / CV")}
           value={applicationConfig.sections.profile.resume}
-          description="Candidates can upload PDF, DOC, or DOCX."
+          description={t("Candidates can upload PDF, DOC, or DOCX.")}
         />
         <VisibilityField
           name="applicationLinkedinVisibility"
@@ -171,34 +174,34 @@ export function ApplicationSection({
         />
         <VisibilityField
           name="applicationWebsiteVisibility"
-          label="Website / Portfolio"
+          label={t("Website / Portfolio")}
           value={applicationConfig.sections.profile.websiteUrl}
         />
         <VisibilityField
           name="applicationEducationVisibility"
-          label="Education"
+          label={t("Education")}
           value={applicationConfig.sections.profile.education}
-          description="Candidates can add one or more education entries."
+          description={t("Candidates can add one or more education entries.")}
         />
         <VisibilityField
           name="applicationExperienceVisibility"
-          label="Experience"
+          label={t("Experience")}
           value={applicationConfig.sections.profile.experience}
-          description="Candidates can add one or more work experience entries."
+          description={t("Candidates can add one or more work experience entries.")}
         />
       </FieldGroup>
 
       <FieldGroup
         title="Details"
-        description="Additional written context and screening questions."
+        description={t("Additional written context and screening questions.")}
       >
         <VisibilityField
           name="applicationCoverLetterVisibility"
-          label="Cover letter"
+          label={t("Cover letter")}
           value={applicationConfig.sections.details.coverLetter}
         />
         <div>
-          <h3 className="mb-3 text-sm font-semibold">Custom questions</h3>
+          <h3 className="mb-3 text-sm font-semibold">{t("Custom questions")}</h3>
           <JobQuestionBuilder
             initialQuestions={applicationConfig.questions}
             aiContext={aiContext}

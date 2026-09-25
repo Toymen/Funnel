@@ -9,6 +9,7 @@ import { JobOverviewBody } from "@/features/career-page/job/JobOverviewBody";
 import type { CareerPageConfig } from "@/features/career-page/config";
 import type { WorkspaceBoardBranding } from "@/features/workspaces/board";
 import { cn } from "@/lib/utils";
+import { useAdminI18n } from "@/features/i18n/admin-i18n";
 
 export type PreviewJobDraft = {
   slug: string;
@@ -45,6 +46,7 @@ export function JobLivePreview({
   workspace: (WorkspaceBoardBranding & { id: string }) | null;
   config: CareerPageConfig | null;
 }) {
+  const { t } = useAdminI18n();
   const [device, setDevice] = useState<"desktop" | "mobile">("desktop");
 
   return (
@@ -55,7 +57,7 @@ export function JobLivePreview({
           <span className="size-2.5 rounded-full bg-clay/70" />
           <span className="size-2.5 rounded-full bg-success/70" />
         </div>
-        <p className="text-xs font-medium text-ink-soft">Live preview</p>
+        <p className="text-xs font-medium text-ink-soft">{t("Live preview")}</p>
         <div className="flex items-center gap-1 rounded-lg border border-border p-0.5">
           {(["desktop", "mobile"] as const).map((d) => {
             const Icon = d === "desktop" ? Monitor : Smartphone;

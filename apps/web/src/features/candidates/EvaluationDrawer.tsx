@@ -20,6 +20,7 @@ import {
   SpinnerIcon,
 } from "@/components/ui/icons/phosphor";
 import { cn } from "@/lib/utils";
+import { useAdminI18n } from "@/features/i18n/admin-i18n";
 
 const RATINGS = [
   { key: "strong", label: "Strong", icon: ThumbsUp },
@@ -44,6 +45,7 @@ export function EvaluationDrawer({
   stageName: string | null;
   trigger: ReactNode;
 }) {
+  const { t } = useAdminI18n();
   const router = useRouter();
   const [open, setOpen] = useState(false);
   const [rating, setRating] = useState<RatingKey | null>(null);
@@ -65,7 +67,7 @@ export function EvaluationDrawer({
       }
       if (result.attributes.length === 0) {
         toast.message("No attributes suggested", {
-          description: "Try again or add your own below.",
+          description: t("Try again or add your own below."),
         });
         return;
       }
@@ -144,7 +146,7 @@ export function EvaluationDrawer({
       onOpenChange={setOpen}
       trigger={trigger}
       title={`Add evaluation${stageName ? ` · ${stageName}` : ""}`}
-      description="Rate this candidate and leave feedback for the team."
+      description={t("Rate this candidate and leave feedback for the team.")}
       footer={
         <>
           <Button
@@ -181,7 +183,7 @@ export function EvaluationDrawer({
                   )}
                 >
                   <r.icon className="size-5" strokeWidth={1.8} />
-                  {r.label}
+                  {t(r.label)}
                 </button>
               );
             })}
@@ -244,7 +246,7 @@ export function EvaluationDrawer({
               id="evaluation-comment"
               value={comment}
               onChange={(e) => setComment(e.target.value)}
-              placeholder="Strengths, concerns, and your recommendation…"
+              placeholder={t("Strengths, concerns, and your recommendation…")}
               className="min-h-32 pb-11"
             />
             <button

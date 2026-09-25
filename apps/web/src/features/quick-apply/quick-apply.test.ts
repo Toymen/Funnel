@@ -1,6 +1,6 @@
 import { describe, expect, it } from "vitest";
 
-import { QUICK_APPLY_LANGUAGES, suggestLanguage } from "./languages";
+import { PRIMARY_QUICK_APPLY_LANGUAGES, QUICK_APPLY_LANGUAGES, suggestLanguage } from "./languages";
 import { format, QUICK_APPLY_MESSAGES } from "./messages";
 import { isPlaceholderEmail, placeholderEmailForPhone, quickApplicationSchema } from "./schema";
 
@@ -47,8 +47,13 @@ describe("languages (PRD §5.3)", () => {
   it("suggests a language from Accept-Language, never Leichte Sprache", () => {
     expect(suggestLanguage("pl-PL,pl;q=0.9,en;q=0.8")).toBe("pl");
     expect(suggestLanguage("ar;q=0.5,fr;q=0.9")).toBe("ar");
+    expect(suggestLanguage("tr;q=0,en;q=0.8")).toBe("en");
     expect(suggestLanguage("fr-FR")).toBe("de");
     expect(suggestLanguage(null)).toBe("de");
+  });
+  it("puts the five primary RLP languages first without removing accessible alternatives", () => {
+    expect(PRIMARY_QUICK_APPLY_LANGUAGES.map(({ code }) => code)).toEqual(["de", "en", "tr", "ar", "uk"]);
+    expect(QUICK_APPLY_LANGUAGES.map(({ code }) => code)).toContain("de-easy");
   });
   it("formats placeholders", () => {
     expect(format("Schritt {current} von {total}", { current: 2, total: 4 })).toBe("Schritt 2 von 4");

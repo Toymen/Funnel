@@ -14,6 +14,7 @@ import {
 import { MailComposer, type ComposerTemplate } from "@/features/mailbox/MailComposer";
 import { Sheet, SheetTrigger } from "@/components/ui/sheet";
 import { cn } from "@/lib/utils";
+import { useAdminI18n } from "@/features/i18n/admin-i18n";
 
 export type EmailTemplateOption = {
   id: string;
@@ -53,6 +54,7 @@ export function EmailDrawer({
   templateValues?: TemplateValues;
   aiConfigured?: boolean;
 }) {
+  const { t } = useAdminI18n();
   const router = useRouter();
   const firstName = name.trim().split(/\s+/)[0] || "there";
   const [open, setOpen] = useState(false);
@@ -70,12 +72,12 @@ export function EmailDrawer({
       <SheetTrigger asChild>{trigger}</SheetTrigger>
       <DrawerLayout
         title={`Email ${name}`}
-        description="Compose and send an email directly to this candidate."
+        description={t("Compose and send an email directly to this candidate.")}
       >
         <div className="space-y-4">
           {aiConfigured ? (
             <div className="space-y-2 rounded-xl border bg-muted/30 p-3.5">
-              <p className="text-[12px] font-semibold uppercase tracking-wide text-muted-foreground">Draft with AI</p>
+              <p className="text-[12px] font-semibold uppercase tracking-wide text-muted-foreground">{t("Draft with AI")}</p>
               <p className="text-xs text-muted-foreground">Pick a type, then use “Draft with AI” below to fill the subject and message.</p>
               <div className="flex flex-wrap gap-1.5">
                 {DRAFT_TYPES.map(({ id, label }) => (

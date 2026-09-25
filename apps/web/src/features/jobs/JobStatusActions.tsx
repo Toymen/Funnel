@@ -8,6 +8,7 @@ import { toast } from "@/lib/notification-island/toast";
 
 import { updateJobStatusAction } from "./actions";
 import { Button } from "@/components/ui/button";
+import { useAdminI18n } from "@/features/i18n/admin-i18n";
 
 const actionMeta: Record<string, { label: string; icon: typeof Send }> = {
   draft: { label: "Move to draft", icon: FileEdit },
@@ -22,6 +23,7 @@ const statusLabel: Record<string, string> = {
 };
 
 export function JobStatusActions({ job }: { job: Job }) {
+  const { t } = useAdminI18n();
   const router = useRouter();
   const [isPending, startTransition] = useTransition();
   const actions = (["draft", "open", "closed"] as const).filter(
@@ -61,7 +63,7 @@ export function JobStatusActions({ job }: { job: Job }) {
             onClick={() => changeStatus(status)}
           >
             <Icon className="size-4" />
-            {meta.label}
+            {t(meta.label)}
           </Button>
         );
       })}

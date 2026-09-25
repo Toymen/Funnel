@@ -57,6 +57,7 @@ import { BookmarkSimpleIcon } from "@/components/ui/icons/phosphor";
 import { cn } from "@/lib/utils";
 import { QuickApplyBadges } from "@/features/mobile-admin/QuickApplyBadges";
 import type { QuickApplyInfo } from "@/features/mobile-admin/quick-contact";
+import { useAdminI18n } from "@/features/i18n/admin-i18n";
 
 export type CandidateRow = {
   id: string;
@@ -178,6 +179,7 @@ export function CandidatesTable({
     currentUserId: string;
   };
 }) {
+  const { t } = useAdminI18n();
   const router = useRouter();
   const [query, setQuery] = useState(initialFilters?.query ?? "");
   const [sortKey, setSortKey] = useState<SortKey>((initialFilters?.sort as SortKey) ?? "recent");
@@ -425,7 +427,7 @@ export function CandidatesTable({
     }
     if (selectedCount > 0) {
       downloadCsv(`candidates-${new Date().toISOString().slice(0, 10)}.csv`, [
-        CSV_HEADERS,
+        CSV_HEADERS.map(t),
         ...exportRows.map(candidateToCsvRow),
       ]);
       return;
@@ -476,7 +478,7 @@ export function CandidatesTable({
             onKeyDown={(e) => {
               if (e.key === "Enter") navigateWithFilter("q", query.trim());
             }}
-            placeholder="Search candidates by name, email, role or location…"
+            placeholder={t("Search candidates by name, email, role or location…")}
             className="h-11 rounded-full pl-11"
           />
         </div>
@@ -512,19 +514,19 @@ export function CandidatesTable({
       {/* Filter pills */}
       <div className="flex flex-wrap items-center gap-2">
         <FilterPill
-          label="Department"
+          label={t("Department")}
           value={dept}
           onChange={(value) => { setDept(value); navigateWithFilter("dept", value); }}
           options={departments}
         />
         <FilterPill
-          label="Job"
+          label={t("Job")}
           value={role}
           onChange={(value) => { setRole(value); navigateWithFilter("role", value); }}
           options={roles}
         />
         <FilterPill
-          label="Stage"
+          label={t("Stage")}
           value={stage}
           onChange={(value) => { setStage(value); navigateWithFilter("stage", value); }}
           options={stages}
@@ -543,7 +545,7 @@ export function CandidatesTable({
         />
         {sources.length > 0 ? (
           <FilterPill
-            label="Source"
+            label={t("Source")}
             value={source}
             onChange={(value) => { setSource(value); navigateWithFilter("source", value); }}
             options={sources}
@@ -551,14 +553,14 @@ export function CandidatesTable({
         ) : null}
         {tagOptions.length > 0 ? (
           <FilterPill
-            label="Tag"
+            label={t("Tag")}
             value={tag}
             onChange={(value) => { setTag(value); navigateWithFilter("tag", value); }}
             options={tagOptions}
           />
         ) : null}
         <FilterPill
-          label="Sort"
+          label={t("Sort")}
           value={sortKey}
           onChange={(v) => { setSortKey(v as SortKey); navigateWithFilter("sort", v); }}
           options={["recent", "oldest", "modified", "name"]}
@@ -597,13 +599,13 @@ export function CandidatesTable({
               size="sm"
               disabled={pageInfo.page <= 1 || isPending}
               onClick={() => navigateWithFilter("page", String(pageInfo.page - 1))}
-            >Previous</Button>
+            >{t("Previous")}</Button>
             <Button
               variant="outline"
               size="sm"
               disabled={!pageInfo.hasNextPage || isPending}
               onClick={() => navigateWithFilter("page", String(pageInfo.page + 1))}
-            >Next</Button>
+            >{t("Next")}</Button>
           </div>
         </div>
       ) : null}
@@ -620,7 +622,7 @@ export function CandidatesTable({
               onClick={() => setBulkEmailOpen(true)}
             >
               <Mail className="size-4" />
-              Email
+              {t("Email")}
             </Button>
             <Button
               size="sm"
@@ -678,7 +680,7 @@ export function CandidatesTable({
             <Checkbox
               checked={allVisibleSelected}
               onCheckedChange={toggleAll}
-              aria-label="Select all"
+              aria-label={t("Select all")}
             />
             <span className="text-[11px] font-semibold uppercase tracking-[0.12em] text-muted-foreground">
               Candidate
@@ -759,7 +761,7 @@ export function CandidatesTable({
                         ) : null}
                         {row.hasOpenPrivacyRequest ? (
                           <span
-                            title="Has a pending privacy request awaiting review"
+                            title={t("Has a pending privacy request awaiting review")}
                             className="inline-flex items-center gap-1 rounded-full bg-clay/10 px-1.5 py-0.5 text-[11px] font-semibold text-clay"
                           >
                             <ShieldAlert className="size-3" />
@@ -853,7 +855,7 @@ export function CandidatesTable({
                 <EmptyState
                   variant="filtered"
                   icon={Search}
-                  title="Nobody matches these filters"
+                  title={t("Nobody matches these filters")}
                   hint="Widen the search, or clear the filters to see everyone again."
                   action={
                     <Button variant="outline" size="sm" onClick={clearFilters}>
@@ -864,7 +866,7 @@ export function CandidatesTable({
               ) : (
                 <EmptyState
                   icon={Users}
-                  title="No candidates yet"
+                  title={t("No candidates yet")}
                   hint="They arrive when someone applies through your career page, or you add one by hand."
                 />
               )

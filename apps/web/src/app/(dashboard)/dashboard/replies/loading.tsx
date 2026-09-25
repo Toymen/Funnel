@@ -1,11 +1,15 @@
+"use client";
+
 import { Skeleton } from "@/components/ui/skeleton";
+import { useAdminI18n } from "@/features/i18n/admin-i18n";
 
 export default function RepliesLoading() {
+  const { t } = useAdminI18n();
   return (
     <div
       className="mx-auto max-w-4xl space-y-5"
       aria-busy="true"
-      aria-label="Loading replies"
+      aria-label={t("Loading replies")}
     >
       <div className="space-y-2">
         <Skeleton className="h-4 w-40" />

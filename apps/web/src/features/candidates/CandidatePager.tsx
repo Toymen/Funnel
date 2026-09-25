@@ -5,6 +5,7 @@ import { useRouter } from "next/navigation";
 import { ChevronLeft, ChevronRight } from "lucide-react";
 
 import { Button } from "@/components/ui/button";
+import { useAdminI18n } from "@/features/i18n/admin-i18n";
 
 /**
  * Always-visible prev/next candidate navigation, next to "Back to
@@ -21,6 +22,7 @@ export function CandidatePager({
   position: number | null;
   total: number;
 }) {
+  const { t } = useAdminI18n();
   const router = useRouter();
 
   if (position === null || total === 0) return null;
@@ -38,10 +40,10 @@ export function CandidatePager({
         className="size-8 p-0 disabled:opacity-30"
         disabled={!prevId}
         onClick={() => go(prevId)}
-        title="Previous candidate"
+        title={t("Previous candidate")}
       >
         <ChevronLeft className="size-4" />
-        <span className="sr-only">Previous candidate</span>
+        <span className="sr-only">{t("Previous candidate")}</span>
       </Button>
       <span className="tabular-nums">
         Candidate {position} of {total}
@@ -52,10 +54,10 @@ export function CandidatePager({
         className="size-8 p-0 disabled:opacity-30"
         disabled={!nextId}
         onClick={() => go(nextId)}
-        title="Next candidate"
+        title={t("Next candidate")}
       >
         <ChevronRight className="size-4" />
-        <span className="sr-only">Next candidate</span>
+        <span className="sr-only">{t("Next candidate")}</span>
       </Button>
     </div>
   );

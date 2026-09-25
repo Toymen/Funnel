@@ -11,6 +11,7 @@ import { RelativeTime } from "@/lib/date-hydration";
 import { cn } from "@/lib/utils";
 
 import type { CandidateMessage } from "./types";
+import { useAdminI18n } from "@/features/i18n/admin-i18n";
 
 export function ConversationThread({
   conversation,
@@ -27,6 +28,7 @@ export function ConversationThread({
   workspaceId: string;
   aiConfigured: boolean;
 }) {
+  const { t } = useAdminI18n();
   const first = conversation[0]!;
   const last = conversation[conversation.length - 1]!;
   const threadId = first.threadId;
@@ -79,7 +81,7 @@ export function ConversationThread({
                   )}
                 >
                   <span className="font-medium text-foreground/80">
-                    {inbound ? message.fromEmail ?? "Candidate" : "You"}
+                    {inbound ? message.fromEmail ?? t("Candidate") : "You"}
                   </span>
                   <RelativeTime value={message.createdAt} />
                 </div>

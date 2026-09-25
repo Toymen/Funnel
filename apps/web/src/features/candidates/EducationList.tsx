@@ -1,4 +1,5 @@
 import type { CandidateEducationEntry, ResumeEducationItem } from "@harly/db";
+import { useAdminI18n } from "@/features/i18n/admin-i18n";
 
 function isStructuredEntry(
   item: ResumeEducationItem | CandidateEducationEntry,
@@ -39,6 +40,7 @@ export function EducationList({
   education: Array<ResumeEducationItem | CandidateEducationEntry>;
   fallback: string | null;
 }) {
+  const { t } = useAdminI18n();
   if (education.length === 0 && !fallback) return null;
 
   return (
@@ -54,7 +56,7 @@ export function EducationList({
             </div>
             <div>
               <p className="font-medium">
-                {[item.degree, item.field].filter(Boolean).join(" · ") || "Education"}
+                {[item.degree, item.field].filter(Boolean).join(" · ") || t("Education")}
               </p>
               <p className="mt-0.5 text-sm text-muted-foreground">{item.school}</p>
               {isStructuredEntry(item) && item.description ? (

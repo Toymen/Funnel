@@ -20,6 +20,7 @@ import {
 } from "@/features/dashboard/widgets";
 import { getSetupChecklist } from "@/features/dashboard/setup-checklist";
 import { getWorkspaceContext } from "@/features/workspaces/context";
+import { getAdminT } from "@/features/i18n/admin-i18n-server";
 
 export const dynamic = "force-dynamic";
 
@@ -46,6 +47,7 @@ export default async function DashboardPage({
 }: {
   searchParams: Promise<{ job?: string }>;
 }) {
+  const t = await getAdminT();
   const { job } = await searchParams;
   const { user } = await getWorkspaceContext();
   const firstName = (user.name ?? "").trim().split(/\s+/)[0] || "there";
@@ -91,24 +93,24 @@ export default async function DashboardPage({
         <TriageStrip
           items={[
             {
-              label: "Awaiting your review",
+              label: t("Awaiting your review"),
               value: review.length,
               href: "/dashboard/candidates",
               urgent: true,
             },
             {
-              label: "Overdue replies",
+              label: t("Overdue replies"),
               value: overdue,
               href: "/dashboard/inbox",
               urgent: true,
             },
             {
-              label: "Interviews today",
+              label: t("Interviews today"),
               value: interviews.length,
               href: "/dashboard/calendars",
             },
             {
-              label: "Candidates in pipeline",
+              label: t("Candidates in pipeline"),
               value: activeCandidates,
               href: "/dashboard/pipeline",
             },

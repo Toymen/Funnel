@@ -7,6 +7,7 @@ import { toast } from "@/lib/notification-island/toast";
 
 import { addCandidateTag, removeCandidateTag } from "@/features/candidates/actions";
 import { Input } from "@/components/ui/input";
+import { useAdminI18n } from "@/features/i18n/admin-i18n";
 
 export function CandidateTags({
   candidateId,
@@ -17,6 +18,7 @@ export function CandidateTags({
   workspaceId: string;
   tags: Array<{ id: string; label: string }>;
 }) {
+  const { t } = useAdminI18n();
   const router = useRouter();
   const [adding, setAdding] = useState(false);
   const [draft, setDraft] = useState("");
@@ -85,7 +87,7 @@ export function CandidateTags({
             }
           }}
           onBlur={add}
-          placeholder="Tag name…"
+          placeholder={t("Tag name…")}
           className="h-7 w-32 rounded-full px-3 text-xs"
         />
       ) : (

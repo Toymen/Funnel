@@ -23,6 +23,7 @@ import { HarlyAILogoMark } from "@/components/ui/icons/HarlyAILogoMark";
 import { RelativeTime } from "@/lib/date-hydration";
 import { formatModelLabel, type AiProviderId } from "@/lib/ai/providers";
 import { cn } from "@/lib/utils";
+import { useAdminI18n } from "@/features/i18n/admin-i18n";
 
 const PROVIDER_LOGO: Record<
   AiProviderId,
@@ -151,6 +152,7 @@ export function AiScoreCard({
   /** Condensed only , jumps the caller to the full breakdown (Evaluation tab). */
   onViewDetailsAction?: () => void;
 }) {
+  const { t } = useAdminI18n();
   if (applications.length === 0) return null;
 
   const byApplication = new Map(evaluations.map((e) => [e.applicationId, e]));
@@ -190,7 +192,7 @@ export function AiScoreCard({
                   <div className="flex flex-wrap items-center gap-2">
                     <p className="truncate text-sm font-semibold">{application.jobTitle}</p>
                     <span className={cn("rounded-full px-2 py-0.5 text-xs font-semibold", meta.className)}>
-                      {meta.label}
+                      {t(meta.label)}
                     </span>
                   </div>
                   {highlights.length > 0 ? (
@@ -269,7 +271,7 @@ export function AiScoreCard({
                           meta.className,
                         )}
                       >
-                        {meta.label}
+                        {t(meta.label)}
                       </span>
                     </div>
                     <p className="mt-1 max-w-xl text-sm leading-6 text-muted-foreground">

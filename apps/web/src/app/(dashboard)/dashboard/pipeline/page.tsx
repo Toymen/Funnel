@@ -9,6 +9,7 @@ import { PipelineViewToggle } from "@/features/pipeline/PipelineViewToggle";
 import { getPipelineData, type PipelineData } from "@/features/pipeline/data";
 import { getWorkspaceAiStatus } from "@/lib/ai/config";
 import { getWorkspaceContext } from "@/features/workspaces/context";
+import { getAdminT } from "@/features/i18n/admin-i18n-server";
 
 export const dynamic = "force-dynamic";
 
@@ -23,6 +24,7 @@ type PipelinePageProps = {
 };
 
 export default async function PipelinePage({ searchParams }: PipelinePageProps) {
+  const t = await getAdminT();
   const { job, jobId, view: rawView } = await searchParams;
   const view = rawView === "board" ? "board" : "list";
   const { organization: workspace } = await getWorkspaceContext();
@@ -35,8 +37,8 @@ export default async function PipelinePage({ searchParams }: PipelinePageProps) 
     return (
       <div className="space-y-4">
         <EmptyState
-          title="No jobs yet"
-          description="Create a job to start building your pipeline."
+          title={t("No jobs yet")}
+          description={t("Create a job to start building your pipeline.")}
           action={{ href: "/dashboard/jobs/new", label: "Create job" }}
         />
       </div>
@@ -59,8 +61,8 @@ export default async function PipelinePage({ searchParams }: PipelinePageProps) 
       <div className="space-y-4">
         {toolbar}
         <EmptyState
-          title="No stages configured"
-          description="Add pipeline stages to this job to start tracking candidates."
+          title={t("No stages configured")}
+          description={t("Add pipeline stages to this job to start tracking candidates.")}
         />
       </div>
     );
@@ -71,8 +73,8 @@ export default async function PipelinePage({ searchParams }: PipelinePageProps) 
       <div className="space-y-4">
         {toolbar}
         <EmptyState
-          title="No candidates yet"
-          description="Candidates will appear here once they apply."
+          title={t("No candidates yet")}
+          description={t("Candidates will appear here once they apply.")}
         />
       </div>
     );
