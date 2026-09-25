@@ -14,6 +14,20 @@ Mac/PC ──git push──► GitHub (PR → CI → Merge) ──► GHCR ghcr.
 
 ## Container
 
+### Lokaler Docker-Neuaufbau
+
+Der lokale Stack nutzt dieselbe Produktions-Compose-Datei und ergänzt nur den
+Image-Build sowie die explizit erlaubte Loopback-URL:
+
+```bash
+pnpm docker:local:up       # Image bauen und Stack starten
+pnpm docker:local:down     # Container entfernen, Daten behalten
+pnpm docker:local:reset    # Container und Volumes entfernen, frisch bauen
+```
+
+`docker:local:reset` löscht ausschließlich die lokalen Compose-Volumes dieses
+Projekts. Vor einem Reset produktiver Daten weiterhin ein Backup erstellen.
+
 Alles läuft als kleine, getrennte Container aus **einem** Image. Dienste mit demselben
 Image teilen sich die Layer auf der Platte.
 

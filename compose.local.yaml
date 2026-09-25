@@ -1,0 +1,29 @@
+# Local Docker workflow. The production topology in compose.yaml remains the
+# source of truth; this file only adds a local image build and loopback origin.
+services:
+  migrate:
+    image: funnel:local
+    environment:
+      HARLY_URL: http://localhost:3000
+      NEXT_PUBLIC_APP_URL: http://localhost:3000
+      BETTER_AUTH_URL: http://localhost:3000
+      HARLY_ALLOW_LOCAL_ORIGIN: "true"
+
+  app:
+    image: funnel:local
+    build:
+      context: .
+      dockerfile: Dockerfile
+    environment:
+      HARLY_URL: http://localhost:3000
+      NEXT_PUBLIC_APP_URL: http://localhost:3000
+      BETTER_AUTH_URL: http://localhost:3000
+      HARLY_ALLOW_LOCAL_ORIGIN: "true"
+
+  scheduler:
+    image: funnel:local
+    environment:
+      HARLY_URL: http://localhost:3000
+      NEXT_PUBLIC_APP_URL: http://localhost:3000
+      BETTER_AUTH_URL: http://localhost:3000
+      HARLY_ALLOW_LOCAL_ORIGIN: "true"
