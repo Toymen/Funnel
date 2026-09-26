@@ -25,6 +25,8 @@ import type { WorkspaceOption } from "@/features/workspaces/data";
 
 const VERSION = "v0.1.0";
 const REPO_URL = "https://github.com/Vytral/harly";
+/** Breite des Panels (w-80). */
+const PANEL_WIDTH = 320;
 
 type UserMenuProps = {
   user: { name: string; email: string; image: string | null; username: string | null };
@@ -74,9 +76,20 @@ export function UserMenu({
     function updateCoords() {
       const rect = triggerRef.current?.getBoundingClientRect();
       if (!rect) return;
+      // Bier-Schneider (PRD §11.1): Das Panel ist 320 px breit und hängt rechts am
+      // Avatar. Auf schmalen Handys ragte es links aus dem Bild – deshalb so weit
+      // nach rechts schieben, dass links mindestens 8 px Rand bleiben.
+      const gutter = 8;
+      const panelWidth = Math.min(PANEL_WIDTH, window.innerWidth - 2 * gutter);
       setCoords({
         top: rect.bottom + 8,
-        right: window.innerWidth - rect.right,
+        right: Math.max(
+          gutter,
+          Math.min(
+            window.innerWidth - rect.right,
+            window.innerWidth - panelWidth - gutter,
+          ),
+        ),
       });
     }
 
@@ -135,7 +148,7 @@ export function UserMenu({
               aria-hidden="true"
             />
             <div
-              className="fixed z-50 w-80 overflow-hidden rounded-xl border bg-popover shadow-xl shadow-black/5"
+              className="fixed z-50 w-80 max-w-[calc(100vw-16px)] overflow-hidden rounded-xl border bg-popover shadow-xl shadow-black/5"
               style={{ top: coords.top, right: coords.right }}
               role="menu"
             >
