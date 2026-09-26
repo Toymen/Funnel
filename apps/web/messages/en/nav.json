@@ -1,1 +1,12 @@
-{}
+{
+  "userMenu": {
+    "trigger": "Account menu",
+    "workspace": "Workspace",
+    "viewProfile": "View profile",
+    "accountSettings": "Account settings",
+    "organizationSettings": "Organization settings",
+    "starOnGithub": "Star on GitHub",
+    "signOut": "Sign out",
+    "signingOut": "Signing out…"
+  }
+}
