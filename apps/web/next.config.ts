@@ -1,5 +1,9 @@
 import type { NextConfig } from "next";
+import createNextIntlPlugin from "next-intl/plugin";
 import path from "node:path";
+
+// Bier-Schneider: DE/EN im Arbeitgeberbereich (docs/bier-schneider/I18N.md).
+const withNextIntl = createNextIntlPlugin("./src/i18n/request.ts");
 
 const nextConfig: NextConfig = {
   output: "standalone",
@@ -42,4 +46,4 @@ const nextConfig: NextConfig = {
   serverExternalPackages: ["postgres", "unpdf"],
 };
 
-export default nextConfig;
+export default withNextIntl(nextConfig);

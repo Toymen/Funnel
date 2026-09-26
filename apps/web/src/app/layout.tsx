@@ -1,6 +1,8 @@
 import type { Metadata } from "next";
 import localFont from "next/font/local";
 import { GeistMono } from "geist/font/mono";
+import { NextIntlClientProvider } from "next-intl";
+import { getLocale } from "next-intl/server";
 
 import { ThemeProvider } from "@/components/ThemeProvider";
 import { Toaster } from "@/components/ui/sonner";
@@ -48,14 +50,17 @@ export async function generateMetadata(): Promise<Metadata> {
   };
 }
 
-export default function RootLayout({
+export default async function RootLayout({
   children,
 }: Readonly<{
   children: React.ReactNode;
 }>) {
+  // Bier-Schneider: Sprache des Arbeitgeberbereichs (Cookie → Browser → Deutsch).
+  // Die Bewerbungsseite setzt lang/dir zusätzlich auf ihrem eigenen Container.
+  const locale = await getLocale();
   return (
     <html
-      lang="en"
+      lang={locale}
       suppressHydrationWarning
       className={`${onest.variable} ${onestVariable.variable} ${GeistMono.variable} h-full antialiased`}
       data-scroll-behavior="smooth"
@@ -73,9 +78,11 @@ export default function RootLayout({
           enableSystem
           disableTransitionOnChange
         >
-          <TooltipProvider delayDuration={200}>{children}</TooltipProvider>
-          <Toaster position="bottom-right" richColors closeButton />
-          <CookiePanel />
+          <NextIntlClientProvider>
+            <TooltipProvider delayDuration={200}>{children}</TooltipProvider>
+            <Toaster position="bottom-right" richColors closeButton />
+            <CookiePanel />
+          </NextIntlClientProvider>
         </ThemeProvider>
       </body>
     </html>
