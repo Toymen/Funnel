@@ -33,6 +33,7 @@ const OWN_CODE = [
   "src/app/(dashboard)/dashboard/reports/funnel/**/*.{ts,tsx}",
   "src/lib/notify/webhook-hosts*.ts",
   "src/i18n/**/*.{ts,tsx}",
+  "src/test/**/*.ts",
   "src/components/LanguageSwitcher.tsx",
 ];
 
