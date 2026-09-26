@@ -12,5 +12,7 @@ export default defineConfig({
     globals: true,
     environment: "node",
     include: ["src/**/*.test.ts", "src/**/*.test.tsx"],
+    // Bier-Schneider: getTranslations() & Co. in Tests (englische Texte).
+    setupFiles: ["./src/test/setup-intl.ts"],
   },
 });

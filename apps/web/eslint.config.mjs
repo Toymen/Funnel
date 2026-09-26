@@ -16,6 +16,8 @@ import tseslint from "typescript-eslint";
  *    typescript-eslint type-aware, Import-Sortierung.
  * 3. Bewerber-Oberfläche (APPLICANT_UI): keine sichtbaren Klartexte im JSX,
  *    alle Texte kommen aus `features/quick-apply/messages.ts` (9 Sprachen).
+ *    Arbeitgeberbereich (EMPLOYER_UI): dasselbe für DE/EN über next-intl,
+ *    Texte in `messages/{de,en}/*.json` (docs/bier-schneider/I18N.md).
  * 4. Storybook (`*.stories.tsx`, `.storybook/**`): eslint-plugin-storybook.
  *
  * Neue eigene Pfade werden in OWN_CODE (bzw. APPLICANT_UI) ergänzt.
@@ -30,6 +32,9 @@ const OWN_CODE = [
   "src/app/api/public/funnel/**/*.{ts,tsx}",
   "src/app/(dashboard)/dashboard/reports/funnel/**/*.{ts,tsx}",
   "src/lib/notify/webhook-hosts*.ts",
+  "src/i18n/**/*.{ts,tsx}",
+  "src/test/**/*.ts",
+  "src/components/LanguageSwitcher.tsx",
 ];
 
 /** Oberflächen, die Bewerberinnen und Bewerber sehen (mehrsprachig). */
@@ -40,7 +45,57 @@ const VISIBLE_ATTRIBUTES =
   "placeholder|title|alt|label|aria-label|aria-description|aria-valuetext|aria-roledescription";
 const LITERAL_TEXT_MESSAGE = "Sichtbarer Text gehört in features/quick-apply/messages.ts (alle 9 Sprachen).";
 
+/**
+ * Arbeitgeberbereich, der schon vollständig übersetzt ist (DE/EN, next-intl).
+ * Ein Bereich kommt hier hinein, sobald er fertig ist – danach verhindert Lint,
+ * dass neue Klartexte hineinrutschen. Zum Prüfen eines Bereichs vorab:
+ *   EMPLOYER_I18N_EXTRA="src/features/jobs/**\/*.tsx" pnpm exec eslint src/features/jobs
+ */
+const EMPLOYER_UI = [
+  "src/components/LanguageSwitcher.tsx",
+  "src/components/dashboard/UserMenu.tsx",
+  ...(process.env.EMPLOYER_I18N_EXTRA ?? "")
+    .split(",")
+    .map((glob) => glob.trim())
+    .filter(Boolean),
+];
+const EMPLOYER_TEXT_MESSAGE =
+  "Sichtbarer Text gehört in apps/web/messages/{de,en}/<bereich>.json (siehe docs/bier-schneider/I18N.md).";
+
 const STORIES = ["**/*.stories.@(ts|tsx|js|jsx|mjs|cjs)", "**/*.story.@(ts|tsx|js|jsx|mjs|cjs)"];
+
+/**
+ * Verbietet sichtbare Klartexte im JSX: Text zwischen Tags, {"Text"} und
+ * sichtbare/vorgelesene Attribute (placeholder, aria-label, title …).
+ * Erlaubt bleibt alles ohne Buchstaben (Zahlen, Satzzeichen, Symbole, Emoji).
+ */
+function noLiteralText(name, files, message) {
+  return {
+    name,
+    files,
+    // Stories sind Entwicklerwerkzeug (Bedienelemente, Rahmen), keine Oberfläche.
+    ignores: STORIES,
+    plugins: { i18next },
+    rules: {
+      "i18next/no-literal-string": ["error", { mode: "jsx-text-only", words: { exclude: [/^[^\p{L}]*$/u] } }],
+      "no-restricted-syntax": [
+        "error",
+        {
+          selector: `JSXAttribute[name.name=/^(${VISIBLE_ATTRIBUTES})$/] > Literal[value=/\\p{L}/u]`,
+          message,
+        },
+        {
+          selector: `JSXAttribute[name.name=/^(${VISIBLE_ATTRIBUTES})$/] > JSXExpressionContainer > Literal[value=/\\p{L}/u]`,
+          message,
+        },
+        {
+          selector: ":matches(JSXElement, JSXFragment) > JSXExpressionContainer > Literal[value=/\\p{L}/u]",
+          message,
+        },
+      ],
+    },
+  };
+}
 
 const eslintConfig = defineConfig([
   ...nextVitals,
@@ -117,37 +172,10 @@ const eslintConfig = defineConfig([
   },
 
   // ── Bewerber-Oberfläche: keine Klartexte ──────────────────────────────
-  {
-    name: "bier-schneider/applicant-ui-i18n",
-    files: APPLICANT_UI,
-    // Stories sind Entwicklerwerkzeug (Bedienelemente, Rahmen), keine Bewerberoberfläche.
-    ignores: STORIES,
-    plugins: { i18next },
-    rules: {
-      // Sichtbarer JSX-Text muss aus messages.ts kommen. Erlaubt ist Text ohne
-      // Buchstaben (Zahlen, Satzzeichen, Symbole, Emoji). Sprachnamen kommen
-      // aus languages.ts ({l.name}) und sind damit ebenfalls erlaubt.
-      "i18next/no-literal-string": ["error", { mode: "jsx-text-only", words: { exclude: [/^[^\p{L}]*$/u] } }],
-      // Ergänzung: auch Klartext in sichtbaren/vorgelesenen Attributen
-      // (placeholder, aria-label, title …) und als {"Text"} im JSX verbieten.
-      // Werte ohne Buchstaben (z. B. "0151 1234567") bleiben erlaubt.
-      "no-restricted-syntax": [
-        "error",
-        {
-          selector: `JSXAttribute[name.name=/^(${VISIBLE_ATTRIBUTES})$/] > Literal[value=/\\p{L}/u]`,
-          message: LITERAL_TEXT_MESSAGE,
-        },
-        {
-          selector: `JSXAttribute[name.name=/^(${VISIBLE_ATTRIBUTES})$/] > JSXExpressionContainer > Literal[value=/\\p{L}/u]`,
-          message: LITERAL_TEXT_MESSAGE,
-        },
-        {
-          selector: ":matches(JSXElement, JSXFragment) > JSXExpressionContainer > Literal[value=/\\p{L}/u]",
-          message: LITERAL_TEXT_MESSAGE,
-        },
-      ],
-    },
-  },
+  noLiteralText("bier-schneider/applicant-ui-i18n", APPLICANT_UI, LITERAL_TEXT_MESSAGE),
+
+  // ── Arbeitgeberbereich: keine Klartexte (DE/EN über next-intl) ─────────
+  noLiteralText("bier-schneider/employer-ui-i18n", EMPLOYER_UI, EMPLOYER_TEXT_MESSAGE),
 
   // ── Storybook ──────────────────────────────────────────────────────────
   // Greift erst, wenn es *.stories.tsx bzw. .storybook/ gibt; solange solche

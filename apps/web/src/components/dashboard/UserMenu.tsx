@@ -12,17 +12,21 @@ import {
   UserRound,
 } from "lucide-react";
 import Link from "next/link";
+import { useTranslations } from "next-intl";
 
 import { authClient, signOut } from "@/lib/auth-client";
 import { UserAvatar } from "@/components/ui/UserAvatar";
 import { GithubIcon } from "@/components/ui/icons/GithubIcon";
 import { WorkspaceMark } from "@/components/dashboard/WorkspaceSwitcher";
 import { Badge } from "@/components/ui/badge";
+import { LanguageSwitcher } from "@/components/LanguageSwitcher";
 import { cn } from "@/lib/utils";
 import type { WorkspaceOption } from "@/features/workspaces/data";
 
 const VERSION = "v0.1.0";
 const REPO_URL = "https://github.com/Vytral/harly";
+/** Breite des Panels (w-80). */
+const PANEL_WIDTH = 320;
 
 type UserMenuProps = {
   user: { name: string; email: string; image: string | null; username: string | null };
@@ -31,6 +35,21 @@ type UserMenuProps = {
   workspaceOptions: WorkspaceOption[];
 };
 
+const KNOWN_ROLES = [
+  "owner",
+  "admin",
+  "recruiter",
+  "hiring_manager",
+  "interviewer",
+  "member",
+] as const;
+type KnownRole = (typeof KNOWN_ROLES)[number];
+
+function isKnownRole(role: string): role is KnownRole {
+  return (KNOWN_ROLES as readonly string[]).includes(role);
+}
+
+/** Eigene Rollen haben freie Namen; nur die eingebauten werden übersetzt. */
 function formatRole(role: string) {
   return role.replace(/_/g, " ").replace(/\b\w/g, (c) => c.toUpperCase());
 }
@@ -41,6 +60,8 @@ export function UserMenu({
   workspace,
   workspaceOptions,
 }: UserMenuProps) {
+  const t = useTranslations("nav.userMenu");
+  const tRoles = useTranslations("common.roles");
   const router = useRouter();
   const triggerRef = useRef<HTMLButtonElement>(null);
   const [open, setOpen] = useState(false);
@@ -55,9 +76,20 @@ export function UserMenu({
     function updateCoords() {
       const rect = triggerRef.current?.getBoundingClientRect();
       if (!rect) return;
+      // Bier-Schneider (PRD §11.1): Das Panel ist 320 px breit und hängt rechts am
+      // Avatar. Auf schmalen Handys ragte es links aus dem Bild – deshalb so weit
+      // nach rechts schieben, dass links mindestens 8 px Rand bleiben.
+      const gutter = 8;
+      const panelWidth = Math.min(PANEL_WIDTH, window.innerWidth - 2 * gutter);
       setCoords({
         top: rect.bottom + 8,
-        right: window.innerWidth - rect.right,
+        right: Math.max(
+          gutter,
+          Math.min(
+            window.innerWidth - rect.right,
+            window.innerWidth - panelWidth - gutter,
+          ),
+        ),
       });
     }
 
@@ -95,7 +127,7 @@ export function UserMenu({
         type="button"
         onClick={() => setOpen((v) => !v)}
         className="flex items-center rounded-full ring-offset-background transition focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2"
-        aria-label="Account menu"
+        aria-label={t("trigger")}
         aria-expanded={open}
       >
         <UserAvatar name={user.name} src={user.image} size="md" priority />
@@ -116,7 +148,7 @@ export function UserMenu({
               aria-hidden="true"
             />
             <div
-              className="fixed z-50 w-80 overflow-hidden rounded-xl border bg-popover shadow-xl shadow-black/5"
+              className="fixed z-50 w-80 max-w-[calc(100vw-16px)] overflow-hidden rounded-xl border bg-popover shadow-xl shadow-black/5"
               style={{ top: coords.top, right: coords.right }}
               role="menu"
             >
@@ -133,7 +165,7 @@ export function UserMenu({
                   variant="secondary"
                   className="shrink-0 text-[11px] font-normal"
                 >
-                  {formatRole(role)}
+                  {isKnownRole(role) ? tRoles(role) : formatRole(role)}
                 </Badge>
               </div>
 
@@ -142,7 +174,7 @@ export function UserMenu({
               {/* ── Workspace switcher ── */}
               <div className="px-3 py-3">
                 <p className="mb-2 px-1 text-[11px] font-medium uppercase tracking-widest text-muted-foreground">
-                  Workspace
+                  {t("workspace")}
                 </p>
                 <div className="space-y-0.5">
                   {workspaceOptions.map((ws) => (
@@ -188,7 +220,7 @@ export function UserMenu({
                       className="size-4 text-muted-foreground"
                       strokeWidth={1.5}
                     />
-                    View profile
+                    {t("viewProfile")}
                   </Link>
                 )}
                 <Link
@@ -200,7 +232,7 @@ export function UserMenu({
                     className="size-4 text-muted-foreground"
                     strokeWidth={1.5}
                   />
-                  Account settings
+                  {t("accountSettings")}
                 </Link>
                 <Link
                   href="/settings"
@@ -211,8 +243,15 @@ export function UserMenu({
                     className="size-4 text-muted-foreground"
                     strokeWidth={1.5}
                   />
-                  Organization settings
+                  {t("organizationSettings")}
                 </Link>
+              </div>
+
+              <div className="h-px bg-border" />
+
+              {/* ── Sprache (Bier-Schneider, docs/bier-schneider/I18N.md) ── */}
+              <div className="flex items-center justify-between gap-3 px-5 py-3">
+                <LanguageSwitcher />
               </div>
 
               <div className="h-px bg-border" />
@@ -227,7 +266,7 @@ export function UserMenu({
                   className="flex items-center gap-2.5 rounded-lg px-2 py-2 text-sm text-foreground/80 transition-colors hover:bg-accent hover:text-foreground"
                 >
                   <GithubIcon className="size-4 text-muted-foreground" />
-                  <span className="flex-1">Star on GitHub</span>
+                  <span className="flex-1">{t("starOnGithub")}</span>
                   <Badge
                     variant="secondary"
                     className="font-mono text-[0.65rem] font-normal"
@@ -249,7 +288,7 @@ export function UserMenu({
                   className="flex w-full items-center gap-2.5 rounded-lg px-2 py-2 text-sm text-destructive transition-colors hover:bg-destructive/10 disabled:opacity-50"
                 >
                   <LogOut className="size-4" strokeWidth={1.5} />
-                  {isPending ? "Signing out…" : "Sign out"}
+                  {isPending ? t("signingOut") : t("signOut")}
                 </button>
               </div>
             </div>

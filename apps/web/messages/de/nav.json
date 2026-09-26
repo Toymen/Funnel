@@ -1,0 +1,12 @@
+{
+  "userMenu": {
+    "trigger": "Konto-Menü",
+    "workspace": "Arbeitsbereich",
+    "viewProfile": "Profil ansehen",
+    "accountSettings": "Kontoeinstellungen",
+    "organizationSettings": "Organisationseinstellungen",
+    "starOnGithub": "Auf GitHub ansehen",
+    "signOut": "Abmelden",
+    "signingOut": "Wird abgemeldet …"
+  }
+}

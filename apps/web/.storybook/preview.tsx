@@ -1,7 +1,11 @@
 import type { Decorator, Preview } from "@storybook/nextjs-vite";
+import { NextIntlClientProvider } from "next-intl";
 import { sb } from "storybook/test";
 
 import { languageInfo, QUICK_APPLY_LANGUAGES, type QuickApplyLanguage } from "@/features/quick-apply/languages";
+
+import { TIME_ZONE } from "@/i18n/config";
+import { MESSAGES } from "@/i18n/messages";
 
 import { configureQuickApplyMock, type QuickApplyMockConfig } from "./mocks/quick-apply";
 
@@ -22,10 +26,14 @@ const withLanguage: Decorator = (Story, context) => {
     document.documentElement.lang = lang;
     document.documentElement.dir = dir;
   }
+  // Arbeitgeberbereich kennt nur DE/EN: „en“ → Englisch, alles andere → Deutsch.
+  const locale = language === "en" ? "en" : "de";
   return (
-    <div lang={lang} dir={dir}>
-      <Story />
-    </div>
+    <NextIntlClientProvider locale={locale} messages={MESSAGES[locale]} timeZone={TIME_ZONE}>
+      <div lang={lang} dir={dir}>
+        <Story />
+      </div>
+    </NextIntlClientProvider>
   );
 };
 

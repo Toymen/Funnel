@@ -1,0 +1,52 @@
+{
+  "actions": {
+    "save": "Speichern",
+    "saving": "Wird gespeichert …",
+    "cancel": "Abbrechen",
+    "delete": "Löschen",
+    "edit": "Bearbeiten",
+    "close": "Schließen",
+    "back": "Zurück",
+    "next": "Weiter",
+    "confirm": "Bestätigen",
+    "create": "Erstellen",
+    "add": "Hinzufügen",
+    "remove": "Entfernen",
+    "search": "Suchen",
+    "retry": "Erneut versuchen",
+    "copy": "Kopieren",
+    "copied": "Kopiert",
+    "apply": "Übernehmen",
+    "reset": "Zurücksetzen",
+    "more": "Mehr",
+    "viewAll": "Alle anzeigen",
+    "open": "Öffnen",
+    "download": "Herunterladen",
+    "upload": "Hochladen",
+    "select": "Auswählen",
+    "clear": "Leeren",
+    "done": "Fertig",
+    "yes": "Ja",
+    "no": "Nein"
+  },
+  "states": {
+    "loading": "Wird geladen …",
+    "empty": "Noch keine Einträge",
+    "error": "Etwas ist schiefgelaufen.",
+    "required": "Pflichtfeld",
+    "optional": "optional",
+    "unknown": "Unbekannt"
+  },
+  "language": {
+    "label": "Sprache",
+    "changed": "Sprache geändert"
+  },
+  "roles": {
+    "owner": "Inhaber/in",
+    "admin": "Admin",
+    "recruiter": "Recruiter/in",
+    "hiring_manager": "Fachbereich",
+    "interviewer": "Interviewer/in",
+    "member": "Mitglied"
+  }
+}

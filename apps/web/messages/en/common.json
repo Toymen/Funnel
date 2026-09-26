@@ -1,0 +1,52 @@
+{
+  "actions": {
+    "save": "Save",
+    "saving": "Saving…",
+    "cancel": "Cancel",
+    "delete": "Delete",
+    "edit": "Edit",
+    "close": "Close",
+    "back": "Back",
+    "next": "Next",
+    "confirm": "Confirm",
+    "create": "Create",
+    "add": "Add",
+    "remove": "Remove",
+    "search": "Search",
+    "retry": "Try again",
+    "copy": "Copy",
+    "copied": "Copied",
+    "apply": "Apply",
+    "reset": "Reset",
+    "more": "More",
+    "viewAll": "View all",
+    "open": "Open",
+    "download": "Download",
+    "upload": "Upload",
+    "select": "Select",
+    "clear": "Clear",
+    "done": "Done",
+    "yes": "Yes",
+    "no": "No"
+  },
+  "states": {
+    "loading": "Loading…",
+    "empty": "Nothing here yet",
+    "error": "Something went wrong.",
+    "required": "Required",
+    "optional": "optional",
+    "unknown": "Unknown"
+  },
+  "language": {
+    "label": "Language",
+    "changed": "Language changed"
+  },
+  "roles": {
+    "owner": "Owner",
+    "admin": "Admin",
+    "recruiter": "Recruiter",
+    "hiring_manager": "Hiring manager",
+    "interviewer": "Interviewer",
+    "member": "Member"
+  }
+}
