@@ -40,14 +40,14 @@
   },
   "devDependencies": {
     "dotenv": "17.4.2",
-    "drizzle-kit": "0.31.10",
+    "drizzle-kit": "0.31.11",
     "drizzle-orm": "0.45.2",
     "esbuild": "0.28.2",
     "eslint": "10.10.0",
-    "markdownlint-cli2": "0.23.2",
-    "prettier": "3.9.8",
-    "tsx": "4.23.13",
-    "turbo": "2.10.13",
+    "markdownlint-cli2": "0.23.3",
+    "prettier": "3.9.9",
+    "tsx": "4.23.15",
+    "turbo": "2.11.7",
     "typescript": "6.0.3"
   },
   "packageManager": "pnpm@12.4.2"
