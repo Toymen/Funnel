@@ -1,5 +1,5 @@
 # syntax=docker/dockerfile:1.7
-FROM node:24.21.0-bookworm-slim AS build
+FROM node:26.11.1-bookworm-slim AS build
 WORKDIR /src
 RUN npm install --global pnpm@12.4.2
 COPY package.json pnpm-lock.yaml pnpm-workspace.yaml turbo.json ./
@@ -34,7 +34,7 @@ RUN --mount=type=cache,id=harly-next-cache,target=/src/apps/web/.next/cache \
 RUN pnpm exec esbuild tooling/runtime/src/entrypoint.ts --bundle --platform=node --format=esm --target=node24 --outfile=/tmp/harly-runtime.mjs
 RUN pnpm exec esbuild packages/db/scripts/seed-bier-schneider.ts --bundle --platform=node --format=cjs --target=node24 --outfile=/tmp/seed-bier-schneider.cjs
 
-FROM node:24.21.0-bookworm-slim AS runtime
+FROM node:26.11.1-bookworm-slim AS runtime
 ENV NODE_ENV=production \
     NEXT_TELEMETRY_DISABLED=1 \
     PORT=3000 \
